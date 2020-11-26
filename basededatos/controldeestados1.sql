@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-11-2020 a las 16:32:12
+-- Tiempo de generación: 26-11-2020 a las 01:26:04
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `controldeestados`
+-- Base de datos: `controldeestados1`
 --
 
 -- --------------------------------------------------------
@@ -502,6 +502,32 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `idrol` int(11) NOT NULL,
+  `rol` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`idrol`, `rol`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Admin', 1, NULL, NULL, NULL),
+(2, 'Supervisor', 1, NULL, NULL, NULL),
+(3, 'Operario', 1, NULL, NULL, NULL),
+(4, 'Gerente', 1, NULL, NULL, NULL),
+(5, 'Administrador', 1, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tiposdispositivosiot`
 --
 
@@ -523,6 +549,48 @@ INSERT INTO `tiposdispositivosiot` (`idtipodispositivoiot`, `tipodispositivoIoT`
 (1, 'BPE-01', 'Caja para registrar de paso de producto terminado y ejecutar paro en linea por acción de operarios.', '2020-09-04 19:16:59', NULL, NULL, 1),
 (2, 'BPEI-1', 'Caja con botones Paso/Paro/medición de corriente', '2020-09-04 19:19:45', NULL, NULL, 1),
 (3, 'BPEIR-1', 'Botonera con botones de paso y error con medicion de corriente y relay para control de màquinas', '2020-09-04 19:22:15', NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `idusuario` int(11) NOT NULL,
+  `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `correo` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `usuario` varchar(15) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `clave` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `rol` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`idusuario`, `nombre`, `correo`, `usuario`, `clave`, `rol`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Jorge Andres', 'jorgecock@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, NULL, NULL, NULL),
+(2, 'Gloria Eugenia', 'magenial@gmail.com', 'magenial', '81dc9bdb52d04dc20036dbd8313ed055', 2, 0, NULL, NULL, '2020-05-27 13:59:07'),
+(3, 'Juan Pablo', 'juanpablo@gmail.com', 'juanpablo', '25ef8924973420229be604d76afcbd9b', 3, 1, NULL, NULL, NULL),
+(4, 'Pepe', 'pepe1@gmail.com', 'pepe1', '202cb962ac59075b964b07152d234b70', 2, 1, NULL, NULL, NULL),
+(5, 'Manuel Fernando', 'manuel@gmail.com', 'rooticon12', '202cb962ac59075b964b07152d234b70', 4, 1, NULL, NULL, NULL),
+(8, 'gonzalo', 'gonzalo@gmail.com', 'gonzo', '81dc9bdb52d04dc20036dbd8313ed055', 3, 1, NULL, NULL, '2020-05-27 13:07:44'),
+(9, 'Marcela', 'marcela@gmail.com', 'marce', '202cb962ac59075b964b07152d234b70', 2, 1, NULL, NULL, NULL),
+(10, 'Alberto', 'alberto@gmail.com', 'alberto', '202cb962ac59075b964b07152d234b70', 3, 0, NULL, NULL, '2020-05-28 17:22:43'),
+(11, 'Matilde', 'matilde@matilde.com', 'matilde', '11c0d3f31578732d1aebdad4f70c6985', 4, 1, NULL, NULL, '2020-05-27 13:44:45'),
+(12, 'Oswaldo', 'oswaldo@oswaldo.com', 'oswaldo', '633d2c523d43600cca8b0d1d8bb795b0', 5, 1, NULL, NULL, NULL),
+(13, 'Yidis', 'Yidis@gmail.com', 'yidis', '01303fc071799c4af6697a4802e19c7c', 3, 1, NULL, NULL, NULL),
+(14, 'Marcela B', 'marcelab@gmail.com', 'marce1', '0d54d1a7a5de5c491dbc3162b9919bc8', 2, 1, NULL, NULL, NULL),
+(15, 'Jorge Andres Cock', 'jorgecock1@gmail.com', 'gogogog', '827ccb0eea8a706c4c34a16891f84e7b', 1, 1, '2020-05-26 20:40:12', NULL, NULL),
+(16, 'Liliana', 'liliana@gmail.com', 'liliana', 'a071495b74b65a34559c76227e0633a4', 4, 1, '2020-05-26 20:45:13', NULL, NULL),
+(17, 'casandra', 'cccc@gmail.com', 'pepe3', '81dc9bdb52d04dc20036dbd8313ed055', 4, 1, '2020-05-27 00:37:48', NULL, NULL),
+(18, 'catalina', 'catalina@gmail.com', 'Catalina', '827ccb0eea8a706c4c34a16891f84e7b', 4, 1, '2020-05-27 13:58:52', NULL, NULL),
+(19, 'Oscar', 'oscar@gmail.com', 'magenial', '827ccb0eea8a706c4c34a16891f84e7b', 4, 0, '2020-05-27 13:59:41', NULL, '2020-05-27 14:00:37');
 
 --
 -- Índices para tablas volcadas
@@ -562,10 +630,23 @@ ALTER TABLE `registrotiempos`
   ADD PRIMARY KEY (`idregistro`);
 
 --
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`idrol`);
+
+--
 -- Indices de la tabla `tiposdispositivosiot`
 --
 ALTER TABLE `tiposdispositivosiot`
   ADD PRIMARY KEY (`idtipodispositivoiot`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`idusuario`),
+  ADD KEY `rol` (`rol`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -596,10 +677,22 @@ ALTER TABLE `registrotiempos`
   MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=338;
 
 --
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `tiposdispositivosiot`
 --
 ALTER TABLE `tiposdispositivosiot`
   MODIFY `idtipodispositivoiot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
@@ -618,6 +711,12 @@ ALTER TABLE `dispositivosiot`
 --
 ALTER TABLE `modulos`
   ADD CONSTRAINT `modulos_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `estados` (`idestado`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
