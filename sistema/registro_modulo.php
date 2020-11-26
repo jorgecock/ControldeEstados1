@@ -33,7 +33,7 @@
 				$alert='<p class="msg_error">El nombre del Módulo ya existe</p>';
 			}else{
 				$query_insert = mysqli_query($conexion,"INSERT INTO modulos(nombremodulo,descripcion)
-					VALUES ('$nombre, '$descripcion')");
+					VALUES ('$nombre', '$descripcion')");
 
 				if($query_insert){
 					//$alert='<p class="msg_save">Usuario creado Correctamente</p>';

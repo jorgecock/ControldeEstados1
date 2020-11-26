@@ -9,7 +9,7 @@
 	}
 
 
-	$verdatosyexportar=false;
+	$verdatosyexportar=false; // si se activa es porque ya se encontraron datos para descargar
 	if(isset($_POST["cargar_data"])) {
 		if (empty($_POST['ordenprod']) AND empty($_POST['itemaproducir'])){
 				echo "Debe seleccionar una orden de produccion y un tipo de prenda producida";
@@ -57,6 +57,8 @@
 					<form action="<?php echo $_SERVER['PHP_SELF']; ?>"  method="post">
 						
 						<label for="ordendeprod">Orden de producción: </label>
+						
+						<!-- Buscar orden de producción -->
 						<input type="text" name="ordenprod" value="<?php 
 							if ($inicio==true){
 								echo "";
@@ -65,7 +67,11 @@
 							}	
 						?>"
 						>
+
+
 						<br><br>
+						
+						<!-- Buscar item a producir -->
 						<label for="itemaproducir">Item a producir: </label>
 						<input type="text" name="itemaproducir" value="<?php 
 							if ($inicio==true){
@@ -75,6 +81,9 @@
 							}
 						?>"
 						>
+
+
+
 						<br><br>
 						
 						<?php if ($verdatosyexportar==true){ ?>
@@ -84,7 +93,7 @@
 						
 
 						<button type="submit" id="cargar_data" name='cargar_data' value="Buscar Eficiencias" class="btn btn-info">Buscar Eficiencias</button>
-						<a href="index.php">Regresar a la ventana de inicio</a>
+						<!-- <a href="index.php">Regresar a la ventana de inicio</a> -->
 					</form>
 				</div>
 			</div>
@@ -96,14 +105,18 @@
  
 				<table id="" class="table table-striped table-bordered">
 					<tr>
-						<th>Eficiencia Acumulada</th>
 						<th>Hora</th>
+						<th>Cantidad Esperada</th>
+						<th>Cantidad Hecha</th>
+						<th>Eficiencia Acumulada</th>
 					</tr>
 					<tbody>
 						<?php foreach($eficiencias as $eficiencia) { ?>
 							<tr>
-								<td><?php echo $eficiencia ['eficiencia']; ?></td>
 								<td><?php echo $eficiencia ['fechahora']; ?></td>
+								<td><?php echo $eficiencia ['cantidadesperada']; ?></td>
+								<td><?php echo $eficiencia ['cantidadhecha']; ?></td>
+								<td><?php echo $eficiencia ['eficiencia']; ?></td>
 							</tr>
 						<?php } ?>
 					</tbody>

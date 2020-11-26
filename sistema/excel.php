@@ -38,14 +38,18 @@
 	 
 		<table id="" class="table table-striped table-bordered">
 			<tr>
-				<th>Eficiencia Acumulada</th>
 				<th>Hora</th>
+				<th>Cantidad Esperada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
 			</tr>
 			<tbody>
 				<?php foreach($eficiencias as $eficiencia) { ?>
 					<tr>
-					<td><?php echo $eficiencia ['eficiencia']; ?></td>
-					<td><?php echo $eficiencia ['fechahora']; ?></td>
+						<td><?php echo $eficiencia ['fechahora']; ?></td>
+						<td><?php echo $eficiencia ['cantidadesperada']; ?></td>
+						<td><?php echo $eficiencia ['cantidadhecha']; ?></td>
+						<td><?php echo $eficiencia ['eficiencia']; ?></td>
 					</tr>
 				<?php } ?>
 			</tbody>

@@ -10,16 +10,13 @@
 	if(!empty($_POST)){
 		
 		//seguridad
-		if(empty($_POST['idusuario'])){
+		if(empty($_POST['idmodulo'])){
 			header('location: lista_modulos.php');
 		}
 
-		$idusuario=$_POST['idusuario'];
-		
-		//$query_delete=mysqli_query($conexion,"DELETE FROM usuario WHERE idusuario=$idusuario");
-		$query_delete=mysqli_query($conexion,"UPDATE  usuario SET status=0 WHERE idusuario=$idusuario");
-
-
+		$idmodulo=$_POST['idmodulo'];
+		$fecha=date('y-m-d H:i:s');
+		$query_delete=mysqli_query($conexion,"UPDATE modulos SET status=0, deleted_at='$fecha' WHERE idmodulo=$idmodulo");
 		if($query_delete){
 			header('location: lista_modulos.php');
 		}else{
@@ -34,14 +31,13 @@
 		header('location: lista_modulos.php');
 	}else{
 		
-		$idusuario=$_REQUEST['id'];
-		$query=mysqli_query($conexion,"SELECT u.nombre, u.usuario, r.rol FROM usuario u INNER JOIN rol r on u.rol= r.idrol WHERE idusuario=$idusuario");
+		$idmodulo=$_REQUEST['id'];
+		$query=mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$idmodulo");
 		$result=mysqli_num_rows($query);
 		if ($result>0){
 			while ($data=mysqli_fetch_array($query)) {
-				$nombre=$data['nombre'];
-				$usuario=$data['usuario'];
-				$rol=$data['rol'];
+				$nombremodulo=$data['nombremodulo'];
+				$descripcion=$data['descripcion'];
 			}
 
 		}else{
@@ -64,13 +60,12 @@
 	<section id="container">
 		<div class="data_delete">
 			<h2>Está seguro de eliminar el registro:</h2>
-			<p>Nombre: <span><?php echo $nombre; ?></span></p>
-			<p>Usuario: <span><?php echo $usuario; ?></span></p>
-			<p>Rol: <span><?php echo $rol; ?></span></p>
+			<p>Modulo: <span><?php echo $nombremodulo; ?></span></p>
+			<p>Descripcion: <span><?php echo $descripcion; ?></span></p>
 
 			<form method="post" action="">
-				<input type="hidden" name="idusuario" value="<?php echo $idusuario; ?>">
-				<a href="lista_usuarios.php" class="btn_cancel">Cancelar</a>
+				<input type="hidden" name="idmodulo" value="<?php echo $idmodulo; ?>">
+				<a href="lista_modulos.php" class="btn_cancel">Cancelar</a>
 				<input type="submit" value="Aceptar" class="btn_ok"> 
 			</form>	
 		</div>

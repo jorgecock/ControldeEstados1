@@ -9,16 +9,16 @@
 	if(!empty($_POST)){
 		
 		//seguridad
-		if(empty($_POST['id'])){
+		if(empty($_POST['idtipodispositivoIoT'])){
 			header('location: lista_tiposdispositivosIoT.php');
 		}
 		
-		$id=$_POST['id'];
+		$idtipodispositivoIoT=$_POST['idtipodispositivoIoT'];
 		
 		//Query para borrar cambiando el estatus a 0
 		include "../conexion.php";
 		$fecha=date('y-m-d H:i:s');
-		$query_delete=mysqli_query($conexion,"UPDATE  tiposmodulosiot SET status=0, deleted_at ='$fecha' WHERE idtipomoduloiot='$id'");
+		$query_delete=mysqli_query($conexion,"UPDATE  tiposdispositivosiot SET status=0, deleted_at ='$fecha' WHERE idtipodispositivoiot='$idtipodispositivoIoT'");
 		mysqli_close($conexion);
 
 		if($query_delete){
@@ -29,21 +29,20 @@
 	}
 
 
-
 	//Mostrar Datos Recibidos de Get
 	if (empty($_REQUEST['id'])){
 		header('location: lista_tiposdispositivosIoT.php');
 	}else{
 		
-		$id=$_REQUEST['id'];
+		$idtipodispositivoIoT=$_REQUEST['id'];
 		include "../conexion.php";
-		$query=mysqli_query($conexion,"SELECT tipomoduloIoT, referencia FROM tiposmodulosiot  WHERE idtipomoduloiot='$id'");
+		$query=mysqli_query($conexion,"SELECT * FROM tiposdispositivosiot  WHERE idtipodispositivoiot='$idtipodispositivoIoT'");
 		mysqli_close($conexion);
 		$result=mysqli_num_rows($query);
 		if ($result>0){
 			while ($data=mysqli_fetch_array($query)) {
-				$tipomoduloIoT=$data['tipomoduloIoT'];
-				$referencia=$data['referencia'];
+				$tipodispositivoIoT=$data['tipodispositivoIoT'];
+				$descripcion=$data['descripcion'];
 			}
 		}else{
 			header('location: lista_tiposdispositivosIoT.php');
@@ -64,11 +63,11 @@
 	<section id="container">
 		<div class="data_delete">
 			<h2>Está seguro de eliminar el registro:</h2>
-			<p>Tipo de modulo IoT: <span><?php echo $tipomoduloIoT; ?></span></p>
-			<p>Referencia: <span><?php echo $referencia; ?></span></p>
+			<p>Tipo de dispositivo IoT: <span><?php echo $tipodispositivoIoT; ?></span></p>
+			<p>Descripcion: <span><?php echo $descripcion; ?></span></p>
 			
 			<form method="post" action="">
-				<input type="hidden" name="id" value="<?php echo $id; ?>">
+				<input type="hidden" name="idtipodispositivoIoT" value="<?php echo $idtipodispositivoIoT; ?>">
 				<a href="lista_tiposdispositivosIoT.php" class="btn_cancel">Cancelar</a>
 				<input type="submit" value="Aceptar" class="btn_ok"> 
 			</form>	

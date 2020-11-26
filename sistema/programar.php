@@ -65,26 +65,26 @@
 		<h1 align='center'>MODULO <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
 		<h1>Datos de orden de producción para el día</h1>
-		<hr size="3px" color="black" />
 		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h2>
+		<hr size="3px" color="black" />
 		<form align='left' method="post" action="">
 			<label for="ordendeprod">Orden de producción:  </label>
 			<input type="text" name="ordendeprod">
-			<br><br>
+			
 			<label for="itemaproducir">Item a producir:  </label>
 			<input type="text" name="itemaproducir">
-			<br><br>
+			
 			<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
 			<input type="number" name="unidadesesperadas">
-			<br><br>
+			
 			<label for="tiempocicloesperado">Tiempo de ciclo en minutos: (Tiempo de ritmo esperado entre prendas entregadas en el punto final)  </label>
 			<input type="number" step="any" name="tiempocicloesperado">
-			<br><br>
+			
 			<label for="minutosprogramados">Minutos de jornada programados para producir la referencia:  </label>
 			<input type="number" step="any" name="minutosprogramados">
-			<br><br>
+			<br>
 			<input type="submit" name="ProgProd" value="Programar Producción">
-			<a href="index.php">Regresar a la ventana de inicio</a>
+			<!-- <a href="index.php">Regresar a la ventana de inicio</a> -->
 			<h4><?php echo $alert; ?></h4>
 		</form>
 

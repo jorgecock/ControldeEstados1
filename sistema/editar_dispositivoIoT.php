@@ -10,34 +10,23 @@
 	if (!empty($_POST)) 
 	{
 		$alert='';
-		if (empty($_POST['nombre']) || empty($_POST['correo']) || empty($_POST['usuario']) || empty($_POST['rol'])) 
+		if (empty($_POST['iddispositivoIoT']) || empty($_POST['modulo']) || empty($_POST['firmware']) || empty($_POST['tipodispositivoIoT'])) 
 		{
 			$alert='<p class="msg_error">Todos los campos son obligatorios</p>';
 		}else{
 			
-			$idusuario=$_POST['idUsuario'];/* mmmm  verificar*/
-			$nombre=$_POST['nombre'];
-			$email=$_POST['correo'];
-			$user=$_POST['usuario'];
-			$clave=md5($_POST['clave']);
-			$rol=$_POST['rol'];
-
+			$iddispositivoIoT=$_POST['iddispositivoIoT'];/* mmmm  verificar*/
+			$modulo=$_POST['modulo'];
+			$firmware=$_POST['firmware'];
+			$tipodispositivoIoT=$_POST['tipodispositivoIoT'];
+			
 			include "../conexion.php";
-			$query= mysqli_query($conexion,"SELECT * FROM usuario 
-											WHERE ((usuario='$user' OR correo='$email') AND idusuario!=$idusuario)");
-			$result=mysqli_fetch_array($query);
-			if ($result>0){
-				$alert='<p class="msg_error">El dispositivo IoT ya existe</p>';
+			$fecha=date('y-m-d H:i:s');
+			$sql_update = mysqli_query($conexion,"UPDATE dispositivosiot SET modulo=$modulo, firmware='$firmware', tipodispositivoIoT=$tipodispositivoIoT, updated_at='$fecha' WHERE iddispositivoIoT='$iddispositivoIoT' ");
+			if($sql_update){
+				header('location: lista_dispositivosIoT.php');
 			}else{
-				$fecha=date('y-m-d H:i:s');
-				$sql_update = mysqli_query($conexion,"UPDATE usuario SET nombre='$nombre', correo='$email', usuario='$user', rol='$rol' WHERE idUsuario='$idusuario' ");
-
-				if($sql_update){
-					//$alert='<p class="msg_save">Usuario Actualizado Correctamente</p>';
-					header('location: lista_dispositivosIoT.php');
-				}else{
-					$alert='<p class="msg_error">Error al actualizar el dispositivo IoT</p>';
-				}
+				$alert='<p class="msg_error">Error al actualizar el dispositivo IoT</p>';
 			}
 			mysqli_close($conexion);
 		}
@@ -48,23 +37,18 @@
 	if (empty($_GET['id'])){
 		header('location: lista_dispositivosIoT.php');
 	}
-	$iduser=$_GET['id'];
+	$iddispositivoIoT=$_GET['id'];
 	include "../conexion.php";
-	$sql=mysqli_query($conexion,"SELECT u.idusuario, u.nombre, u.correo, u.usuario, (u.rol) as idrol, (r.rol) as rol FROM usuario u INNER JOIN rol r on u.rol= r.idrol WHERE (idusuario=$iduser AND status=1)");
+	$sql=mysqli_query($conexion,"SELECT * FROM dispositivosiot WHERE (iddispositivoIoT=$iddispositivoIoT AND status=1)");
 	mysqli_close($conexion);
 	$result_sql=mysqli_num_rows($sql);
 	if ($result_sql==0){
 		header('location: lista_dispositivosIoT.php'); 
 	}else{
 		while ($data=mysqli_fetch_array($sql)) {
-			$iduser=$data['idusuario'];
-			$nombre=$data['nombre'];
-			$correo=$data['correo'];
-			$usuario=$data['usuario'];
-			$rol=$data['rol'];
-			
-			$idrol=$data['idrol'];
-			/* echo $idrol; echo(" "); echo $rol;*/ /*muestra el rol del usuario a editar*/
+			$modulo=$data['modulo'];
+			$firmware=$data['firmware'];
+			$tipodispositivoIoT=$data['tipodispositivoIoT'];
 		}
 	}
 ?>
@@ -87,33 +71,35 @@
 			<div class="alert"> <?php echo isset($alert) ? $alert : ''; ?></div>
 
 			<form action="" method="post">
-				<input type="hidden" name="idUsuario" value="<?php echo $iduser; ?>">
-				<label for='nombre'>Nombre</label>
-				<input type="text" name="nombre" id="nombre" placeholder="Nombre Completo" value="<?php echo $nombre; ?>">
-				<label for='correo'>Correo Electrónico</label>
-				<input type="email" name="correo" id="correo" placeholder="Correo Electrónico" value="<?php echo $correo; ?>">
-				<label for="usuario">Usuario</label>
-				<input type="text" name="usuario" id="usuario" placeholder="Usuario" value="<?php echo $usuario; ?>">
-				<label for="clave">Clave</label>
-				<input type="password" name="clave" id="clave" placeholder="Clave de Acceso" >
-				<label for="rol">Tipo de usuario</label>
+				
+				<label for='iddispositivoIoT'>Id Dispositivo IoT: <?php echo $iddispositivoIoT?></label>
+				<input type="hidden" name="iddispositivoIoT" id="iddispositivoIoT" placeholder="Id Dispositivo IoT" value="<?php echo $iddispositivoIoT; ?>"              >
 
+				<label for='modulo'>Módulo</label>
+				<input type="text" name="modulo" id="modulo" placeholder="Módulo" value="<?php echo $modulo; ?>">
+				<label for='firmware'>Firmware</label>
+				<input type="text" name="firmware" id="firmware" placeholder="Firmware" value="<?php echo $firmware; ?>">
+			
+				<label for="tipodispositivoIoT">Tipo de dispositivo IoT</label>
 				<?php
 					include "../conexion.php";
-					$query_rol = mysqli_query($conexion,"SELECT * FROM rol");
+					$query_tiposdispositivosiot = mysqli_query($conexion,"SELECT * FROM tiposdispositivosiot");
 					mysqli_close($conexion);
-					$result_rol = mysqli_num_rows($query_rol);
+					$result_tiposdispositivosiot = mysqli_num_rows($query_tiposdispositivosiot);
 				?>
 
-				<select name="rol" id="rol" class="notItemOne">
+				<select name="tipodispositivoIoT" id="tipodispositivoIoT" class="notItemOne">
 					<?php 
-						if($result_rol>0){
-							while ($rol_a= mysqli_fetch_array($query_rol)) { ?>		
+						if($result_tiposdispositivosiot>0){
+							while ($tiposdispositivosiot_a= mysqli_fetch_array($query_tiposdispositivosiot)) { ?>		
 						
-							<option value="<?php echo $rol_a["idrol"]; ?>"     
-								<?php if($idrol==$rol_a["idrol"]){echo " selected";} ?>>
-								<?php echo $rol_a["rol"];?>		
+							<option value="<?php echo $tiposdispositivosiot_a['idtipodispositivoiot']; ?>"     
+								
+								<?php if($tipodispositivoIoT==$tiposdispositivosiot_a["tipodispositivoIoT"]){
+									echo " selected";} ?>>
+								<?php echo $tiposdispositivosiot_a["tipodispositivoIoT"];?>		
 							</option><?php
+							
 							}
 						}
 					?>

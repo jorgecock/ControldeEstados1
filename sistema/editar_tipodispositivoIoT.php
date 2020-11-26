@@ -9,34 +9,22 @@
 	if (!empty($_POST)) 
 	{
 		$alert='';
-		if (empty($_POST['tipomoduloIoT']) OR empty($_POST['referencia']) ) 
+		if (empty($_POST['tipodispositivoIoT'])) 
 		{
-			$alert='<p class="msg_error">Los campos Tipo Modulo y Referencia son necesarios</p>';
+			$alert='<p class="msg_error">El campo Tipo Dispositivo es necesarios</p>';
 		}else{
 			
-			$idtipomoduloiot=$_POST['id'];/* mmmm  verificar*/
-			$tipomoduloIoT=$_POST['tipomoduloIoT'];
+			$idtipodispositivoIoT=$_POST['idtipodispositivoIoT'];
+			$tipodispositivoIoT=$_POST['tipodispositivoIoT'];
 			$descripcion=$_POST['descripcion'];
-			$referencia=$_POST['referencia'];
-			
-			$query= mysqli_query($conexion,"SELECT * FROM tiposmodulosiot 
-											WHERE (referencia='$referencia' AND idtipomoduloiot!=$idtipomoduloiot)");
-			$result=mysqli_fetch_array($query);
-			$result=count($result);
+			$fecha=date('y-m-d H:i:s');
+			$sql_update = mysqli_query($conexion,"UPDATE tiposdispositivosiot SET tipodispositivoIoT='$tipodispositivoIoT', descripcion='$descripcion', updated_at='$fecha' WHERE idtipodispositivoIoT=$idtipodispositivoIoT");
+				
 
-			if ($result>0){
-				$alert='<p class="msg_error">El Tipo de dispositivo IoT ya existe</p>';
+			if($sql_update){
+				header('location: lista_tiposdispositivosIoT.php');
 			}else{
-				
-				$sql_update = mysqli_query($conexion,"UPDATE tiposmodulosiot SET tipomoduloIoT='$tipomoduloIoT', descripcion='$descripcion', referencia='$referencia' WHERE idtipomoduloiot='$idtipomoduloiot'");
-				
-
-				if($sql_update){
-					//$alert='<p class="msg_save">Usuario Actualizado Correctamente</p>';
-					header('location: lista_tiposdispositivosIoT.php');
-				}else{
-					$alert='<p class="msg_error">Error al actualizar el dispositivo IoT</p>';
-				}
+				$alert='<p class="msg_error">Error al actualizar el dispositivo IoT</p>';
 			}
 		}
 	}
@@ -47,18 +35,16 @@
 		mysqli_close($conexion);
 		header('location: lista_tiposdispositivosIoT.php');
 	}
-	$idtipmodIoT=$_REQUEST['id'];
-	$sql=mysqli_query($conexion,"SELECT idtipomoduloiot, tipomoduloIoT, descripcion, referencia  FROM tiposmodulosIoT WHERE (idtipomoduloiot=$idtipmodIoT AND status=1)");
+	$idtipodispositivoIoT=$_REQUEST['id'];
+	$sql=mysqli_query($conexion,"SELECT * FROM tiposdispositivosIoT WHERE (idtipodispositivoiot=$idtipodispositivoIoT AND status=1)");
 	mysqli_close($conexion);
 	$result_sql=mysqli_num_rows($sql);
 	if ($result_sql==0){
 		header('location: lista_tiposdispositivosIoT.php'); 
 	}else{
 		while ($data=mysqli_fetch_array($sql)) {
-			$idtipmodIoT=$data['idtipomoduloiot'];
-			$tipomoduloIoT=$data['tipomoduloIoT'];
+			$tipodispositivoIoT=$data['tipodispositivoIoT'];
 			$descripcion=$data['descripcion'];
-			$referencia=$data['referencia'];
 		}
 	}
 ?>
@@ -82,13 +68,12 @@
 			<div class="alert"> <?php echo isset($alert) ? $alert : ''; ?></div>
 
 			<form action="" method="post">
-				<input type="hidden" name="id" value="<?php echo $idtipmodIoT; ?>">
-				<label for='tipomoduloIoT'>Tipo de Dispositivo IoT</label>
-				<input type="text" name="tipomoduloIoT" id="tipomoduloIoT" placeholder="Tipo de modulo IoT" value="<?php echo $tipomoduloIoT; ?>">
+				<label for='idtipodispositivoIoT'>Id Tipo de Dispositivo IoT: <?php echo $idtipodispositivoIoT; ?></label>
+				<input type="hidden" name="idtipodispositivoIoT" value="<?php echo $idtipodispositivoIoT; ?>">
+				<label for='tipodispositivoIoT'>Tipo de Dispositivo IoT</label>
+				<input type="text" name="tipodispositivoIoT" id="tipodispositivoIoT" placeholder="Tipo de dispositivo IoT" value="<?php echo $tipodispositivoIoT; ?>">
 				<label for='descripcion'>Descripción</label>
 				<input type="text" name="descripcion" id="descripcion" placeholder="Descripción" value="<?php echo $descripcion; ?>">
-				<label for="referencia">Referencia</label>
-				<input type="text" name="referencia" id="referencia" placeholder="Referencia" value="<?php echo $referencia; ?>">
 				<br>
 				<input type="submit" value="Actualizar Tipo de Dispositivo IoT" class="btn_save">
 				<br>
