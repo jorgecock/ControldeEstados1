@@ -15,6 +15,7 @@
 		$firmware=$_POST['firmware'];
 		$idusuario=$_SESSION['idUser'];
 
+
 		if (empty($_POST['modulo']) || empty($_POST['tipodispositivoIoT']) || empty($_POST['firmware'])) 
 		{
 			$alert='<p class="msg_error">Los campos: Modulo, Tipo de dispositivo y Firmwares son obligatorios</p>';
@@ -22,6 +23,7 @@
 			include "../conexion.php";
 			$query= mysqli_query($conexion,"SELECT * FROM dispositivosiot WHERE ((modulo='$modulo') AND status=1)");
 			$result=mysqli_fetch_array($query);
+
 			if ($result>0){
 				$alert='<p class="msg_error">El módulo ya tiene asociado un dispositivo IoT.</p>';
 			}else{

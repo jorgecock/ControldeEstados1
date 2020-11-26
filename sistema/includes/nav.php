@@ -28,13 +28,18 @@
 						<?php if($_SESSION['rol']==1 || $_SESSION['rol']==2 || $_SESSION['rol']==4 || $_SESSION['rol']==5){
 							//Permiso para exportar datos de eficiencia a excel ?>
 						<li><a href="eficienciasaexcel.php">Descargar datos de eficiencia a excel</a></li>
+						
+						<li class="principal"><a href="lista_modulos.php">Módulos</a></li>
+
+
+
 						<?php } ?>
 
 
 						<!--
 						<li><a href="lista_ordenes_produccion.php">Ordenes de Producción</a></li>
 						<li class="principal"><a href="lista_plantas.php">Plantas</a></li>
-						<li class="principal"><a href="lista_modulos.php">Módulos</a></li>
+						
 						<li><a href="#">Balanceo</a></li>
 						<li><a href="#">Control de Calidad</a></li>
 						<li><a href="#">Inventarios</a></li>
