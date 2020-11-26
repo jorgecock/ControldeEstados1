@@ -59,25 +59,23 @@
 		Porcentaje completado: <?php echo $porcentajecompletado; ?> %</h3>
 		<hr size="3px" color="black" />
 		<h3>Ultimo tiempo de ciclo realizado: 
+			<?php 
+				if ($productoshechos > 1){
+					//primer productdo
+					echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos"; 
+					$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
+				}else{
+					//segundo producto en adelante.
+					echo ("No aplica para la primera unidad hecha.");
+					$eficienciaultimociclo=" No aplica para la primera unidad hecha.";
+				}
+			?>
 
-		<?php 
-			if ($productoshechos > 1){
-				//primer productdo
-				echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos"; 
-				$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
-			}else{
-				//segundo producto en adelante.
-				echo ("No aplica para la primera unidad hecha.");
-				$eficienciaultimociclo=" No aplica para la primera unidad hecha.";
-			}
-		?>
-
-		<br>
-		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
-		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
-
-
+			<br>
+			Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
+			Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 		</h3>
+		<a href="index.php">Regresar a la ventana de inicio</a>
 		<hr size="8px" color="black" />
 		Número de modulo a seguir.<br>
 		<select id="mySelect" onchange="cambiodemodulo(this.value)">

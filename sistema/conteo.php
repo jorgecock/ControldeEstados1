@@ -126,6 +126,7 @@
 		<form method="post" action="">
 			<input type="submit" name="pausa" value="pausa"> 
 			<input type="submit" name="terminar" value="terminar">
+			<a href="index.php">Regresar a la ventana de inicio</a>
 		</form>	
 		<hr size="8px" color="black" />
 		Numero de módulo a seguir.<br>

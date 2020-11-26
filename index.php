@@ -50,7 +50,7 @@
 <html lang="es">
 <head>
 	<meta charset="utf-8">
-	<title>Login | Sistema Facturación </title>
+	<title>Login | Sistema Conteo e Indicadores </title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>

@@ -123,6 +123,7 @@
 			
 			<input type="submit" name="reanudar" value="Reanudar Conteo"> 
 			<input type="submit" name="terminar" value="terminar">
+			<a href="index.php">Regresar a la ventana de inicio</a>
 		</form>	
 		
 		<hr size="8px" color="black" />

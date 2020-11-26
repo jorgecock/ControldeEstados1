@@ -9,7 +9,7 @@
 	include "scripts.php";
 	include "functions.php";
 	include "definicionmodulo.php";
-
+	include "includes/scripts.php";
 	include "validacionestadoactualTablero.php";
 
 ?>
@@ -32,7 +32,8 @@
 		<h1>MODULO <?php echo $mod; ?> </h1>
 		<h1>En espera a ser programado.</h1>
 		<br>
-	  	<hr size="8px" color="black" />
+		<a href="index.php">Regresar a la ventana de inicio</a>
+	  <hr size="8px" color="black" />
 		Número de módulo a seguir.<br>
 		
 		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
@@ -53,10 +54,11 @@
 
 		<script>
 			function cambiodemodulo(val) {
-	  		url="indexTablero.php?mod="+val;
+	  		url="programarTablero.php?mod="+val;
 	  		location.replace(url);
 			}
 		</script>
 	</div>
+	<?php  include "includes/footer.php"; ?>
 </body>
 </html>

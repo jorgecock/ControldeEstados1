@@ -22,9 +22,9 @@ int status = WL_IDLE_STATUS;//estado conexión
 //const char* host = "192.168.43.167"; //Conexion a portatil conectado a celular jorge cock, verificar con IPCONFIG
 //const char* host = "127.0.0.1"; //Conexion celular jorge cock
 //const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
-const char* host = "192.168.1.15"; //Servidor Casa Jorge
+//const char* host = "192.168.1.15"; //Servidor Casa Jorge
 //const char* host = "192.168.1.158"; //Servidor Carsil
-//const char* host = "10.171.92.68"; //Servidor pcKarolina
+const char* host = "10.171.92.68"; //Servidor pcKarolina
 
 const int httpPort = 80;
 
@@ -34,7 +34,7 @@ const int httpPort = 80;
 //Direccion API****************************************************************************************************************
 //String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
 //String url = "http://192.168.1.158/ControldeEstados/api/apiIoT.php";
-String url = "http://localhost/ControldeEstados/api/apiIoT.php"; //carsil y casa  jorge
+String url = "http://localhost/ControldeEstados1/sistema/api/apiIoT.php"; //carsil y casa  jorge
 
 
 int estadosensor1 =0;
@@ -50,7 +50,7 @@ float voltage = 0.0; //salida del ADC
 int contreg=0;
 
 //******************DATOS DEL TIPO DE MODULO Y SERIE***************************************************************************
-int iddispositivoiot=4; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int iddispositivoiot=2; // NUMERO SERIAL DEL DISPOSITIOV IOT
 int idtipodispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
 //*****************************************************************************************************************************
 
@@ -63,9 +63,9 @@ void setup() {
   pinMode(Output1, OUTPUT);
   pinMode(Output2, OUTPUT);
   pinMode(Output3, OUTPUT);
-  digitalWrite(Output1, 1); //apaga led amarillo de confirmacion de boton verde
-  digitalWrite(Output2, 1); //apaga led Asul de confirmacion de boton comunicaciones
-  digitalWrite(Output3, 1); //apaga led rojo de confirmacion de boton rojo
+  digitalWrite(Output1, 1);
+  digitalWrite(Output2, 1);
+  digitalWrite(Output3, 1);
   
   //Inicializacion serial
   Serial.begin(115200);
@@ -92,15 +92,26 @@ void setup() {
   adc.setMeasureMode(ADS1115_CONTINUOUS);
 
 
- //Validar wifi en modulo
+  //Primera Lectura
+  estadosensor1 = digitalRead(Input1);
+  digitalWrite(Output1, !estadosensor1);
+  estadosensor2 = digitalRead(Input2);
+  digitalWrite(Output3, !estadosensor2);
+  Serial.print("Estado sensor1");
+  Serial.println(estadosensor1);
+  Serial.print("Estado sensor2");
+  Serial.println(estadosensor2);
+  Serial.println("************");
+  
+  //Validar wifi en modulo
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("comunicacion con WiFi fallada");
     while (true);
     //Mensaje señal de error 
     digitalWrite(Output2, 0);
-    delay(50);
+    delay(20);
     digitalWrite(Output2, 1);
-    delay(50);
+    delay(20);
   }
 
   //Validar version firmware wifi en modulo
@@ -116,12 +127,15 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     status = WiFi.begin(ssid, pass);
     digitalWrite(Output2, 0);
-    delay(100);
+    delay(200);
     digitalWrite(Output2, 1);
-    delay(100);
+    delay(200);
     Serial.print(".");
   }
 
+  //conectado
+  digitalWrite(Output1, 1);
+  digitalWrite(Output2, 1);
   Serial.println("WiFi Conectado");  
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
@@ -134,33 +148,32 @@ void setup() {
   Serial.println("Conexión con red OK");
   Serial.println("***************************************************");
   delay(100);
+
 }
  
 void loop() {
   voltage = adc.getResult_V();
-  estadosensor1 = !digitalRead(Input1);
+  estadosensor1 = digitalRead(Input1);
   digitalWrite(Output1, !estadosensor1);
-  estadosensor2 = digitalRead(Input2); //se niega por ser un boton normalmente cerrado
+  estadosensor2 = !digitalRead(Input2); //se niega por ser un boton normalmente cerrado
   digitalWrite(Output3, !estadosensor2);
-
-  Serial.print("Estado sensor1: ");
-  Serial.print(estadosensor1);
-  Serial.print("  Estado sensor2: ");
-  Serial.print(estadosensor2);
-  Serial.print("  Voltage medido: ");
-  Serial.println(voltage);
   
-  
-  if (((estadosensor1!=estadosensoranterior1) and estadosensor1==1) or ((estadosensor2!=estadosensoranterior2) and estadosensor2==1) ){
+  if ( ((estadosensor1!=estadosensoranterior1) and estadosensor1==1) or ((estadosensor2!=estadosensoranterior2) and estadosensor2==1) ){
     contreg=contreg+1;;
-    Serial.println("");
-    Serial.println("************");
     Serial.print("Conteo: ");
     Serial.println(contreg);
+    Serial.print("Estado sensor1: ");
+    Serial.println(estadosensor1);
+    Serial.print("Estado sensor2: ");
+    Serial.println(estadosensor2);
+    Serial.print("Voltage medido: ");
+    Serial.println(voltage);
+    Serial.println("************");
+
     
     //Concetarse a la base de datos
     WiFiClient client;
-    delay(500);
+    delay(300);
     if (!client.connect(host, httpPort)) {
       Serial.println("Conexion fallada al servidor");
       digitalWrite(Output2, 0);
@@ -174,7 +187,7 @@ void loop() {
       digitalWrite(Output2, 0);
       delay(30);
       digitalWrite(Output2, 1);
-      delay(1000);
+      delay(30);
       return;
     }else{
       Serial.println("Conectado a:"+ String(host) +":"+String (httpPort)+" correctamente.");

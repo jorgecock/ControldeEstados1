@@ -48,17 +48,7 @@
 			<?php
 				//paginador
 				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM usuario u INNER JOIN rol r ON u.rol=r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1");
-				$result_register=mysqli_fetch_array($sql_register);
-				$total_registro=$result_register['total_registro'];	
-				$por_pagina=10; //hacer selector para escoger numero de registros a ver
-				if(empty($_GET['pagina'])){
-					$pagina=1;
-				}else{
-					$pagina=$_GET['pagina'];
-				}
-
-				$desde=($pagina-1)*$por_pagina;
-				$total_paginas=ceil($total_registro/$por_pagina);
+				include "calculonumpaginas.php";
 
 
 				//Crear lista

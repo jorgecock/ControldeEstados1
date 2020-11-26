@@ -9,7 +9,7 @@
 		$estado=$data['estado'];
 		if ($estado<>$estadopagina){
 			if ($estado==1){
-				header("location: index.php");
+				header("location: programar.php");
 			} elseif ($estado==2){
 				header("location: validacion.php");
 			} elseif ($estado==3){

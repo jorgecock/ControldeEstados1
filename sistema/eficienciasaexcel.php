@@ -1,6 +1,6 @@
 <?php
 	session_start();
-
+	include "includes/scripts.php";
 	
 	if(!isset($_POST["cargar_data"]) AND !isset($_POST["export_data"])) {
 		$inicio=true;
@@ -48,6 +48,8 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
+		<?php include "includes/header.php"; ?>
+		<br><br><br><br><br>
 		<div class="container">
 			<h2>Eficiencias acumuladas al ejecutar una orden de producción de un producto específico</h2>
 			<div class="well-sm col-sm-12">
@@ -82,7 +84,7 @@
 						
 
 						<button type="submit" id="cargar_data" name='cargar_data' value="Buscar Eficiencias" class="btn btn-info">Buscar Eficiencias</button>
-
+						<a href="index.php">Regresar a la ventana de inicio</a>
 					</form>
 				</div>
 			</div>
@@ -108,6 +110,7 @@
 				</table>
 			<?php } ?>
 		</div>
+		<?php  include "includes/footer.php"; ?>
 	</body>
 </html>
 

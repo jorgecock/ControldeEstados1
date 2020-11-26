@@ -2,7 +2,7 @@
 	$host='localhost';
 	$user='root';
 	$password='';
-	$db='confeccioniot';
+	$db='controldeestados1';
 
 	$conexion= mysqli_connect($host,$user,$password,$db);
 	if(!$conexion){

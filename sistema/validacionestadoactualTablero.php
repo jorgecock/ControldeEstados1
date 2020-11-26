@@ -9,7 +9,7 @@
 		$estado=$data['estado'];
 		
 		if (($estado==1 OR $estado==2) AND $estadopagina<>1){
-			header("location: indexTablero.php");
+			header("location: programarTablero.php");
 		} elseif ($estado==3 AND $estadopagina<>3){
 			header("location: conteoTablero.php");
 		} elseif ($estado==4 AND $estadopagina<>4){

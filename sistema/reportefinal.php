@@ -25,7 +25,7 @@
 				SET estado=$siguienteestado 
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
-			header("location: index.php");
+			header("location: programar.php");
 		} 
 	}
 
@@ -107,7 +107,8 @@
 		<hr size="3px" color="black" />
 
 		<form method="post" action="">
-			<input type="submit" name="Reiniciar" value="reiniciar"> 
+			<input type="submit" name="Reiniciar" value="reiniciar">
+			<a href="index.php">Regresar a la ventana de inicio</a> 
 		</form>	
 		
 		<hr size="8px" color="black" />

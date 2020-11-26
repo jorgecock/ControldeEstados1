@@ -44,7 +44,7 @@
 				SET estado=$siguienteestado
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
-			header("location: index.php");
+			header("location: programar.php");
 		}
 	}
 	
@@ -104,6 +104,7 @@
 		<form  method="post" action="">			
 			<?php if($aceptable==1){echo('<input type="submit" name="IniCont" value="Iniciar conteo">');} ?>
 			<input type="submit" name="Regresar" value="Regresar">
+			<a href="index.php">Regresar a la ventana de inicio</a>
 		</form>	
 	
 		<hr size="8px" color="black" />
