@@ -9,18 +9,22 @@
 	include "scripts.php";
 	include "functions.php";
 	include "definicionmodulo.php";
-
+	include "includes/scripts.php";
 
 	include "validacionestadoactualTablero.php";
 
 	include "conexion.php";
-	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
+	$query2 = mysqli_query($conexion,"
+				SELECT u.*, r.numeroordenproduccion  
+				FROM modulos u 
+				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				WHERE u.idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query2);
 	$productoshechos=$data['productoshechos'];
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
-	$ordendeprod=$data['ordendeprod'];
+	$ordendeprod=$data['numeroordenproduccion'];
 	$itemaproducir=$data['itemaproducir'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];

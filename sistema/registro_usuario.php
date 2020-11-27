@@ -16,6 +16,7 @@
 		$usuario=$_POST['usuario'];
 		$clave=md5($_POST['clave']);
 		$rol=$_POST['rol'];
+		$fecha=date('y-m-d H:i:s');
 
 		if (empty($_POST['nombre']) || empty($_POST['correo']) || empty($_POST['usuario']) || empty($_POST['clave']) || empty($_POST['rol'])) 
 			{
@@ -27,8 +28,8 @@
 				if ($result>0){
 					$alert='<p class="msg_error">El usuario o el correo ya existen</p>';
 				}else{
-					$query_insert = mysqli_query($conexion,"INSERT INTO usuario(nombre,correo,usuario,clave,rol)
-						VALUES ('$nombre','$email','$usuario','$clave','$rol')");
+					$query_insert = mysqli_query($conexion,"INSERT INTO usuario(nombre,correo,usuario,clave,rol,created_at)
+						VALUES ('$nombre','$email','$usuario','$clave','$rol','$fecha')");
 					if($query_insert){
 						//$alert='<p class="msg_save">Usuario creado Correctamente</p>';
 						mysqli_close($conexion);

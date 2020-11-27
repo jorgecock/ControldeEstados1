@@ -4,6 +4,7 @@
 	
 	if(!isset($_POST["cargar_data"]) AND !isset($_POST["export_data"])) {
 		$inicio=true;
+		$ordendeprod=1;
 	} else {
 		$inicio=false;
 	}
@@ -56,20 +57,36 @@
 				<div class="btn-group pull-right">
 					<form action="<?php echo $_SERVER['PHP_SELF']; ?>"  method="post">
 						
-						<label for="ordendeprod">Orden de producción: </label>
+						<!-- Orden de produccion -->
+						<label for="ordenprod">Orden de producción:</label>
+						<?php
+							include "../conexion.php";
+							$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion");
+							mysqli_close($conexion);
+							$result_tipo = mysqli_num_rows($query_tipo);
+						?>
+						<select name="ordenprod" id="ordenprod">
+							<?php 
+								if($result_tipo>0){
+								while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
+									<option value="
+										<?php 
+										echo $tipoa['idordenproduccion'];
+										?>" <?php 
+										if ($tipoa['idordenproduccion']=$ordendeprod){
+											echo (" selected");
+										}
+										?>
+									>	
+										
+										<?php echo $tipoa["numeroordenproduccion"]; ?>
+									</option>
+								<?php }
+								}
+							?>
+						</select>
 						
-						<!-- Buscar orden de producción -->
-						<input type="text" name="ordenprod" value="<?php 
-							if ($inicio==true){
-								echo "";
-							}else{
-								echo $ordendeprod;
-							}	
-						?>"
-						>
-
-
-						<br><br>
+						<br><br><br>
 						
 						<!-- Buscar item a producir -->
 						<label for="itemaproducir">Item a producir: </label>

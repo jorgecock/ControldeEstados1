@@ -13,8 +13,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
 	<title>Módulos</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="refresh" content="5">
 </head>
 <body>
 	<?php  include "includes/header.php"; ?>
@@ -33,6 +34,12 @@
 				<th>ID</th>
 				<th>Nombre</th>
 				<th>Descripción</th>
+				<th>Estado</th>
+				<th>Orden prod</th>
+				<th>Producto Asignado</th>
+				<th>Cantidad Asignada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
 				<th>Acciones</th>
 			</tr>
 
@@ -44,9 +51,11 @@
 
 				//Crear lista
 				$query = mysqli_query($conexion,"
-					SELECT idmodulo, nombremodulo, descripcion 
-					FROM modulos   
-					WHERE status=1 ORDER BY idmodulo ASC LIMIT $desde,$por_pagina");
+					SELECT u.* , r.numeroordenproduccion, v.estado AS nomestado
+					FROM modulos u
+					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
+					INNER JOIN estados v ON u.estado=v.idestado
+					WHERE u.status=1 ORDER BY idmodulo ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 
 				$result = mysqli_num_rows($query);
@@ -57,6 +66,13 @@
 								<td><?php echo $data['idmodulo']; ?></td>
 								<td><?php echo $data['nombremodulo']; ?></td>
 								<td><?php echo $data['descripcion']; ?></td>
+								<td><?php echo $data['nomestado']; ?></td>
+								<td><?php echo $data['numeroordenproduccion']; ?></td>
+								<td><?php echo $data['itemaproducir']; ?></td>
+								<td><?php echo $data['unidadesesperadas']; ?></td>
+								<td><?php echo $data['productoshechos']; ?></td>
+								<td><?php echo $data['eficienciaacumulada']; ?></td>
+
 								<td>
 									<a class="link_edit" href="editar_modulo.php?id=<?php echo $data['idmodulo']; ?>">Editar</a>
 									|  

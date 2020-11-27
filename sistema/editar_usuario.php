@@ -18,6 +18,7 @@
 			$usuario=$_POST['usuario'];
 			$clave=md5($_POST['clave']);
 			$rol=$_POST['rol'];
+			$fecha=date('y-m-d H:i:s');
 
 			include "../conexion.php";
 			$query= mysqli_query($conexion,"SELECT * FROM usuario 
@@ -28,9 +29,9 @@
 				$alert='<p class="msg_error">El usuario o el correo ya existe</p>';
 			}else{
 				if(empty($_POST['clave'])){
-					$sql_update = mysqli_query($conexion,"UPDATE usuario SET nombre='$nombre', correo='$email', usuario='$usuario', rol='$rol' WHERE idUsuario='$idusuario' ");
+					$sql_update = mysqli_query($conexion,"UPDATE usuario SET nombre='$nombre', correo='$email', usuario='$usuario', rol='$rol', updated_at='$fecha' WHERE idUsuario='$idusuario' ");
 				}else{
-					$sql_update = mysqli_query($conexion,"UPDATE usuario SET nombre='$nombre', correo='$email', usuario='$usuario', clave='$clave', rol='$rol' WHERE idUsuario='$idusuario' ");
+					$sql_update = mysqli_query($conexion,"UPDATE usuario SET nombre='$nombre', correo='$email', usuario='$usuario', clave='$clave', rol='$rol', updated_at='$fecha' WHERE idUsuario='$idusuario' ");
 				}
 
 				if($sql_update){

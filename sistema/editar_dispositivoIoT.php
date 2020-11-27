@@ -19,9 +19,9 @@
 			$modulo=$_POST['modulo'];
 			$firmware=$_POST['firmware'];
 			$tipodispositivoIoT=$_POST['tipodispositivoIoT'];
+			$fecha=date('y-m-d H:i:s');
 			
 			include "../conexion.php";
-			$fecha=date('y-m-d H:i:s');
 			$sql_update = mysqli_query($conexion,"UPDATE dispositivosiot SET modulo=$modulo, firmware='$firmware', tipodispositivoIoT=$tipodispositivoIoT, updated_at='$fecha' WHERE iddispositivoIoT='$iddispositivoIoT' ");
 			if($sql_update){
 				header('location: lista_dispositivosIoT.php');

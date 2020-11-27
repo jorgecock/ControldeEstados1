@@ -71,7 +71,7 @@
 				<label for="firmware">Firmware</label>
 				<input type="text" name="firmware" id="firmware" placeholder="Firmware" value="<?php echo $firmware; ?>">
 				
-				<label for="tipo">Tipo de Dispositivo IoT</label>
+				<label for="tipodispositivoIoT">Tipo de Dispositivo IoT</label>
 
 				<?php
 					include "../conexion.php";

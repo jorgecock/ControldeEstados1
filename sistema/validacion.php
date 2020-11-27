@@ -9,7 +9,7 @@
 	include "scripts.php";
 	include "functions.php";
 	include "definicionmodulo.php";
-
+	include "includes/scripts.php";
 
 	//Definicion de estado siguiente
 	if (isset($_POST)){
@@ -53,9 +53,10 @@
 	//Traer datos y desiciones.
 	include "conexion.php";
 	$query1 = mysqli_query($conexion,"
-				SELECT *
-				FROM modulos
-				WHERE idmodulo=$mod");
+				SELECT u.*, r.numeroordenproduccion  
+				FROM modulos u 
+				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				WHERE u.idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query1);
 	
@@ -64,7 +65,7 @@
 	$tiempocicloesperado=$data['tiempocicloesperado']; 
 	$minutosprogramados=$data['minutosprogramados']; 
 	$takt=$minutosprogramados/$unidadesesperadas;
-	$ordendeprod=$data['ordendeprod'];
+	$ordendeprod=$data['numeroordenproduccion']; //ordendeprod
 	$itemaproducir=$data['itemaproducir'];
 
 	$aceptable=0;
@@ -86,6 +87,10 @@
 	<title>Estado 2 Validación</title>
 </head>
 <body onload="mueveReloj()">
+	<div>	
+		<?php include "includes/header.php"; ?>	
+		<br><br><br><br>
+	</div>	
 	<div>
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
@@ -102,9 +107,9 @@
 		<h3 align="left" <?php if($aceptable==0){echo('style="background-color:#F05B64";');} ?>><?php echo $mensaje2; ?></h3>
 		<hr size="3px" color="black" />
 		<form  method="post" action="">			
-			<?php if($aceptable==1){echo('<input type="submit" name="IniCont" value="Iniciar conteo">');} ?>
+			<?php if($aceptable==1){echo('<input type="submit" name="IniCont" value="Iniciar conteo"><br>');} ?>
 			<input type="submit" name="Regresar" value="Regresar">
-			<a href="index.php">Regresar a la ventana de inicio</a>
+			<!-- <a href="index.php">Regresar a la ventana de inicio</a> -->
 		</form>	
 	
 		<hr size="8px" color="black" />
@@ -132,5 +137,6 @@
 			}
 		</script>
 	</div>
+	<?php  include "includes/footer.php"; ?>
 </body>
 </html>

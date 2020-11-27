@@ -9,16 +9,20 @@
 	include "scripts.php";
 	include "functions.php";
 	include "definicionmodulo.php";
-
+	include "includes/scripts.php";
 
 	include "conexion.php";
-	$query2 = mysqli_query($conexion,"SELECT * FROM modulos WHERE idmodulo=$mod");
+	$query2 = mysqli_query($conexion,"
+				SELECT u.*, r.numeroordenproduccion  
+				FROM modulos u 
+				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				WHERE u.idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query2);
 	$productoshechos=$data['productoshechos'];
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
-	$ordendeprod=$data['ordendeprod'];
+	$ordendeprod=$data['numeroordenproduccion'];
 	$itemaproducir=$data['itemaproducir'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
@@ -77,6 +81,10 @@
 	<meta http-equiv="refresh" content="5">
 </head>
 <body onload="mueveReloj()">
+	<div>	
+		<?php include "includes/header.php"; ?>	
+		<br><br><br><br>
+	</div>
 	<div>
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
@@ -121,9 +129,9 @@
 
 		<form method="post" action="">
 			
-			<input type="submit" name="reanudar" value="Reanudar Conteo"> 
+			<input type="submit" name="reanudar" value="Reanudar Conteo"><br> 
 			<input type="submit" name="terminar" value="terminar">
-			<a href="index.php">Regresar a la ventana de inicio</a>
+			<!-- <a href="index.php">Regresar a la ventana de inicio</a> -->
 		</form>	
 		
 		<hr size="8px" color="black" />
@@ -151,5 +159,6 @@
 			}
 		</script>
 	</div>	
+	<?php  include "includes/footer.php"; ?>
 </body>
 </html>

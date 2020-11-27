@@ -55,8 +55,12 @@
 	<title>Estado 1 Ingreso de Datos de orden de producción</title>
 </head>
 <body onload="mueveReloj()">
-	<?php include "includes/header.php"; ?>	
-	<br><br><br><br>
+	<div>	
+		<?php include "includes/header.php"; ?>	
+		<br><br><br><br>
+	</div>	
+	<div>	
+		<!-- Reloj -->
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
 			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
@@ -67,10 +71,33 @@
 		<h1>Datos de orden de producción para el día</h1>
 		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h2>
 		<hr size="3px" color="black" />
+		
+
 		<form align='left' method="post" action="">
-			<label for="ordendeprod">Orden de producción:  </label>
-			<input type="text" name="ordendeprod">
 			
+			<!-- Orden de produccion -->
+			<label for="ordendeprod">Orden de producción:</label>
+			<?php
+				include "../conexion.php";
+				$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion");
+					mysqli_close($conexion);
+				$result_tipo = mysqli_num_rows($query_tipo);
+			?>
+
+			<select name="ordendeprod" id="ordendeprod">
+				<?php 
+					if($result_tipo>0){
+						while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
+							<option value="<?php echo $tipoa["idordenproduccion"]; ?>">	
+									<?php echo $tipoa["numeroordenproduccion"]; ?>
+							</option>
+						<?php }
+					}
+				?>
+			</select>
+			<br>
+
+			<!-- Item a producir de produccion -->
 			<label for="itemaproducir">Item a producir:  </label>
 			<input type="text" name="itemaproducir">
 			
@@ -114,6 +141,7 @@
 			}
 		</script>
 	</div>
+	<br>
 	<?php  include "includes/footer.php"; ?>
 </body>
 </html>
