@@ -5,25 +5,43 @@
 
 
 
-	$ordendeprod=($_GET['ordenprod']);
+	$idordenproduccion=($_GET['idordenproduccion']);
 	$itemaproducir=($_GET['itemaproducir']);
+	$idmodulo=$_GET['idmodulo'];
+	$fecha=$_GET['fecha'];
+
+
 
 	include "conexion.php";
 	$query1 = mysqli_query($conexion,"
 		SELECT *
 		FROM registroeficiencias
-		WHERE ordendeprod='$ordendeprod' AND itemaproducir='$itemaproducir'" );
+		WHERE (ordendeprod='$idordenproduccion' AND itemaproducir='$itemaproducir' AND modulo=$idmodulo AND (fechahora LIKE '%$fecha%')  )" );
 		include "conexion.php";
-	mysqli_close($conexion);
+	
 	$result = mysqli_num_rows($query1);
 	if($result>0){
 		while ($data=mysqli_fetch_array($query1)) {
 			$eficiencias[]=$data;	
-
 		}
 		$mod=$eficiencias[0]['modulo'];
 	}
+
+	
+	$query_tipo = mysqli_query($conexion,"
+								SELECT nombremodulo FROM  modulos    
+								WHERE (status=1 AND idmodulo=$idmodulo)");
+	$tipoa= mysqli_fetch_array($query_tipo);
+	$nombremodulo=$tipoa['nombremodulo'];
+				
+	$query_tipo = mysqli_query($conexion,"
+								SELECT numeroordenproduccion FROM  ordenesproduccion    
+								WHERE (status=1 AND idordenproduccion=$idordenproduccion)");
+	mysqli_close($conexion);
+	$tipoa= mysqli_fetch_array($query_tipo);
+	$numeroordenproduccion=$tipoa['numeroordenproduccion'];
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -32,9 +50,9 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
-		<h2>Modulo: <?php echo $mod; ?></h2>
-		<h2>Orden de Producción: <?php echo $ordendeprod; ?></h2>
-		<h2>Item a producir: <?php echo $itemaproducir; ?></h2>
+		<h2>Modulo: <?php echo $nombremodulo; ?></h2>
+				<h2>Orden de Producción: <?php echo $numeroordenproduccion; ?></h2>
+				<h2>Item a producir: <?php echo $itemaproducir; ?></h2>
 	 
 		<table id="" class="table table-striped table-bordered">
 			<tr>

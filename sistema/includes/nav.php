@@ -22,7 +22,7 @@
 						
 						<?php if($_SESSION['rol']==1 || $_SESSION['rol']==2 || $_SESSION['rol']==4 || $_SESSION['rol']==5){
 							//Permiso para programar conteo tableros ?>
-						<li><a href="programar.php">Control de tableros</a></li>
+						<li><a href="programar.php">Ejecución de Orden de Producción</a></li>
 						<?php } ?>
 						<li><a href="programarTablero.php">Visualizar Tablero en planta</a></li>
 						
