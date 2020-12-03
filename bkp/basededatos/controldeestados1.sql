@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-11-2020 a las 21:38:18
+-- Tiempo de generación: 03-12-2020 a las 20:03:22
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -44,15 +44,10 @@ CREATE TABLE `dispositivosiot` (
 --
 
 INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT`, `firmware`, `created_at`, `updated_at`, `deleted_at`, `status`, `idusuario`) VALUES
-(1, 1, 1, 'B', '2020-11-26 01:56:29', NULL, NULL, 1, 1),
-(2, 2, 1, 'B', '2020-11-26 02:45:18', NULL, NULL, 1, 1),
-(3, 3, 1, 'B', '2020-11-26 02:45:41', NULL, NULL, 1, 1),
-(4, 4, 1, 'B', '2020-11-26 02:45:57', NULL, NULL, 1, 1),
-(5, 5, 1, 'B', '2020-11-26 02:50:48', NULL, NULL, 1, 1),
-(6, 6, 1, 'B', '2020-11-26 02:50:59', NULL, NULL, 1, 1),
-(10, 7, 1, 'B', '2020-11-26 03:54:03', '2020-11-26 14:18:33', NULL, 1, 1),
-(11, 8, 1, 'B', '2020-11-26 03:55:28', NULL, NULL, 1, 1),
-(13, 8, 1, 'C', '2020-11-26 11:33:05', '2020-11-26 14:19:44', '2020-11-26 14:19:53', 0, 1);
+(1, 1, 1, 'B', '2020-11-27 09:31:07', NULL, NULL, 1, 1),
+(2, 2, 1, 'A', '2020-11-27 09:31:52', NULL, NULL, 1, 1),
+(3, 3, 1, 'B', '2020-11-27 09:32:15', NULL, NULL, 1, 1),
+(4, 4, 1, 'B', '2020-11-27 09:32:32', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -70,12 +65,38 @@ CREATE TABLE `estados` (
 --
 
 INSERT INTO `estados` (`idestado`, `estado`) VALUES
-(1, 'entrandoorden'),
-(2, 'validando'),
-(3, 'contando'),
-(4, 'enpausa'),
-(5, 'error'),
-(6, 'terminado');
+(1, 'En programación'),
+(2, 'En validación'),
+(3, 'En proceso'),
+(4, 'Pausado Supervisor'),
+(5, 'Parado Línea'),
+(6, 'Terminado');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estadosordenproduccion`
+--
+
+CREATE TABLE `estadosordenproduccion` (
+  `idestadoordenproduccion` int(11) NOT NULL,
+  `estado` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `estadosordenproduccion`
+--
+
+INSERT INTO `estadosordenproduccion` (`idestadoordenproduccion`, `estado`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Inscrita', 1, '2020-05-25 17:22:06', NULL, NULL),
+(2, 'En Proceso', 1, '2020-05-25 17:22:06', NULL, NULL),
+(3, 'Pausada', 1, '2020-05-25 17:22:52', NULL, NULL),
+(4, 'Cancelada', 1, '2020-05-25 17:22:52', NULL, NULL),
+(5, 'Terminada', 1, '2020-05-25 17:23:08', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -118,17 +139,10 @@ CREATE TABLE `modulos` (
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `updated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
-(1, 'Modulo 1', 'Ropa deportiva', 2, '1234', 'polo', 10, 1, 10, 0, 0, 1606414975, 1605671524, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', '2020-11-26 21:12:13', NULL, 1, 0, 1, 0.00807047, 0, 0),
-(2, 'Paco', 'Paca', 3, '2', '2', 12, 1, 12, 3, 1605671529, 0, 1605671529, 1605671834, 1605671729, 1.75, 0, 0, '2020-09-04 17:55:23', '2020-11-26 21:18:44', '2020-11-26 15:21:41', 0, 0, 3, 0, 0, 0),
-(3, '', '', 3, '1234', 'polo', 10, 1, 10, 6, 1606383953, 1606383888, 1606383953, 1606400697, 1606400675, 0.366667, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 6, 0.00842297, 0, 0),
-(4, '', '', 3, '4', '4', 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 2, 0, 0, 0),
-(5, '', '', 1, '1', 'polo', 10, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(6, '', '', 1, '', '', 2, 2, 4, 0, 190929, 0, 0, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(7, 'Camilo Lopez', 'fgdfdg', 1, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2020-11-26 03:53:38', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(8, 'leñadoras', 'con maquinas verdes', 1, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2020-11-26 03:55:01', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(9, 'recortes', 'modulo de recortes', 1, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2020-11-26 03:56:15', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(10, 'pegados', 'Modulo con seis maquinas', 1, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2020-11-26 03:56:26', '2020-11-26 21:10:57', NULL, 1, 0, 0, 0, 0, 0),
-(11, 'ropa para gatos', 'gatso en planta 3', 3, '1234', 'polo', 10, 1, 10, 0, 1606382179, 0, 1606382179, 0, 0, 0, 0, 0, '2020-11-26 03:56:47', NULL, NULL, 1, 0, 0, 0, 0, 0);
+(1, 'Módulo 1', 'Ropa deportiva', 3, '1', '1', 10, 1, 10, 0, 1606966175, 1607012543, 1607012546, 0, 0, 0, 46368, 3, '2020-09-04 17:55:23', '2020-11-27 20:21:42', NULL, 1, 0, 0, 0, 1, 0),
+(2, 'Módulo 2', 'Faldas', 1, '14', '1', 10, 1, 10, 0, 1606975260, 1606975270, 1606975260, 0, 0, 0, 10, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:00', '2020-11-26 15:21:41', 1, 0, 0, 0, 0, 0),
+(3, 'Módulo 3', 'Pijamas', 1, '15', 'polo', 10, 1, 10, 0, 1606502803, 1606502926, 1606502803, 0, 0, 0, 123, 0, '2020-09-04 17:55:23', '2020-11-27 20:21:32', NULL, 1, 0, 0, 0, 1, 0),
+(4, 'Módulo 4', 'Camisas', 1, '15', 'polo', 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:37', NULL, 1, 0, 2, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -138,7 +152,7 @@ INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ord
 
 CREATE TABLE `ordenesproduccion` (
   `idordenproduccion` int(11) NOT NULL,
-  `numeroordenproduccion` int(11) NOT NULL,
+  `numeroordenproduccion` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `fechaprogramacion` date DEFAULT NULL,
   `fechapausa` date DEFAULT NULL,
   `fechacontinuacion` date DEFAULT NULL,
@@ -157,13 +171,10 @@ CREATE TABLE `ordenesproduccion` (
 --
 
 INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `fechaprogramacion`, `fechapausa`, `fechacontinuacion`, `fechacierre`, `created_at`, `updated_at`, `deleted_at`, `descripcion`, `idestadoordenproduccion`, `status`, `usuario_id`) VALUES
-(1, 1, '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:05:38', NULL, NULL, 'Casa', 1, 1, 15),
-(9, 20, '2020-06-18', NULL, NULL, NULL, '2020-07-20 23:24:08', NULL, NULL, '12', 1, 1, 1),
-(10, 21, '2020-06-18', NULL, NULL, NULL, '2020-07-20 23:24:43', NULL, NULL, '12', 1, 1, 1),
-(11, 30, '2020-07-02', NULL, NULL, NULL, '2020-07-20 23:26:17', NULL, NULL, '2', 1, 1, 1),
-(12, 26, '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:55:08', NULL, NULL, 'fdgdfgdg', 1, 1, 1),
-(13, 130, '2020-07-21', NULL, NULL, NULL, '2020-07-21 00:37:27', NULL, NULL, '30', 1, 1, 1),
-(14, 14, '2020-07-25', NULL, NULL, NULL, '2020-07-25 11:23:35', NULL, NULL, 'camisas', 1, 1, 1);
+(1, '10001', '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:05:38', NULL, NULL, 'Casa', 1, 1, 15),
+(14, '10002', '2020-07-25', NULL, NULL, NULL, '2020-07-25 11:23:35', NULL, NULL, 'camisas', 1, 1, 1),
+(15, '10003', '2020-11-25', NULL, NULL, NULL, '2020-11-27 10:41:54', '2020-12-02 18:26:27', NULL, 'zapatos rojizos', 1, 1, 1),
+(16, '10004', '2020-12-13', NULL, NULL, NULL, '2020-12-01 10:10:59', NULL, NULL, 'Camisas pra linea directa', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -174,40 +185,22 @@ INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `
 CREATE TABLE `producto` (
   `idproducto` int(11) NOT NULL,
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
-  `referencia` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
-  `descripcion` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `precio` decimal(10,2) DEFAULT NULL,
-  `existencia` int(11) DEFAULT NULL,
-  `foto` mediumtext COLLATE utf8_spanish_ci DEFAULT NULL,
+  `referencia` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
-  `usuario_id` int(11) NOT NULL
+  `usuario_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `precio`, `existencia`, `foto`, `created_at`, `updated_at`, `deleted_at`, `status`, `usuario_id`) VALUES
-(8, 'Camisa Polo verde xl', '1', 'De cristal', '939.59', 480, 'img_producto.png', '2020-06-08 00:26:13', NULL, NULL, 1, 1),
-(12, 'Camisa Polo Azul m', '2', NULL, '602.73', 1000, 'img_producto.png', '2020-06-08 00:46:41', NULL, NULL, 1, 1),
-(13, 'Camisa Polo Azul roja', '3', '', '507.30', 1029, 'img_producto.png', '2020-06-08 00:47:54', NULL, NULL, 1, 1),
-(14, 'Camisa Polo XXl', '4', '', '8999.00', 345, 'img_producto.png', '2020-06-08 00:52:02', NULL, '2020-06-08 10:53:41', 0, 1),
-(15, 'Camisa Polo Marron', '6', 'Verde', '715.53', 1202, 'img_producto.png', '2020-06-08 00:58:24', NULL, NULL, 1, 1),
-(16, 'camisa Polo violeta', '33334', '4444', '5.00', 30, 'img_e2ea0e22920425dc4f8f352ff94680f1.jpg', '2020-06-09 21:25:58', NULL, NULL, 0, 1);
-
---
--- Disparadores `producto`
---
-DELIMITER $$
-CREATE TRIGGER `entradas_A_I` AFTER INSERT ON `producto` FOR EACH ROW BEGIN
-		INSERT INTO entradas (idproducto, cantidad, precio, usuario_id) 
-		VALUES (new.idproducto, new.existencia, new.precio, new.usuario_id);
-	END
-$$
-DELIMITER ;
+INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`, `usuario_id`) VALUES
+(1, 'Pijama', 'Coleccion Primavera', 'rojo', '2020-12-02 15:38:40', '2020-12-02 18:42:23', '0000-00-00 00:00:00', 1, 1),
+(2, 'Sabana', 'primavera', 'morada', '2020-12-02 18:29:11', '2020-12-02 18:42:35', '2020-12-02 18:50:53', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -217,8 +210,8 @@ DELIMITER ;
 
 CREATE TABLE `registroeficiencias` (
   `id` int(11) NOT NULL,
-  `ordendeprod` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `itemaproducir` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `ordendeprod` int(11) NOT NULL,
+  `itemaproducir` int(11) NOT NULL,
   `cantidadesperada` int(11) NOT NULL,
   `cantidadhecha` int(11) NOT NULL,
   `eficiencia` float NOT NULL,
@@ -231,9 +224,9 @@ CREATE TABLE `registroeficiencias` (
 --
 
 INSERT INTO `registroeficiencias` (`id`, `ordendeprod`, `itemaproducir`, `cantidadesperada`, `cantidadhecha`, `eficiencia`, `fechahora`, `modulo`) VALUES
-(1, '123', 'polo', 0, 10, 50, '2020-11-15 21:29:14', 2),
-(2, '123', 'polo', 0, 20, 60, '2020-11-15 21:30:07', 2),
-(3, '1', 'casa', 0, 0, 50, '2020-11-16 03:49:24', 1);
+(1, 1, 1, 50, 10, 70, '2020-12-03 21:29:14', 1),
+(2, 1, 1, 50, 20, 80, '2020-12-03 01:30:18', 1),
+(3, 1, 1, 50, 30, 85, '2020-12-03 01:30:27', 1);
 
 -- --------------------------------------------------------
 
@@ -595,7 +588,14 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 (340, '1234', 'polo', '2020-11-26 09:24:05'),
 (341, '1234', 'polo', '2020-11-26 09:24:21'),
 (342, '1234', 'polo', '2020-11-26 09:24:36'),
-(343, '1234', 'polo', '2020-11-26 09:24:58');
+(343, '1234', 'polo', '2020-11-26 09:24:58'),
+(344, '16', 'camisas', '2020-12-01 12:52:06'),
+(345, '16', 'camisas', '2020-12-01 12:55:39'),
+(346, '16', 'camisas', '2020-12-01 12:55:53'),
+(347, '16', 'camisas', '2020-12-01 12:57:01'),
+(348, '16', 'camisas', '2020-12-01 12:58:21'),
+(349, '16', 'camisas', '2020-12-01 13:29:37'),
+(350, '16', 'camisas', '2020-12-01 13:29:52');
 
 -- --------------------------------------------------------
 
@@ -644,11 +644,8 @@ CREATE TABLE `tiposdispositivosiot` (
 --
 
 INSERT INTO `tiposdispositivosiot` (`idtipodispositivoiot`, `tipodispositivoIoT`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
-(1, '1', 'Caja para registrar de paso de producto terminado y ejecutar paro en linea por acción de operarios.', '2020-09-04 19:16:59', NULL, NULL, 1),
-(2, '2', 'Caja con botones Paso/Paro/medición de corriente', '2020-09-04 19:19:45', NULL, NULL, 1),
-(3, '3', 'Botonera con botones de paso y error con medicion de corriente y relay para control de màquinas', '2020-09-04 19:22:15', NULL, NULL, 1),
-(6, 'CNCC', 'De medida de distanciaa', '2020-11-26 00:53:02', '2020-11-26 20:24:06', '2020-11-26 14:35:20', 0),
-(7, 'CNC', 'De medida de distancia', '2020-11-26 14:35:30', NULL, NULL, 1);
+(1, '1', 'Caja Wifi con botones: verde de aceptar y rojo de paro, con opción de medir corriente', '2020-09-04 19:16:59', '2020-11-27 15:37:13', NULL, 1),
+(2, '2', 'Caja Wifi con  monitoreo de corriente y opción de apagar máquinas', '2020-09-04 19:19:45', '2020-11-27 15:37:05', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -674,24 +671,11 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idusuario`, `nombre`, `correo`, `usuario`, `clave`, `rol`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Jorge Andres', 'jorgecock@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, NULL, NULL, NULL),
-(2, 'Gloria Eugenia', 'magenial@gmail.com', 'magenial', '81dc9bdb52d04dc20036dbd8313ed055', 2, 0, NULL, NULL, '2020-05-27 13:59:07'),
-(3, 'Juan Pablo', 'juanpablo@gmail.com', 'juanpablot', '25ef8924973420229be604d76afcbd9b', 3, 1, NULL, NULL, NULL),
-(4, 'Pepe', 'pepe1@gmail.com', 'pepe1', '202cb962ac59075b964b07152d234b70', 2, 1, NULL, NULL, NULL),
-(5, 'Manuel Fernando', 'manuel@gmail.com', 'rooticon12', '202cb962ac59075b964b07152d234b70', 4, 1, NULL, NULL, NULL),
-(8, 'gonzalo', 'gonzalo@gmail.com', 'gonzo', '81dc9bdb52d04dc20036dbd8313ed055', 3, 1, NULL, NULL, '2020-05-27 13:07:44'),
-(9, 'Marcela', 'marcela@gmail.com', 'marce', '202cb962ac59075b964b07152d234b70', 2, 1, NULL, NULL, NULL),
-(10, 'Alberto', 'alberto@gmail.com', 'alberto', '202cb962ac59075b964b07152d234b70', 3, 0, NULL, NULL, '2020-05-28 17:22:43'),
-(11, 'Matilde', 'matilde@matilde.com', 'matilde', '11c0d3f31578732d1aebdad4f70c6985', 4, 1, NULL, NULL, '2020-05-27 13:44:45'),
-(12, 'Oswaldo', 'oswaldo@oswaldo.com', 'oswaldo', '633d2c523d43600cca8b0d1d8bb795b0', 5, 1, NULL, NULL, NULL),
-(13, 'Yidis', 'Yidis@gmail.com', 'yidis', '01303fc071799c4af6697a4802e19c7c', 3, 1, NULL, NULL, NULL),
-(14, 'Marcela B', 'marcelab@gmail.com', 'marce1', '0d54d1a7a5de5c491dbc3162b9919bc8', 2, 1, NULL, NULL, NULL),
-(15, 'Jorge Andres Cock', 'jorgecock1@gmail.com', 'gogogog', '827ccb0eea8a706c4c34a16891f84e7b', 1, 1, '2020-05-26 20:40:12', NULL, NULL),
-(16, 'Liliana', 'liliana@gmail.com', 'liliana', 'a071495b74b65a34559c76227e0633a4', 4, 0, '2020-05-26 20:45:13', NULL, '2020-11-25 21:52:48'),
-(17, 'casandra', 'cccc@gmail.com', 'pepe3', '81dc9bdb52d04dc20036dbd8313ed055', 4, 1, '2020-05-27 00:37:48', NULL, NULL),
-(18, 'catalina', 'catalina@gmail.com', 'Catalina', '827ccb0eea8a706c4c34a16891f84e7b', 4, 1, '2020-05-27 13:58:52', NULL, NULL),
-(19, 'Oscar', 'oscar@gmail.com', 'magenial', '827ccb0eea8a706c4c34a16891f84e7b', 4, 0, '2020-05-27 13:59:41', NULL, '2020-05-27 14:00:37'),
-(20, 'Camilo Lopez', 'cam@cam.com', 'camilo', '81dc9bdb52d04dc20036dbd8313ed055', 2, 1, '2020-11-25 21:46:53', NULL, NULL);
+(1, 'Jorge Andrés Cock Ramírez', 'jcock@sena.edu.co', 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, '2020-11-27 09:52:55', NULL, NULL),
+(2, 'Gustavo Carvajal Ramírez', 'gcarvajal@sena.edu.co.com', 'gcarvajal', '827ccb0eea8a706c4c34a16891f84e7b', 2, 1, '2020-11-27 09:53:03', '2020-11-27 16:01:10', NULL),
+(3, 'Karolina Paniagua Gómez', 'kpaniagua@sena.edu.co', 'kpaniagua', '827ccb0eea8a706c4c34a16891f84e7b', 3, 1, '2020-11-27 09:53:14', NULL, NULL),
+(4, 'Marisol Osorio Beltran', 'marosorio@sena.edu.co', 'marosorio', '827ccb0eea8a706c4c34a16891f84e7b', 2, 1, '2020-11-27 09:53:18', NULL, NULL),
+(5, 'Fabio Andrés Gaviria', 'fgaviria@sena.edu.co', 'fgaviria', '827ccb0eea8a706c4c34a16891f84e7b', 3, 0, '2020-11-27 10:05:30', '2020-11-27 16:06:59', '2020-11-27 10:07:13');
 
 --
 -- Índices para tablas volcadas
@@ -712,6 +696,12 @@ ALTER TABLE `estados`
   ADD PRIMARY KEY (`idestado`);
 
 --
+-- Indices de la tabla `estadosordenproduccion`
+--
+ALTER TABLE `estadosordenproduccion`
+  ADD PRIMARY KEY (`idestadoordenproduccion`);
+
+--
 -- Indices de la tabla `modulos`
 --
 ALTER TABLE `modulos`
@@ -730,8 +720,7 @@ ALTER TABLE `ordenesproduccion`
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`idproducto`),
-  ADD KEY `usuario_id` (`usuario_id`);
+  ADD PRIMARY KEY (`idproducto`);
 
 --
 -- Indices de la tabla `registroeficiencias`
@@ -772,13 +761,19 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `dispositivosiot`
 --
 ALTER TABLE `dispositivosiot`
-  MODIFY `iddispositivoIoT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `iddispositivoIoT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`
 --
 ALTER TABLE `estados`
   MODIFY `idestado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `estadosordenproduccion`
+--
+ALTER TABLE `estadosordenproduccion`
+  MODIFY `idestadoordenproduccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `modulos`
@@ -790,13 +785,13 @@ ALTER TABLE `modulos`
 -- AUTO_INCREMENT de la tabla `ordenesproduccion`
 --
 ALTER TABLE `ordenesproduccion`
-  MODIFY `idordenproduccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `idordenproduccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `registroeficiencias`
@@ -808,7 +803,7 @@ ALTER TABLE `registroeficiencias`
 -- AUTO_INCREMENT de la tabla `registrotiempos`
 --
 ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=344;
+  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=351;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -826,7 +821,7 @@ ALTER TABLE `tiposdispositivosiot`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Restricciones para tablas volcadas
@@ -845,12 +840,6 @@ ALTER TABLE `dispositivosiot`
 --
 ALTER TABLE `modulos`
   ADD CONSTRAINT `modulos_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `estados` (`idestado`);
-
---
--- Filtros para la tabla `producto`
---
-ALTER TABLE `producto`
-  ADD CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`idusuario`);
 
 --
 -- Filtros para la tabla `usuario`
