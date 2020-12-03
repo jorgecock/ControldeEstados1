@@ -79,7 +79,7 @@
 			<label for="ordendeprod">Orden de producción:</label>
 			<?php
 				include "../conexion.php";
-				$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion");
+				$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion WHERE status=1");
 					mysqli_close($conexion);
 				$result_tipo = mysqli_num_rows($query_tipo);
 			?>
@@ -97,10 +97,32 @@
 			</select>
 			<br>
 
+
+
 			<!-- Item a producir de produccion -->
-			<label for="itemaproducir">Item a producir:  </label>
-			<input type="text" name="itemaproducir">
+			<label for="itemaproducir">Item a producir:</label>
+			<?php
+				include "../conexion.php";
+				$query_tipo = mysqli_query($conexion,"SELECT * FROM producto WHERE status=1");
+					mysqli_close($conexion);
+				$result_tipo = mysqli_num_rows($query_tipo);
+			?>
+
+			<select name="itemaproducir" id="itemaproducir">
+				<?php 
+					if($result_tipo>0){
+						while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
+							<option value="<?php echo $tipoa["idproducto"]; ?>">	
+									<?php echo $tipoa["nombre"]; ?>
+							</option>
+						<?php }
+					}
+				?>	
+			</select>
+			<br>
 			
+
+
 			<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
 			<input type="number" name="unidadesesperadas">
 			

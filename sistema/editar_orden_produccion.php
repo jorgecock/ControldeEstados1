@@ -20,9 +20,10 @@
 			$fechaprogramacion=$_POST['fechaprogramacion'];
 			$descripcion=$_POST['descripcion'];
 			$usuario_id=$_SESSION['idUser'];
+			$fecha=date('y-m-d H:i:s');
 
 			include "../conexion.php";
-			$sql_update = mysqli_query($conexion,"UPDATE ordenesproduccion SET numeroordenproduccion='$numeroordenproduccion', fechaprogramacion='$fechaprogramacion', descripcion='$descripcion', usuario_id='$usuario_id' WHERE idordenproduccion=$idordenproduccion ");
+			$sql_update = mysqli_query($conexion,"UPDATE ordenesproduccion SET numeroordenproduccion='$numeroordenproduccion', fechaprogramacion='$fechaprogramacion', descripcion='$descripcion', usuario_id='$usuario_id', updated_at='$fecha' WHERE idordenproduccion=$idordenproduccion ");
 			mysqli_close($conexion);
 
 			if($sql_update){

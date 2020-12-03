@@ -13,9 +13,10 @@
 
 	include "conexion.php";
 	$query2 = mysqli_query($conexion,"
-				SELECT u.*, r.numeroordenproduccion  
+				SELECT u.*, r.numeroordenproduccion , s.nombre   
 				FROM modulos u 
 				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				INNER JOIN producto s ON  u.itemaproducir=s.idproducto
 				WHERE u.idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query2);
@@ -23,7 +24,7 @@
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
 	$ordendeprod=$data['numeroordenproduccion'];
-	$itemaproducir=$data['itemaproducir'];
+	$itemaproducir=$data['nombre'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
 	$prodhechosdespausaini=$data['prodhechosdespausaini'];

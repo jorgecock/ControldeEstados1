@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	//if($_SESSION['rol']!=1){
+	//if($_SESSION['rol']!=1){	
 	//	header("location: ./");
 	//}
 	
@@ -13,9 +13,10 @@
 
 	include "conexion.php";
 	$query2 = mysqli_query($conexion,"
-				SELECT u.*, r.numeroordenproduccion  
+				SELECT u.*, r.numeroordenproduccion , s.nombre  
 				FROM modulos u 
 				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				INNER JOIN producto s ON  u.itemaproducir=s.idproducto
 				WHERE u.idmodulo=$mod");
 
 	$data=mysqli_fetch_array($query2);
@@ -29,7 +30,9 @@
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
 	$ordendeprod=$data['numeroordenproduccion'];
-	$itemaproducir=$data['itemaproducir'];
+	$itemaproducir=$data['nombre'];
+	$idproducto=$data['itemaproducir'];
+	$idordenproduccion=$data['ordendeprod'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$prodhechosdespausaini=$data['prodhechosdespausaini'];
 	$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa);
@@ -87,11 +90,14 @@
 	<meta http-equiv="refresh" content="5">
 </head>
 <body onload="mueveReloj()">
+	<!--Encabezado -->
 	<div>	
 		<?php include "includes/header.php"; ?>	
 		<br><br><br><br>
 	</div>	
-	<div>
+
+	<!--Columna izquierda -->
+	<div style="padding: 10px; float: left; width: 50%; text-align: justify;">
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
 			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
@@ -130,8 +136,75 @@
 		<h3>Tiempo transcurrido desde la ultima pausa en minutos: <?php echo round($tiempopasadodesdeultimoreinicio/60,2); ?>, en segundos: <?php echo round($tiempopasadodesdeultimoreinicio,2); ?></h3>
 		<h3>Pausas hechas: <?php echo ($pausashechas); ?></h3> 
 		<h3>Tiempo acumulado en pausas en minutos: <?php echo round($tiempopausado/60,2); ?>, en segundos: <?php echo ($tiempopausado); ?></h3>
-
 		<hr size="3px" color="black" />
+	</div>
+
+	<!--columna derecha -->
+	<div style="padding: 10px; float: right; width: 50%; text-align: justify;"	>
+		
+		<?php
+			
+			$idmodulo=$mod;
+			$fecha=date('y-m-d');
+
+			include "conexion.php";
+			$query1 = mysqli_query($conexion,"
+				SELECT *
+				FROM registroeficiencias
+				WHERE (ordendeprod='$idordenproduccion' AND itemaproducir='$idproducto' AND modulo=$idmodulo AND (fechahora LIKE '%$fecha%'))" );
+				include "conexion.php";
+	
+			$result = mysqli_num_rows($query1);
+			if($result>0){
+				while ($data=mysqli_fetch_array($query1)) {
+					$eficiencias[]=$data;		
+				}
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombremodulo FROM  modulos    
+								WHERE (status=1 AND idmodulo=$idmodulo)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombremodulo=$tipoa['nombremodulo'];
+				
+				$query_tipo = mysqli_query($conexion,"
+								SELECT numeroordenproduccion FROM  ordenesproduccion    
+								WHERE (status=1 AND idordenproduccion=$idordenproduccion)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$numeroordenproduccion=$tipoa['numeroordenproduccion'];
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombre FROM  producto    
+								WHERE (status=1 AND idproducto=$idproducto)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombre=$tipoa['nombre'];
+			}else{
+				$eficiencias=[];
+			}
+			mysqli_close($conexion);
+		?>
+		<hr size="3px" color="black" />
+		<table id="" class="table table-striped table-bordered">
+			<tr>
+				<th>Hora</th>
+				<th>Cantidad Esperada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
+			</tr>
+			
+			<tbody>
+				<?php foreach($eficiencias as $eficiencia) { ?>
+					<tr>
+						<td><?php echo substr($eficiencia['fechahora'], 11) ; ?></td>
+						<td><?php echo $eficiencia['cantidadesperada']; ?></td>
+						<td><?php echo $eficiencia['cantidadhecha']; ?></td>
+						<td><?php echo $eficiencia['eficiencia']; ?></td>
+					</tr>
+				<?php } ?>
+			</tbody>	
+		</table>
+		<hr size="3px" color="black" />
+
+		<div>
 		<form method="post" action="">
 			<input type="submit" name="pausa" value="pausa"><br> 
 			<input type="submit" name="terminar" value="terminar">
@@ -161,7 +234,12 @@
 	  		location.replace(url);
 			}
 		</script>
-	</div>	
-	<?php  include "includes/footer.php"; ?>
+	</div>
+
+	<!--pie de pagina -->
+	</div>
+	<div style="padding: 0px 10px 10px 10px; float: right; width: 100% ; text-align: justify;">
+		<?php  include "includes/footer.php"; ?>
+	</div>
 </body>
 </html>

@@ -53,9 +53,10 @@
 	//Traer datos y desiciones.
 	include "conexion.php";
 	$query1 = mysqli_query($conexion,"
-				SELECT u.*, r.numeroordenproduccion  
+				SELECT u.*, r.numeroordenproduccion, s.nombre  
 				FROM modulos u 
 				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+				INNER JOIN producto s ON  u.itemaproducir=s.idproducto
 				WHERE u.idmodulo=$mod");
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query1);
@@ -66,7 +67,7 @@
 	$minutosprogramados=$data['minutosprogramados']; 
 	$takt=$minutosprogramados/$unidadesesperadas;
 	$ordendeprod=$data['numeroordenproduccion']; //ordendeprod
-	$itemaproducir=$data['itemaproducir'];
+	$itemaproducir=$data['nombre'];
 
 	$aceptable=0;
 
@@ -99,6 +100,8 @@
 		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
 		<h1 align='center'>MODULO <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
+		
+
 		<h1>Validación de los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h1>
 		<hr size="3px" color="black" />
 		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>

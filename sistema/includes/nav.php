@@ -60,16 +60,16 @@
 				<?php } ?>
 
 
-				<!--
 				<li class="principal">
 					<a href="#">Productos</a>
 					<ul>
 						<li class="principal"><a href="lista_productos.php">Productos</a></li>
-						<li class="principal"><a href="lista_operaciones.php">Operaciones</a></li>
-						<li class="principal"><a href="registro_ficha_tecnica.php">Insertar Información General de Diseño</a></li>
+						<!-- <li class="principal"><a href="lista_operaciones.php">Operaciones</a></li>
+						<li class="principal"><a href="registro_ficha_tecnica.php">Insertar Información General de Diseño</a></li> -->
 					</ul>
 				</li>
 
+				<!--
 				<li class="principal">
 					<a href="#">Máquinas</a>
 					<ul>

@@ -9,7 +9,7 @@
 	<header>
 		<div class="header">
 			<?php //<img src="../img/sewingmachine1.png"> ?>
-			<h1>Sistema IoT Confecciones</h1>
+			<h1>Sistema ANDON - IoT - Confecciones</h1>
 			<div class="optionsBar">
 				<p>Colombia, <?php echo fechaC(); ?> </p>
 				<span>|</span>
