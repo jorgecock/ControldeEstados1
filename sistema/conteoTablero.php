@@ -77,7 +77,6 @@
 			Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 
 		</h3>
-		<a href="index.php">Regresar a la ventana de inicio</a>
 		<hr size="8px" color="black" />
 		Numero de módulo a seguir.<br>
 
@@ -169,6 +168,7 @@
 			</tbody>	
 		</table>
 		<hr size="3px" color="black" />
+		<a href="index.php">Regresar a la ventana de inicio</a>
 	</div>
 </body>
 </html>

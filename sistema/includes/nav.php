@@ -97,5 +97,13 @@
 					</ul>
 				</li>
 				-->
+
+				<li class="principal">
+					<a href="acercade.php">Acerca de</a>
+					<ul>
+						<li class="principal"><a href="acercade.php">Acerca de</a></li>
+					</ul>
+				</li>
+
 			</ul>
 		</nav>
