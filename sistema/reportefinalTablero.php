@@ -24,6 +24,8 @@
 	$data=mysqli_fetch_array($query2);
 	$productoshechos=$data['productoshechos'];
 	$unidadesesperadas=$data['unidadesesperadas'];
+	$idproducto=$data['itemaproducir'];
+	$idordenproduccion=$data['ordendeprod'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
 	$ordendeprod=$data['numeroordenproduccion'];
 	$itemaproducir=$data['nombre'];
@@ -40,23 +42,23 @@
 	<meta http-equiv="refresh" content="5">
 </head>
 <body onload="mueveReloj()">
-	<div>
+	
+	<?php 
+		if ($productoshechos < $unidadesesperadas){
+			echo("<h1 style='background-color:#F05B64';>Reporte final de producción e indicadores<br>La producción fue terminada sin hacer todas las unidades esperadas</h1>");
+		} else {
+			echo("<h1 style='background-color:#9AE3B0;'>Reporte final de producción e indicadores<br>Producción terminada completa</h1>");
+		}
+	?>
+	<h1 align="center">MODULO <?php echo $mod; ?></h1>
+	<hr size="3px" color="black" />
+	<div style="padding: 10px; float: left; width: 50%; text-align: justify;" >
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
 			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
 		</form>
 		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
-		<h1 align="center">MODULO <?php echo $mod; ?></h1>
-
-		<hr size="3px" color="black" />
-		<?php 
-			if ($productoshechos < $unidadesesperadas){
-					echo("<h1 style='background-color:#F05B64';>Reporte final de producción e indicadores<br>La producción fue terminada sin hacer todas las unidades esperadas</h1>");
-				} else {
-					echo("<h1 style='background-color:#9AE3B0;'>Reporte final de producción e indicadores<br>Producción terminada completa</h1>");
-				}
-		?>
-		<hr size="3px" color="black" />
+		
 		<h3>Orden de producción: <?php echo $ordendeprod; ?><br>Item a producir: <?php echo $itemaproducir; ?></h3>
 		<hr size="3px" color="black" />
 		<h3>Unidades terminadas actualmente: <?php echo $productoshechos; ?><br>
@@ -80,8 +82,78 @@
 			Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 			Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 		</h3>
-		<a href="index.php">Regresar a la ventana de inicio</a>
 		<hr size="8px" color="black" />
+	</div>
+
+
+	<!--columna derecha -->
+	<div style="padding: 10px; float: right; width: 50%; text-align: justify;"	>
+		
+		<?php
+			
+			$idmodulo=$mod;
+			$fecha=date('y-m-d');
+
+			include "conexion.php";
+			$query1 = mysqli_query($conexion,"
+				SELECT *
+				FROM registroeficiencias
+				WHERE (ordendeprod='$idordenproduccion' AND itemaproducir='$idproducto' AND modulo=$idmodulo AND (fechahora LIKE '%$fecha%'))" );
+				include "conexion.php";
+	
+			$result = mysqli_num_rows($query1);
+			if($result>0){
+				while ($data=mysqli_fetch_array($query1)) {
+					$eficiencias[]=$data;		
+				}
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombremodulo FROM  modulos    
+								WHERE (status=1 AND idmodulo=$idmodulo)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombremodulo=$tipoa['nombremodulo'];
+				
+				$query_tipo = mysqli_query($conexion,"
+								SELECT numeroordenproduccion FROM  ordenesproduccion    
+								WHERE (status=1 AND idordenproduccion=$idordenproduccion)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$numeroordenproduccion=$tipoa['numeroordenproduccion'];
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombre FROM  producto    
+								WHERE (status=1 AND idproducto=$idproducto)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombre=$tipoa['nombre'];
+			}else{
+				$eficiencias=[];
+			}
+			mysqli_close($conexion);
+		?>
+		<hr size="3px" color="black" />
+				
+
+		<table id="" class="table table-striped table-bordered">
+			<tr>
+				<th>Hora</th>
+				<th>Cantidad Esperada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
+			</tr>
+			
+			<tbody>
+				<?php foreach($eficiencias as $eficiencia) { ?>
+					<tr>
+						<td><?php echo substr($eficiencia['fechahora'], 11) ; ?></td>
+						<td><?php echo $eficiencia['cantidadesperada']; ?></td>
+						<td><?php echo $eficiencia['cantidadhecha']; ?></td>
+						<td><?php echo (round($eficiencia['eficiencia'],2)."%"); ?></td>
+					</tr>
+				<?php } ?>
+			</tbody>	
+		</table>
+		<hr size="3px" color="black" />
+
+		<div>
 		Número de modulo a seguir.<br>
 		<select id="mySelect" onchange="cambiodemodulo(this.value)">
 			<?php
@@ -98,7 +170,8 @@
 			}
 			?>
 		</select>
-
+		<a href="index.php">Regresar a la ventana de inicio</a>
+		<hr size="8px" color="black" />
 		<script>
 			function cambiodemodulo(val) {
 	  		url="reportefinalTablero.php?mod="+val;
@@ -106,5 +179,9 @@
 			}
 		</script>
 	</div>
+
+
+
+
 </body>
 </html>

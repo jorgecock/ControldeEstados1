@@ -124,7 +124,7 @@
 		<h3>Tiempo acumulado en trabajo hecho en minutos: <?php echo round($tiempoacumulado/60,2); ?>, en segundos: <?php echo ($tiempoacumulado); ?></h3>
 		<hr size="3px" color="black" />
 		<form method="post" action="">
-			<input type="submit" name="reanudar" value="Reanudar Conteo"> 
+			<input type="submit" name="reanudar" value="Reanudar Conteo"><br>		
 			<input type="submit" name="terminar" value="terminar">
 			<a href="index.php">Regresar a la ventana de inicio</a>
 		</form>	

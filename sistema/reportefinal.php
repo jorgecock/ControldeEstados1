@@ -41,9 +41,11 @@
 	mysqli_close($conexion);
 	$data=mysqli_fetch_array($query2);
 	$productoshechos=$data['productoshechos'];
+	$idordenproduccion=$data['ordendeprod'];
 	$unidadesesperadas=$data['unidadesesperadas'];
 	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
 	$ordendeprod=$data['numeroordenproduccion'];
+	$idproducto=$data['itemaproducir'];
 	$itemaproducir=$data['nombre'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
@@ -65,7 +67,7 @@
 		<?php include "includes/header.php"; ?>	
 		<br><br><br><br>
 	</div>	
-	<div>
+	<div style="padding: 10px; float: left; width: 50%; text-align: justify;">
 		<hr size="8px" color="black" />
 		<form name="form_reloj">
 			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
@@ -113,14 +115,83 @@
 		
 		<h3>Tiempo acumulado en pausas en minutos: <?php echo round($tiempopausado/60,2); ?>, en segundos: <?php echo ($tiempopausado); ?></h3>
 		<h3>Tiempo acumulado en trabajo hecho en minutos: <?php echo round($tiempoacumulado/60,2); ?>, en segundos: <?php echo ($tiempoacumulado); ?></h3>
-		<hr size="3px" color="black" />
+	
+		<hr size="8px" color="black" />
+	</div>
+	
 
+	<!--columna derecha -->
+	<div style="padding: 10px; float: right; width: 50%; text-align: justify;"	>
+		
+		<?php
+			
+			$idmodulo=$mod;
+			$fecha=date('y-m-d');
+
+			include "conexion.php";
+			$query1 = mysqli_query($conexion,"
+				SELECT *
+				FROM registroeficiencias
+				WHERE (ordendeprod='$idordenproduccion' AND itemaproducir='$idproducto' AND modulo=$idmodulo AND (fechahora LIKE '%$fecha%'))" );
+				include "conexion.php";
+	
+			$result = mysqli_num_rows($query1);
+			if($result>0){
+				while ($data=mysqli_fetch_array($query1)) {
+					$eficiencias[]=$data;		
+				}
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombremodulo FROM  modulos    
+								WHERE (status=1 AND idmodulo=$idmodulo)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombremodulo=$tipoa['nombremodulo'];
+				
+				$query_tipo = mysqli_query($conexion,"
+								SELECT numeroordenproduccion FROM  ordenesproduccion    
+								WHERE (status=1 AND idordenproduccion=$idordenproduccion)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$numeroordenproduccion=$tipoa['numeroordenproduccion'];
+
+				$query_tipo = mysqli_query($conexion,"
+								SELECT nombre FROM  producto    
+								WHERE (status=1 AND idproducto=$idproducto)");
+				$tipoa= mysqli_fetch_array($query_tipo);
+				$nombre=$tipoa['nombre'];
+			}else{
+				$eficiencias=[];
+			}
+			mysqli_close($conexion);
+		?>
+		<hr size="3px" color="black" />
+				
+
+		<table id="" class="table table-striped table-bordered">
+			<tr>
+				<th>Hora</th>
+				<th>Cantidad Esperada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
+			</tr>
+			
+			<tbody>
+				<?php foreach($eficiencias as $eficiencia) { ?>
+					<tr>
+						<td><?php echo substr($eficiencia['fechahora'], 11) ; ?></td>
+						<td><?php echo $eficiencia['cantidadesperada']; ?></td>
+						<td><?php echo $eficiencia['cantidadhecha']; ?></td>
+						<td><?php echo (round($eficiencia['eficiencia'],2)."%"); ?></td>
+					</tr>
+				<?php } ?>
+			</tbody>	
+		</table>
+		<hr size="3px" color="black" />
 		<form method="post" action="">
 			<input type="submit" name="Reiniciar" value="reiniciar">
-			<a href="index.php">Regresar a la ventana de inicio</a> 
+			<!-- <a href="index.php">Regresar a la ventana de inicio</a> --> 
 		</form>	
-		
-		<hr size="8px" color="black" />
+
+
 		Número de modulo a seguir.<br>
 		<select id="mySelect" onchange="cambiodemodulo(this.value)">
 			<?php
@@ -137,7 +208,7 @@
 			}
 			?>
 		</select>
-
+		<hr size="8px" color="black" />
 		<script>
 			function cambiodemodulo(val) {
 	  		url="reportefinal.php?mod="+val;
@@ -145,6 +216,10 @@
 			}
 		</script>
 	</div>
-	<?php  include "includes/footer.php"; ?>
+
+
+	<div style="padding: 10px; float: right; width: 100%; text-align: justify;">
+		<?php  include "includes/footer.php"; ?>
+	</div>
 </body>
 </html>

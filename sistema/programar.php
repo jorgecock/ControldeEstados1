@@ -82,8 +82,7 @@
 				$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion WHERE status=1");
 					mysqli_close($conexion);
 				$result_tipo = mysqli_num_rows($query_tipo);
-			?>
-
+			?>	
 			<select name="ordendeprod" id="ordendeprod">
 				<?php 
 					if($result_tipo>0){
@@ -95,9 +94,6 @@
 					}
 				?>
 			</select>
-			<br>
-
-
 
 			<!-- Item a producir de produccion -->
 			<label for="itemaproducir">Item a producir:</label>
@@ -107,7 +103,6 @@
 					mysqli_close($conexion);
 				$result_tipo = mysqli_num_rows($query_tipo);
 			?>
-
 			<select name="itemaproducir" id="itemaproducir">
 				<?php 
 					if($result_tipo>0){
@@ -119,10 +114,7 @@
 					}
 				?>	
 			</select>
-			<br>
 			
-
-
 			<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
 			<input type="number" name="unidadesesperadas">
 			

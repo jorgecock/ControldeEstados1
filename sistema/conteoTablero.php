@@ -78,29 +78,7 @@
 
 		</h3>
 		<hr size="8px" color="black" />
-		Numero de módulo a seguir.<br>
-
-		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
-			<?php
-			include "conexion.php";
-			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
-			mysqli_close($conexion);
-			$result1=mysqli_num_rows($query1);
-			echo $result1;
-			for($i=1;$i<=$result1;$i++){
-			?>	
-				<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
-			<?php 
-			}
-			?>
-		</select>
-
-		<script>
-			function cambiodemodulo(val) {
-	  		url="conteoTablero.php?mod="+val;
-	  		location.replace(url);
-			}
-		</script>
+		
 	</div>	
 	
 
@@ -168,7 +146,33 @@
 			</tbody>	
 		</table>
 		<hr size="3px" color="black" />
+
+		Numero de módulo a seguir.<br>
+
+		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
+			<?php
+			include "conexion.php";
+			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
+			mysqli_close($conexion);
+			$result1=mysqli_num_rows($query1);
+			echo $result1;
+			for($i=1;$i<=$result1;$i++){
+			?>	
+				<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
+			<?php 
+			}
+			?>
+		</select>
+
+		<script>
+			function cambiodemodulo(val) {
+	  		url="conteoTablero.php?mod="+val;
+	  		location.replace(url);
+			}
+		</script>
+
 		<a href="index.php">Regresar a la ventana de inicio</a>
+		<hr size="8px" color="black" />
 	</div>
 </body>
 </html>

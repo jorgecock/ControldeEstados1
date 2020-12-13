@@ -11,6 +11,9 @@
 	include "definicionmodulo.php";
 	include "includes/scripts.php";
 
+
+
+
 	include "conexion.php";
 	$query2 = mysqli_query($conexion,"
 				SELECT u.*, r.numeroordenproduccion , s.nombre  
@@ -18,7 +21,6 @@
 				INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
 				INNER JOIN producto s ON  u.itemaproducir=s.idproducto
 				WHERE u.idmodulo=$mod");
-
 	$data=mysqli_fetch_array($query2);
 	
 	$tiempoacumuladoanterior=$data['tiempoacumulado'];
@@ -183,6 +185,8 @@
 			mysqli_close($conexion);
 		?>
 		<hr size="3px" color="black" />
+				
+
 		<table id="" class="table table-striped table-bordered">
 			<tr>
 				<th>Hora</th>
@@ -197,7 +201,7 @@
 						<td><?php echo substr($eficiencia['fechahora'], 11) ; ?></td>
 						<td><?php echo $eficiencia['cantidadesperada']; ?></td>
 						<td><?php echo $eficiencia['cantidadhecha']; ?></td>
-						<td><?php echo $eficiencia['eficiencia']; ?></td>
+						<td><?php echo (round($eficiencia['eficiencia'],2)."%"); ?></td>
 					</tr>
 				<?php } ?>
 			</tbody>	
