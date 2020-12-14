@@ -1,6 +1,6 @@
 
 <?php
-	header("Content-Type: application/xls");
+	header("Content-Type: application/xls; charset=utf-8");
 	header("Content-Disposition: attachment; filename= reporte.xls");	
 
 
@@ -76,7 +76,7 @@
 						<td><?php echo $eficiencia ['fechahora']; ?></td>
 						<td><?php echo $eficiencia ['cantidadesperada']; ?></td>
 						<td><?php echo $eficiencia ['cantidadhecha']; ?></td>
-						<td><?php echo $eficiencia ['eficiencia']; ?></td>
+						<td><?php echo str_replace(".",",",$eficiencia ['eficiencia']) ; ?></td>
 					</tr>
 				<?php } ?>
 			</tbody>

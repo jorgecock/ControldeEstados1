@@ -29,6 +29,10 @@
 	$itemaproducir=$data['nombre'];
 	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
 	$tiempocicloesperado=$data['tiempocicloesperado'];
+	$pausashechas=$data['pausashechas'];
+	$tiempopausado=$data['tiempopausado'];
+	$tiempoacumulado=$data['tiempoacumulado'];
+	$eficienciaacumulada=$productoshechos*$tiempocicloesperado*6000/$tiempoacumulado;
 ?>
 
 
@@ -62,8 +66,8 @@
 			<?php 
 				if ($productoshechos > 1){
 					//primer productdo
-					echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos."; 
-					$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
+					echo round($ultimotiempodeproduccion/60,2)." minutos, ".round($ultimotiempodeproduccion,2)." segundos."; 
+					$eficienciaultimociclo=round($tiempocicloesperado*6000/$ultimotiempodeproduccion,2)." %";
 				}else{
 					//segundo producto en adelante.
 					echo ("No aplica para la primera unidad hecha.");
@@ -75,6 +79,15 @@
 			Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 			Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 		</h3>
+
+		<h3>Eficiencia Acumulada: <?php echo round($eficienciaacumulada,2); ?></h3>
+		<h3>Pausas hechas: <?php echo ($pausashechas); ?></h3> 
+		
+		<h3>Tiempo acumulado en pausas en minutos: <?php echo round($tiempopausado/60,2); ?>, en segundos: <?php echo ($tiempopausado); ?></h3>
+		<h3>Tiempo acumulado en trabajo hecho en minutos: <?php echo round($tiempoacumulado/60,2); ?>, en segundos: <?php echo ($tiempoacumulado); ?></h3>
+
+
+
 		<a href="index.php">Regresar a la ventana de inicio</a>
 		<hr size="8px" color="black" />
 		Numero de modulo a seguir.<br>

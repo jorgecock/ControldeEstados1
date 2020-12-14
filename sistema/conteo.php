@@ -11,9 +11,6 @@
 	include "definicionmodulo.php";
 	include "includes/scripts.php";
 
-
-
-
 	include "conexion.php";
 	$query2 = mysqli_query($conexion,"
 				SELECT u.*, r.numeroordenproduccion , s.nombre  
@@ -40,7 +37,7 @@
 	$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa);
 	$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
 	$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
-	$eficiencia=$productoshechos*100/(($tiempoacumtrabajo/60)/$tiempocicloesperado);
+	$eficiencia=$productoshechos*$tiempocicloesperado*6000/$tiempoacumtrabajo;
 	$pausashechas=$data['pausashechas'];
 	$tiempopausado=$data['tiempopausado'];
 
@@ -121,8 +118,8 @@
 		<?php 
 			if ($prodhechosdespausaini > 1){
 				//primer producto despues de inicio o de pausa
-				echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos"; 
-				$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
+				echo round($ultimotiempodeproduccion/60,2)." minutos, ".round($ultimotiempodeproduccion,2)." segundos"; 
+				$eficienciaultimociclo=round($tiempocicloesperado*6000/$ultimotiempodeproduccion,2)." %";
 			}else{
 				//segundo producto en adelante.
 				echo ("No aplica para la primera unidad hecha despues del inicio de producción o luego de renudar por algún tipo de pausa.");
@@ -133,7 +130,12 @@
 		Tiempo de ciclo esperado: <?php echo $tiempocicloesperado; ?> minutos, <?php echo $tiempocicloesperado*60; ?> segundos.<br>
 		Eficiencia del ultimo ciclo: <?php echo $eficienciaultimociclo; ?><br>
 		</h3>
-		<h3>Eficiencia Acumulada: <?php echo round($eficiencia,2); ?></h3> 
+		
+
+		<!-- <h3>Eficiencia Acumulada: <?php //echo round($eficiencia,2); ?></h3> --> 
+
+
+
 		<h3>Tiempo Acumulado trabajado total en minutos: <?php echo round($tiempoacumtrabajo/60,2); ?>, en segundos: <?php echo round($tiempoacumtrabajo,2); ?></h3>
 		<h3>Tiempo transcurrido desde la ultima pausa en minutos: <?php echo round($tiempopasadodesdeultimoreinicio/60,2); ?>, en segundos: <?php echo round($tiempopasadodesdeultimoreinicio,2); ?></h3>
 		<h3>Pausas hechas: <?php echo ($pausashechas); ?></h3> 

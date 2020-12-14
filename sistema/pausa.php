@@ -33,10 +33,9 @@
 	$tiempoactual=strtotime("now");
 	$tiempopasadodesdeultimapausa=($tiempoactual-$momentodepausa);
 	$nuevotiempoacumpausa=$tiempopasadodesdeultimapausa+$tiempopausadoanterior;
-	$eficienciaacumulada=$data['eficienciaacumulada'];
   $pausashechas=$data['pausashechas'];
   $tiempoacumulado=$data['tiempoacumulado'];
-
+  $eficienciaacumulada=$productoshechos*$tiempocicloesperado*6000/$tiempoacumulado;
 
 	//Definicion de estado siguiente
 	if (isset($_POST)){
@@ -107,8 +106,8 @@
 		<?php 
 			if ($prodhechosdespausaini > 1){
 				//primer productdo
-				echo round($ultimotiempodeproduccion,2)." minutos, ".round($ultimotiempodeproduccion*60,2)." segundos"; 
-				$eficienciaultimociclo=round($tiempocicloesperado*100/$ultimotiempodeproduccion,2)." %";
+				echo round($ultimotiempodeproduccion/60,2)." minutos, ".round($ultimotiempodeproduccion,2)." segundos"; 
+				$eficienciaultimociclo=round($tiempocicloesperado*6000/$ultimotiempodeproduccion,2)." %";
 			}else{
 				//segundo producto en adelante.
 				echo ("No aplica para la primera unidad hecha despues del inicio de producción o luego de renudar por algún tipo de pausa.");
