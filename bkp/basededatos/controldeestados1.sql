@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-12-2020 a las 20:03:22
--- Versión del servidor: 10.4.13-MariaDB
--- Versión de PHP: 7.4.8
+-- Tiempo de generación: 19-07-2021 a las 20:59:11
+-- Versión del servidor: 10.4.17-MariaDB
+-- Versión de PHP: 8.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `controldeestados1`
 --
+CREATE DATABASE IF NOT EXISTS `controldeestados1` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `controldeestados1`;
 
 -- --------------------------------------------------------
 
@@ -27,8 +29,8 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `dispositivosiot`
 --
 
-CREATE TABLE `dispositivosiot` (
-  `iddispositivoIoT` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `dispositivosiot` (
+  `iddispositivoIoT` int(11) NOT NULL AUTO_INCREMENT,
   `modulo` int(11) NOT NULL,
   `tipodispositivoIoT` int(11) NOT NULL,
   `firmware` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -36,8 +38,12 @@ CREATE TABLE `dispositivosiot` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
-  `idusuario` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `idusuario` int(11) NOT NULL,
+  PRIMARY KEY (`iddispositivoIoT`),
+  KEY `idmodulo` (`modulo`),
+  KEY `tipodispositivoIoT` (`tipodispositivoIoT`),
+  KEY `fk_dispositivosiot_usuario` (`idusuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `dispositivosiot`
@@ -47,7 +53,7 @@ INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT
 (1, 1, 1, 'B', '2020-11-27 09:31:07', NULL, NULL, 1, 1),
 (2, 2, 1, 'A', '2020-11-27 09:31:52', NULL, NULL, 1, 1),
 (3, 3, 1, 'B', '2020-11-27 09:32:15', NULL, NULL, 1, 1),
-(4, 4, 1, 'B', '2020-11-27 09:32:32', NULL, NULL, 1, 1);
+(4, 4, 1, 'B', '2020-11-27 09:32:32', NULL, '2021-07-14 20:55:43', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -55,10 +61,11 @@ INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT
 -- Estructura de tabla para la tabla `estados`
 --
 
-CREATE TABLE `estados` (
-  `idestado` int(11) NOT NULL,
-  `estado` varchar(20) COLLATE utf8_spanish_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+CREATE TABLE IF NOT EXISTS `estados` (
+  `idestado` int(11) NOT NULL AUTO_INCREMENT,
+  `estado` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`idestado`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `estados`
@@ -78,14 +85,15 @@ INSERT INTO `estados` (`idestado`, `estado`) VALUES
 -- Estructura de tabla para la tabla `estadosordenproduccion`
 --
 
-CREATE TABLE `estadosordenproduccion` (
-  `idestadoordenproduccion` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `estadosordenproduccion` (
+  `idestadoordenproduccion` int(11) NOT NULL AUTO_INCREMENT,
   `estado` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`idestadoordenproduccion`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `estadosordenproduccion`
@@ -104,13 +112,13 @@ INSERT INTO `estadosordenproduccion` (`idestadoordenproduccion`, `estado`, `stat
 -- Estructura de tabla para la tabla `modulos`
 --
 
-CREATE TABLE `modulos` (
-  `idmodulo` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `modulos` (
+  `idmodulo` int(11) NOT NULL AUTO_INCREMENT,
   `nombremodulo` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `estado` int(11) NOT NULL DEFAULT 1,
-  `ordendeprod` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `itemaproducir` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `ordendeprod` int(11) NOT NULL DEFAULT 0,
+  `itemaproducir` int(11) NOT NULL DEFAULT 0,
   `unidadesesperadas` int(11) NOT NULL,
   `tiempocicloesperado` float NOT NULL,
   `minutosprogramados` float NOT NULL,
@@ -131,18 +139,24 @@ CREATE TABLE `modulos` (
   `prodhechosdespausaini` int(11) NOT NULL,
   `eficienciaacumulada` float NOT NULL,
   `pausashechas` int(11) NOT NULL,
-  `tiempoacumtrabajo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `tiempoacumtrabajo` int(11) NOT NULL,
+  PRIMARY KEY (`idmodulo`),
+  KEY `idestado` (`estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `modulos`
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `updated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
-(1, 'Módulo 1', 'Ropa deportiva', 3, '1', '1', 10, 1, 10, 0, 1606966175, 1607012543, 1607012546, 0, 0, 0, 46368, 3, '2020-09-04 17:55:23', '2020-11-27 20:21:42', NULL, 1, 0, 0, 0, 1, 0),
-(2, 'Módulo 2', 'Faldas', 1, '14', '1', 10, 1, 10, 0, 1606975260, 1606975270, 1606975260, 0, 0, 0, 10, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:00', '2020-11-26 15:21:41', 1, 0, 0, 0, 0, 0),
-(3, 'Módulo 3', 'Pijamas', 1, '15', 'polo', 10, 1, 10, 0, 1606502803, 1606502926, 1606502803, 0, 0, 0, 123, 0, '2020-09-04 17:55:23', '2020-11-27 20:21:32', NULL, 1, 0, 0, 0, 1, 0),
-(4, 'Módulo 4', 'Camisas', 1, '15', 'polo', 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:37', NULL, 1, 0, 2, 0, 0, 0);
+(1, 'Módulo 1', 'Ropa deportiva', 3, 1, 1, 10, 1, 10, 0, 1606966175, 1607012543, 1607012546, 0, 0, 0, 46368, 3, '2020-09-04 17:55:23', '2020-11-27 20:21:42', NULL, 1, 0, 0, 0, 1, 0),
+(2, 'Módulo 2', 'Faldas', 1, 14, 1, 10, 1, 10, 0, 1606975260, 1606975270, 1606975260, 0, 0, 0, 10, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:00', '2020-11-26 15:21:41', 1, 0, 0, 0, 0, 0),
+(3, 'Módulo 3', 'Pijamas', 3, 1, 1, 100, 1, 100, 0, 1626314408, 1606502926, 1626314408, 1626314408, 0, 0, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:21:32', NULL, 1, 0, 0, 0, 0, 0),
+(4, 'Módulo 4', 'Camisas', 1, 15, 0, 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:37', NULL, 1, 0, 2, 0, 0, 0),
+(12, 'Módulo 5', 'Medias', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:02:20', NULL, NULL, 1, 0, 0, 0, 0, 0),
+(13, 'Módulo 6', 'Corbatas', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:06:38', NULL, NULL, 1, 0, 0, 0, 0, 0),
+(14, 'Módulo 7', 'Guantes', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:34:44', NULL, NULL, 1, 0, 0, 0, 0, 0),
+(15, 'Módulo 8', 'Mochilas', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 15:55:53', '2021-07-14 22:56:27', '2021-07-14 15:56:39', 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -150,8 +164,8 @@ INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ord
 -- Estructura de tabla para la tabla `ordenesproduccion`
 --
 
-CREATE TABLE `ordenesproduccion` (
-  `idordenproduccion` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ordenesproduccion` (
+  `idordenproduccion` int(11) NOT NULL AUTO_INCREMENT,
   `numeroordenproduccion` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `fechaprogramacion` date DEFAULT NULL,
   `fechapausa` date DEFAULT NULL,
@@ -163,14 +177,17 @@ CREATE TABLE `ordenesproduccion` (
   `descripcion` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `idestadoordenproduccion` int(11) NOT NULL DEFAULT 1,
   `status` int(11) NOT NULL DEFAULT 1,
-  `usuario_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `usuario_id` int(11) NOT NULL,
+  PRIMARY KEY (`idordenproduccion`),
+  KEY `idestadoordenproduccion` (`idestadoordenproduccion`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ordenesproduccion`
 --
 
 INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `fechaprogramacion`, `fechapausa`, `fechacontinuacion`, `fechacierre`, `created_at`, `updated_at`, `deleted_at`, `descripcion`, `idestadoordenproduccion`, `status`, `usuario_id`) VALUES
+(0, 'No Asignada', NULL, NULL, NULL, NULL, '2021-07-14 11:31:28', NULL, NULL, '', 1, 1, 0),
 (1, '10001', '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:05:38', NULL, NULL, 'Casa', 1, 1, 15),
 (14, '10002', '2020-07-25', NULL, NULL, NULL, '2020-07-25 11:23:35', NULL, NULL, 'camisas', 1, 1, 1),
 (15, '10003', '2020-11-25', NULL, NULL, NULL, '2020-11-27 10:41:54', '2020-12-02 18:26:27', NULL, 'zapatos rojizos', 1, 1, 1),
@@ -182,8 +199,8 @@ INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `
 -- Estructura de tabla para la tabla `producto`
 --
 
-CREATE TABLE `producto` (
-  `idproducto` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `producto` (
+  `idproducto` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `referencia` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
@@ -191,16 +208,18 @@ CREATE TABLE `producto` (
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
-  `usuario_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `usuario_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idproducto`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`, `usuario_id`) VALUES
+(0, 'No Asignado', 'No Asignado', '', '2021-07-14 15:29:36', NULL, NULL, 1, NULL),
 (1, 'Pijama', 'Coleccion Primavera', 'rojo', '2020-12-02 15:38:40', '2020-12-02 18:42:23', '0000-00-00 00:00:00', 1, 1),
-(2, 'Sabana', 'primavera', 'morada', '2020-12-02 18:29:11', '2020-12-02 18:42:35', '2020-12-02 18:50:53', 0, 1);
+(2, 'Sabana', 'primavera', 'morada', '2020-12-02 18:29:11', '2020-12-02 18:42:35', '2020-12-02 18:50:53', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -208,16 +227,20 @@ INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `cr
 -- Estructura de tabla para la tabla `registroeficiencias`
 --
 
-CREATE TABLE `registroeficiencias` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `registroeficiencias` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `ordendeprod` int(11) NOT NULL,
   `itemaproducir` int(11) NOT NULL,
   `cantidadesperada` int(11) NOT NULL,
   `cantidadhecha` int(11) NOT NULL,
   `eficiencia` float NOT NULL,
   `fechahora` datetime NOT NULL DEFAULT current_timestamp(),
-  `modulo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `modulo` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_registroeficiencias_ordenesproduccion` (`ordendeprod`),
+  KEY `fk_registroeficiencias_producto` (`itemaproducir`),
+  KEY `fk_registroeficiencias_modulos` (`modulo`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `registroeficiencias`
@@ -234,12 +257,13 @@ INSERT INTO `registroeficiencias` (`id`, `ordendeprod`, `itemaproducir`, `cantid
 -- Estructura de tabla para la tabla `registrotiempos`
 --
 
-CREATE TABLE `registrotiempos` (
-  `idregistro` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `registrotiempos` (
+  `idregistro` int(11) NOT NULL AUTO_INCREMENT,
   `ordendeprod` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `itemaproducir` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
-  `horaderegistro` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `horaderegistro` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`idregistro`)
+) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `registrotiempos`
@@ -603,14 +627,15 @@ INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `ho
 -- Estructura de tabla para la tabla `rol`
 --
 
-CREATE TABLE `rol` (
-  `idrol` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `rol` (
+  `idrol` int(11) NOT NULL AUTO_INCREMENT,
   `rol` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`idrol`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `rol`
@@ -629,23 +654,24 @@ INSERT INTO `rol` (`idrol`, `rol`, `status`, `created_at`, `updated_at`, `delete
 -- Estructura de tabla para la tabla `tiposdispositivosiot`
 --
 
-CREATE TABLE `tiposdispositivosiot` (
-  `idtipodispositivoiot` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `tiposdispositivosiot` (
+  `idtipodispositivoiot` int(11) NOT NULL AUTO_INCREMENT,
   `tipodispositivoIoT` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `descripcion` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  `status` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `status` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`idtipodispositivoiot`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tiposdispositivosiot`
 --
 
 INSERT INTO `tiposdispositivosiot` (`idtipodispositivoiot`, `tipodispositivoIoT`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
-(1, '1', 'Caja Wifi con botones: verde de aceptar y rojo de paro, con opción de medir corriente', '2020-09-04 19:16:59', '2020-11-27 15:37:13', NULL, 1),
-(2, '2', 'Caja Wifi con  monitoreo de corriente y opción de apagar máquinas', '2020-09-04 19:19:45', '2020-11-27 15:37:05', NULL, 1);
+(1, '1A', 'Caja Wifi con botones: verde de aceptar y rojo de paro, con opción de medir corriente', '2020-09-04 19:16:59', '2020-11-27 15:37:13', NULL, 1),
+(2, '2A', 'Caja Wifi con  monitoreo de corriente y opción de apagar máquinas', '2020-09-04 19:19:45', '2020-11-27 15:37:05', '2021-07-16 10:23:44', 1);
 
 -- --------------------------------------------------------
 
@@ -653,8 +679,8 @@ INSERT INTO `tiposdispositivosiot` (`idtipodispositivoiot`, `tipodispositivoIoT`
 -- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE `usuario` (
-  `idusuario` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `usuario` (
+  `idusuario` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `correo` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `usuario` varchar(15) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -663,8 +689,10 @@ CREATE TABLE `usuario` (
   `status` int(11) NOT NULL DEFAULT 1,
   `created_at` datetime DEFAULT current_timestamp(),
   `updated_at` datetime DEFAULT NULL,
-  `deleted_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`idusuario`),
+  KEY `rol` (`rol`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -678,152 +706,6 @@ INSERT INTO `usuario` (`idusuario`, `nombre`, `correo`, `usuario`, `clave`, `rol
 (5, 'Fabio Andrés Gaviria', 'fgaviria@sena.edu.co', 'fgaviria', '827ccb0eea8a706c4c34a16891f84e7b', 3, 0, '2020-11-27 10:05:30', '2020-11-27 16:06:59', '2020-11-27 10:07:13');
 
 --
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `dispositivosiot`
---
-ALTER TABLE `dispositivosiot`
-  ADD PRIMARY KEY (`iddispositivoIoT`),
-  ADD KEY `idmodulo` (`modulo`),
-  ADD KEY `tipodispositivoIoT` (`tipodispositivoIoT`);
-
---
--- Indices de la tabla `estados`
---
-ALTER TABLE `estados`
-  ADD PRIMARY KEY (`idestado`);
-
---
--- Indices de la tabla `estadosordenproduccion`
---
-ALTER TABLE `estadosordenproduccion`
-  ADD PRIMARY KEY (`idestadoordenproduccion`);
-
---
--- Indices de la tabla `modulos`
---
-ALTER TABLE `modulos`
-  ADD PRIMARY KEY (`idmodulo`),
-  ADD KEY `idestado` (`estado`);
-
---
--- Indices de la tabla `ordenesproduccion`
---
-ALTER TABLE `ordenesproduccion`
-  ADD PRIMARY KEY (`idordenproduccion`),
-  ADD KEY `idestadoordenproduccion` (`idestadoordenproduccion`),
-  ADD KEY `usuario_id` (`usuario_id`);
-
---
--- Indices de la tabla `producto`
---
-ALTER TABLE `producto`
-  ADD PRIMARY KEY (`idproducto`);
-
---
--- Indices de la tabla `registroeficiencias`
---
-ALTER TABLE `registroeficiencias`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `registrotiempos`
---
-ALTER TABLE `registrotiempos`
-  ADD PRIMARY KEY (`idregistro`);
-
---
--- Indices de la tabla `rol`
---
-ALTER TABLE `rol`
-  ADD PRIMARY KEY (`idrol`);
-
---
--- Indices de la tabla `tiposdispositivosiot`
---
-ALTER TABLE `tiposdispositivosiot`
-  ADD PRIMARY KEY (`idtipodispositivoiot`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`idusuario`),
-  ADD KEY `rol` (`rol`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `dispositivosiot`
---
-ALTER TABLE `dispositivosiot`
-  MODIFY `iddispositivoIoT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- AUTO_INCREMENT de la tabla `estados`
---
-ALTER TABLE `estados`
-  MODIFY `idestado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT de la tabla `estadosordenproduccion`
---
-ALTER TABLE `estadosordenproduccion`
-  MODIFY `idestadoordenproduccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de la tabla `modulos`
---
-ALTER TABLE `modulos`
-  MODIFY `idmodulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT de la tabla `ordenesproduccion`
---
-ALTER TABLE `ordenesproduccion`
-  MODIFY `idordenproduccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- AUTO_INCREMENT de la tabla `producto`
---
-ALTER TABLE `producto`
-  MODIFY `idproducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `registroeficiencias`
---
-ALTER TABLE `registroeficiencias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT de la tabla `registrotiempos`
---
-ALTER TABLE `registrotiempos`
-  MODIFY `idregistro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=351;
-
---
--- AUTO_INCREMENT de la tabla `rol`
---
-ALTER TABLE `rol`
-  MODIFY `idrol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de la tabla `tiposdispositivosiot`
---
-ALTER TABLE `tiposdispositivosiot`
-  MODIFY `idtipodispositivoiot` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `idusuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
 -- Restricciones para tablas volcadas
 --
 
@@ -833,13 +715,28 @@ ALTER TABLE `usuario`
 ALTER TABLE `dispositivosiot`
   ADD CONSTRAINT `dispositivosiot_ibfk_2` FOREIGN KEY (`tipodispositivoIoT`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `dispositivosiot_ibfk_3` FOREIGN KEY (`modulo`) REFERENCES `modulos` (`idmodulo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `dispositivosiot_ibfk_4` FOREIGN KEY (`tipodispositivoIoT`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `dispositivosiot_ibfk_4` FOREIGN KEY (`tipodispositivoIoT`) REFERENCES `tiposdispositivosiot` (`idtipodispositivoiot`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_dispositivosiot_usuario` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `modulos`
 --
 ALTER TABLE `modulos`
   ADD CONSTRAINT `modulos_ibfk_1` FOREIGN KEY (`estado`) REFERENCES `estados` (`idestado`);
+
+--
+-- Filtros para la tabla `ordenesproduccion`
+--
+ALTER TABLE `ordenesproduccion`
+  ADD CONSTRAINT `fk_ordenesproduccion_estadosordenproduccion` FOREIGN KEY (`idestadoordenproduccion`) REFERENCES `estadosordenproduccion` (`idestadoordenproduccion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `registroeficiencias`
+--
+ALTER TABLE `registroeficiencias`
+  ADD CONSTRAINT `fk_registroeficiencias_modulos` FOREIGN KEY (`modulo`) REFERENCES `modulos` (`idmodulo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_registroeficiencias_ordenesproduccion` FOREIGN KEY (`ordendeprod`) REFERENCES `ordenesproduccion` (`idordenproduccion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_registroeficiencias_producto` FOREIGN KEY (`itemaproducir`) REFERENCES `producto` (`idproducto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `usuario`
