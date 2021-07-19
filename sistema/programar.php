@@ -32,7 +32,6 @@
 				WHERE idmodulo=$mod");
 			mysqli_close($conexion);
 			
-
 			header("location: validacion.php");
 			
 		}		
@@ -65,11 +64,33 @@
 		<form name="form_reloj">
 			<input type="text" name="reloj" style="font-size : 14pt; text-align : left;" onfocus="window.document.form_reloj.reloj.blur()">
 		</form>
-		<h3 align='left'> Fecha: <?php echo date("d/m/Y"); ?></h3>
-		<h1 align='center'>MODULO <?php echo $mod; ?></h1>
+		
+		<!-- Nombre modulo  -->
+		<?php
+			include "../conexion.php";
+			$query_tipo = mysqli_query($conexion,"
+				SELECT nombremodulo 
+				FROM modulos 
+				WHERE idmodulo=$mod");
+			mysqli_close($conexion);
+			$result_tipo = mysqli_num_rows($query_tipo);
+			if($result_tipo>0){
+				$data= mysqli_fetch_array($query_tipo);
+				$nombremodulo = $data['nombremodulo'];
+			}else {
+				echo ('error nombre modulo');					
+			}
+		?>
+		<h1 align='center'>MODULO: <?php echo $nombremodulo; ?></h1>
+		
+
+
 		<hr size="3px" color="black" />
-		<h1>Datos de orden de producción para el día</h1>
-		<h2>Inserte los datos de la orden de producción a programar en el módulo <?php echo $mod; ?></h2>
+		<h1>Datos de orden de producción para el día:</h1>
+		
+
+	
+		<h2>Inserte los datos de la orden de producción a programar en el módulo.</h2>
 		<hr size="3px" color="black" />
 		
 
@@ -115,6 +136,7 @@
 				?>	
 			</select>
 			
+
 			<label for="unidadesesperadas">Unidades requeridas en la jornada a programar:  </label>
 			<input type="number" name="unidadesesperadas">
 			
@@ -129,24 +151,30 @@
 			<h4><?php echo $alert; ?></h4>
 		</form>
 
+	  	
+	  	<!-- Cambio de modulo  -->
 	  	<hr size="8px" color="black" />
 		Número de módulo a seguir.<br>
-		
 		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
 			<?php
-			//obtener numero de modulos configurados a hacer seguimiento para select 
-			include "conexion.php";
-			$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
-			mysqli_close($conexion);
-			$result1=mysqli_num_rows($query1);
-			echo $result1;
-			for($i=1;$i<=$result1;$i++){
+				//obtener numero de modulos configurados a hacer seguimiento para select 
+				include "conexion.php";
+				$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
+				mysqli_close($conexion);
+				$result1=mysqli_num_rows($query1);
+
+				for($i=1;$i<=$result1;$i++){
+					$tipoa= mysqli_fetch_array($query1);
 			?>	
-			<option value="<?php echo $i; ?>" <?php echo ($i==$mod)? "selected":"";?>><?php echo $i;?></option>
+			
+			<option value="<?php echo $tipoa['idmodulo']; ?>" <?php echo ($tipoa['idmodulo']==$mod)? "selected":"";?>><?php echo $tipoa['nombremodulo'];?>
+			</option>
+			
 			<?php 
-			}
+				}
 			?>
 		</select>
+
 
 		<script>
 			function cambiodemodulo(val) {

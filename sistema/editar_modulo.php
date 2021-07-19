@@ -65,7 +65,7 @@
 			<div class="alert"> <?php echo isset($alert) ? $alert : ''; ?></div>
 
 			<form action="" method="post">
-				<label for='idmodulo'>Id Modulo: <?php echo $idmodulo; ?>    </label>
+				<label for='idmodulo'> ************************************** <!-- Id Modulo: <?php echo $idmodulo; ?> -->   </label>
 				<input type="hidden" name="idmodulo" value="<?php echo $idmodulo; ?>">
 				
 				<label for='nombremodulo'>Nombre del módulo</label>

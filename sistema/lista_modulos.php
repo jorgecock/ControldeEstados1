@@ -31,7 +31,7 @@
 
 		<table>
 			<tr>
-				<th>ID</th>
+				<!-- <th>ID</th> -->
 				<th>Nombre</th>
 				<th>Descripción</th>
 				<th>Estado</th>
@@ -68,7 +68,7 @@
 					while ($data=mysqli_fetch_array($query)) {
 						?>
 							<tr>
-								<td><?php echo $data['idmodulo']; ?></td>
+								<!-- 0<td><?php echo $data['idmodulo']; ?></td> -->
 								<td><?php echo $data['nombremodulo']; ?></td>
 								<td><?php echo $data['descripcion']; ?></td>
 								<td><?php echo $data['nomestado']; ?></td>
@@ -79,9 +79,15 @@
 								<td><?php echo $data['eficienciaacumulada']; ?></td>
 
 								<td>
-									<a class="link_edit" href="editar_modulo.php?id=<?php echo $data['idmodulo']; ?>">Editar</a>
-									|  
-									<a class="link_delete" href="eliminar_confirmar_modulo.php?id=<?php echo $data['idmodulo']; ?>">Eliminar</a>
+									<a class="link_edit" href="editar_modulo.php?id=<?php echo $data['idmodulo']; ?>"><i class="fas fa-edit"></i> Editar
+									</a>
+									
+									<?php if($data['idmodulo']!=1){ ?>
+										|  
+										<a class="link_delete" href="eliminar_confirmar_modulo.php?id=<?php echo $data['idmodulo']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
+									<?php
+										} 
+									?>
 								</td>
 							</tr>
 						<?php
