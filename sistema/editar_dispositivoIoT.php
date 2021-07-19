@@ -78,7 +78,7 @@
 				<label for='modulo'>Módulo</label>
 
 
-				
+
 				<?php
 					include "../conexion.php";
 					$query_tipo = mysqli_query($conexion,"SELECT * FROM modulos");
@@ -98,7 +98,6 @@
 					?>				
 				</select>
 				
-
 
 
 				<label for='firmware'>Firmware</label>
