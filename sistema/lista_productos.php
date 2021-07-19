@@ -1,10 +1,9 @@
 <?php
-	include "includes/scripts.php";
 	session_start(); 
 	//if($_SESSION['rol']!=1){
 	//	header("location: ./");
 	//}
-	
+	include "includes/scripts.php";
 ?>
 
 
@@ -40,15 +39,20 @@
 			<?php
 				//paginador
 				include "../conexion.php";
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM producto WHERE status=1");
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM producto 
+					WHERE status=1");
 				include "calculonumpaginas.php";
 
 				//Crear lista
 				$query = mysqli_query($conexion,"
 					SELECT u.idproducto, u.nombre AS 'nombreproducto', u.referencia, u.descripcion, r.nombre AS 'nombreusuario', u.created_at
-					FROM producto u INNER JOIN usuario r ON u.usuario_id = r.idusuario
+					FROM producto u 
+					INNER JOIN usuario r ON u.usuario_id = r.idusuario
 					WHERE u.status=1 
-					ORDER BY u.idproducto ASC LIMIT $desde,$por_pagina");
+					ORDER BY u.idproducto ASC 
+					LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				

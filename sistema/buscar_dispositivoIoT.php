@@ -11,7 +11,7 @@
 
 	$busqueda=strtolower($_REQUEST['busqueda']);
 	if(empty($busqueda)){
-		header("location: lista_usuarios.php");
+		header("location: lista_dispositivosIoT.php");
 	}
 ?>
 
@@ -36,11 +36,9 @@
 		<table>
 			<tr>
 				<th>ID</th>
-				<th>Dirección</th>
-				<th>Nombre</th>
-				<th>Localización</th>
-				<th>Serie</th>
-				<th>Referencia</th>
+				<th>Módulo</th>
+				<th>Tipo de Dispositivo</th>
+				<th>Firmware</th>
 				<th>Fecha Creación</th>
 				<th>Usuario Creador </th>
 				<th>Acciones</th>
@@ -51,19 +49,31 @@
 				include "../conexion.php";
 				$sql_register=mysqli_query($conexion,"
 					SELECT COUNT(*) as total_registro 
-					FROM moduloiot u 
-					INNER JOIN tiposmodulosiot r ON u.idtipomoduloiot=r.idtipomoduloiot
-					INNER JOIN usuario m ON u.usuario_id = m.idusuario 
-					WHERE (m.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.localizacion LIKE '%$busqueda%' OR u.direccion LIKE '%$busqueda%' OR u.serie LIKE '%$busqueda%' OR r.referencia LIKE '%$busqueda%') AND u.status=1");
+					FROM dispositivosiot u 
+					INNER JOIN tiposdispositivosiot r ON u.tipodispositivoIoT=r.idtipodispositivoiot
+					INNER JOIN usuario m ON u.idusuario = m.idusuario
+					INNER JOIN modulos s ON u.modulo = s.idmodulo
+					WHERE (
+						s.nombremodulo LIKE '%$busqueda%' OR 
+						r.tipodispositivoIoT LIKE '%$busqueda%' OR 
+						u.firmware LIKE '%$busqueda%' OR 
+						m.nombre LIKE '%$busqueda%'
+					) AND u.status=1");
 				include "calculonumpaginas.php";
 
 				//Crear lista
 				$query = mysqli_query($conexion,"
-					SELECT u.idmoduloIoT, u.direccion, u.nombre AS 'nombremoduloiot', u.localizacion, u.serie, r.referencia, u.created_at, m.nombre AS 'nombreusuariocreador'
-					FROM moduloiot u 
-					INNER JOIN tiposmodulosiot r ON u.idtipomoduloiot=r.idtipomoduloiot
-					INNER JOIN usuario m ON u.usuario_id = m.idusuario   
-					WHERE (m.nombre LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.localizacion LIKE '%$busqueda%' OR u.direccion LIKE '%$busqueda%' OR u.serie LIKE '%$busqueda%' OR r.referencia LIKE '%$busqueda%') AND u.status=1 ORDER BY u.idmoduloIoT ASC LIMIT $desde,$por_pagina");
+					SELECT u.iddispositivoIoT, s.nombremodulo AS 'modulo', r.tipodispositivoIoT AS 'tipodispositivoIoT', u.firmware, u.created_at, m.nombre AS 'nombreusuariocreador'
+					FROM dispositivosiot u 
+					INNER JOIN tiposdispositivosiot r ON u.tipodispositivoIoT=r.idtipodispositivoiot
+					INNER JOIN usuario m ON u.idusuario = m.idusuario
+					INNER JOIN modulos s ON u.modulo = s.idmodulo
+					WHERE (
+						s.nombremodulo LIKE '%$busqueda%' OR 
+						r.tipodispositivoIoT LIKE '%$busqueda%' OR 
+						u.firmware LIKE '%$busqueda%' OR 
+						m.nombre LIKE '%$busqueda%'
+					) AND u.status=1 ORDER BY u.iddispositivoIoT ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				
 				$result = mysqli_num_rows($query);
@@ -73,18 +83,17 @@
 						$fecha= DateTime::createFromFormat($formato,$data['created_at']);
 						?>
 							<tr>
-								<td><?php echo $data['idmoduloIoT']; ?></td>
-								<td><?php echo $data['direccion']; ?></td>
-								<td><?php echo $data['nombremoduloiot']; ?></td>
-								<td><?php echo $data['localizacion']; ?></td>
-								<td><?php echo $data['serie']; ?></td>
-								<td><?php echo $data['referencia']; ?></td>
+								<td><?php echo $data['iddispositivoIoT']; ?></td>
+								<td><?php echo $data['modulo']; ?></td>
+								<td><?php echo $data['tipodispositivoIoT']; ?></td>
+								<td><?php echo $data['firmware']; ?></td>
 								<td><?php echo $fecha->format('Y-m-d'); ?></td>
 								<td><?php echo $data['nombreusuariocreador']; ?></td>
+								</td>
 								<td>
-									<a class="link_edit" href="editar_dispositivoIoT.php?id=<?php echo $data['idmoduloIoT']; ?>">Editar</a>
+									<a class="link_edit" href="editar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>">Editar</a>
 									|  
-									<a class="link_delete" href="eliminar_confirmar_dispositivoIoT.php?id=<?php echo $data['idmoduloIoT']; ?>">Eliminar</a>
+									<a class="link_delete" href="eliminar_confirmar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>">Eliminar</a>
 								</td>
 							</tr>
 						<?php

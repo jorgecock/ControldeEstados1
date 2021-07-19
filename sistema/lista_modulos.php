@@ -15,7 +15,7 @@
 <head>
 	<title>Módulos</title>
 	<meta charset="UTF-8">
-	<meta http-equiv="refresh" content="5">
+	<meta http-equiv="refresh" content="">
 </head>
 <body>
 	<?php  include "includes/header.php"; ?>
@@ -46,16 +46,21 @@
 			<?php
 				//paginador
 				include "../conexion.php";
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM modulos WHERE status=1");
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM modulos 
+					WHERE status=1");
 				include "calculonumpaginas.php";
-
+				
 				//Crear lista
 				$query = mysqli_query($conexion,"
-					SELECT u.* , r.numeroordenproduccion, v.estado AS nomestado
+					SELECT u.* , r.numeroordenproduccion, v.estado AS nomestado, s.nombre AS itemaproducir
 					FROM modulos u
 					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
 					INNER JOIN estados v ON u.estado=v.idestado
-					WHERE u.status=1 ORDER BY idmodulo ASC LIMIT $desde,$por_pagina");
+					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					WHERE u.status=1 
+					ORDER BY idmodulo ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 
 				$result = mysqli_num_rows($query);

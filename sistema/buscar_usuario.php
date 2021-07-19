@@ -47,12 +47,34 @@
 
 			<?php
 				//paginador
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM usuario u INNER JOIN rol r ON u.rol=r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1");
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM usuario u 
+					INNER JOIN rol r ON u.rol=r.idrol 
+					WHERE (
+						u.idusuario LIKE '%$busqueda%' OR 
+						u.nombre LIKE '%$busqueda%' OR 
+						u.correo LIKE '%$busqueda%' OR 
+						u.usuario LIKE '%$busqueda%' OR 
+						r.rol LIKE '%$busqueda%'
+					) AND u.status=1");
 				include "calculonumpaginas.php";
 
 
 				//Crear lista
-				$query = mysqli_query($conexion,"SELECT u.idusuario, u.nombre, u.correo, u.usuario, r.rol FROM usuario u INNER JOIN rol r ON u.rol = r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1 ORDER BY u.idusuario ASC LIMIT $desde,$por_pagina");
+				$query = mysqli_query($conexion,"
+					SELECT u.idusuario, u.nombre, u.correo, u.usuario, r.rol 
+					FROM usuario u 
+					INNER JOIN rol r ON u.rol = r.idrol 
+					WHERE (
+						u.idusuario LIKE '%$busqueda%' OR 
+						u.nombre LIKE '%$busqueda%' OR 
+						u.correo LIKE '%$busqueda%' OR 
+						u.usuario LIKE '%$busqueda%' OR 
+						r.rol LIKE '%$busqueda%'
+						) AND u.status=1 
+					ORDER BY u.idusuario ASC 
+					LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				if($result>0){

@@ -50,10 +50,11 @@
 
 				//Crear lista
 				$query = mysqli_query($conexion,"
-					SELECT u.iddispositivoIoT, u.modulo, r.tipodispositivoIoT, u.firmware, u.created_at, m.nombre  
+					SELECT u.iddispositivoIoT, s.nombremodulo AS modulo, r.tipodispositivoIoT, u.firmware, u.created_at, m.nombre  
 					FROM dispositivosiot u 
 					INNER JOIN tiposdispositivosiot r ON u.tipodispositivoiot = r.idtipodispositivoiot
-					INNER JOIN usuario m ON u.idusuario = m.idusuario  
+					INNER JOIN usuario m ON u.idusuario = m.idusuario
+					INNER JOIN modulos s ON s.idmodulo =  u.modulo
 					WHERE u.status=1 ORDER BY u.iddispositivoIoT ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				

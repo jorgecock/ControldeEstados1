@@ -1,9 +1,13 @@
 <?php
+	//Lista Orden de produccion
+	
+	//Validar usuario con acceso a este módulo
 	session_start();
 	//if($_SESSION['rol']!=1){
 	//	header("location: ./");
 	//}
-	include "../conexion.php";
+
+	include "includes/scripts.php";
 ?>
 
 
@@ -11,8 +15,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<?php  include "includes/scripts.php"; ?>
-	<title>Usuarios</title>
+	<title>Ordenes de Producción</title>
 </head>
 <body>
 	<?php  include "includes/header.php"; ?>
@@ -21,67 +24,84 @@
 		<?php 
 			$busqueda=strtolower($_REQUEST['busqueda']);
 			if(empty($busqueda)){
-				header("location: lista_usuarios.php");
+				header("location: lista_ordenes_produccion.php");
 				mysqli_close($conexion);
 			}
 		 ?>
 
-		<h1>Usuarios</h1>
-		<a href="registro_usuario.php" class="btn_new">Crear usuario</a>
+		<h1>Ordenes de Producción</h1>
+		<a href="registro_orden_produccion.php" class="btn_new">Crear Orden de Producción</a>
 		
 		
-		<form action="buscar_usuario.php" method="get" class="form_search">
+		<form action="buscar_orden_produccion.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" value="<?php echo $busqueda; ?>">
 			<input type="submit" value="Buscar" class="btn_search">
 		</form>
 
 		<table>
 			<tr>
-				<th>ID</th>
-				<th>Nombre</th>
-				<th>Correo</th>
-				<th>Usuario</th>
-				<th>Rol</th>
+				<th>Número de orden</th>				
+				<th>Fecha de Creación</th>
+				<th>Fecha Programación</th>
+				<th>Descripción</th>
+				<th>Fecha Cierre</th>
+				<th>Estado </th>
+				<th>Usuario Creador </th>
 				<th>Acciones</th>
 			</tr>
 
 			<?php
 				//paginador
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM usuario u INNER JOIN rol r ON u.rol=r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1");
-				$result_register=mysqli_fetch_array($sql_register);
-				$total_registro=$result_register['total_registro'];	
-				$por_pagina=10; //hacer selector para escoger numero de registros a ver
-				if(empty($_GET['pagina'])){
-					$pagina=1;
-				}else{
-					$pagina=$_GET['pagina'];
-				}
-
-				$desde=($pagina-1)*$por_pagina;
-				$total_paginas=ceil($total_registro/$por_pagina);
-
+				include "../conexion.php";
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM ordenesproduccion u 
+					INNER JOIN estadosordenproduccion r ON u.idestadoordenproduccion = r.idestadoordenproduccion
+					INNER JOIN usuario m ON u.usuario_id = m.idusuario
+					WHERE (
+						m.nombre LIKE '%$busqueda%' OR 
+						u.numeroordenproduccion LIKE '%$busqueda%' OR 
+						u.fechaprogramacion LIKE '%$busqueda%' OR 
+						u.created_at LIKE '%$busqueda%' OR 
+						u.descripcion LIKE '%$busqueda%' OR
+						u.fechacierre LIKE '%$busqueda%' OR
+						r.estado LIKE '%$busqueda%'
+					) AND u.status=1");
+				include "calculonumpaginas.php";
 
 				//Crear lista
-				$query = mysqli_query($conexion,"SELECT u.idusuario, u.nombre, u.correo, u.usuario, r.rol FROM usuario u INNER JOIN rol r ON u.rol = r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1 ORDER BY u.idusuario ASC LIMIT $desde,$por_pagina");
+				$query = mysqli_query($conexion,"
+					SELECT u.idordenproduccion, u.numeroordenproduccion, u.created_at, u.fechaprogramacion, u.descripcion, u.fechacierre, r.estado, m.nombre 
+					FROM ordenesproduccion u 
+					INNER JOIN estadosordenproduccion r ON u.idestadoordenproduccion = r.idestadoordenproduccion
+					INNER JOIN usuario m ON u.usuario_id = m.idusuario
+					WHERE (
+						m.nombre LIKE '%$busqueda%' OR 
+						u.numeroordenproduccion LIKE '%$busqueda%' OR 
+						u.fechaprogramacion LIKE '%$busqueda%' OR 
+						u.created_at LIKE '%$busqueda%' OR 
+						u.descripcion LIKE '%$busqueda%' OR
+						u.fechacierre LIKE '%$busqueda%' OR
+						r.estado LIKE '%$busqueda%'
+					) AND u.status=1 ORDER BY u.idordenproduccion ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				if($result>0){
 					while ($data=mysqli_fetch_array($query)) {
 						?>
 							<tr>
-								<td><?php echo $data['idusuario']; ?></td>
+								<!-- <td><?php echo $data['idordenproduccion']; ?></td> -->
+								<td><?php echo $data['numeroordenproduccion']; ?></td>
+								<td><?php echo $data['created_at']; ?></td>
+								<td><?php echo $data['fechaprogramacion']; ?></td>
+								<td><?php echo $data['descripcion']; ?></td>
+								<td><?php echo $data['fechacierre']; ?></td>
+								<td><?php echo $data['estado']; ?></td>
 								<td><?php echo $data['nombre']; ?></td>
-								<td><?php echo $data['correo']; ?></td>
-								<td><?php echo $data['usuario']; ?></td>
-								<td><?php echo $data['rol']; ?></td>
 								<td>
-									<a class="link_edit" href="editar_usuario.php?id=<?php echo $data['idusuario']; ?>">Editar</a>
-									
-									<?php if($data['idusuario']!=1){ ?>
-										|  <a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data['idusuario']; ?>">Eliminar</a>
-										<?php
-										} 
-									?>
+									<a class="link_edit" href="editar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>">Editar</a>
+									|  
+									<a class="link_delete" href="eliminar_confirmar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>">Eliminar</a>
 								</td>
 							</tr>
 						<?php

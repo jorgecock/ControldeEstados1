@@ -1,36 +1,36 @@
 <?php
+	//Buscar modulos
+
+	//Validar usuario con acceso a este módulo
 	session_start();
 	//if($_SESSION['rol']!=1){
 	//	header("location: ./");
 	//}
-	include "../conexion.php";
+
+	$busqueda=strtolower($_REQUEST['busqueda']);
+	if(empty($busqueda)){
+		header("location: lista_modulos.php");
+	}
+	include "includes/scripts.php";
+
 ?>
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<title>Módulos</title>
 	<meta charset="UTF-8">
-	<?php  include "includes/scripts.php"; ?>
-	<title>Usuarios</title>
+	<meta http-equiv="refresh" content="">
 </head>
 <body>
 	<?php  include "includes/header.php"; ?>
 
 	<section id="container">
-		<?php 
-			$busqueda=strtolower($_REQUEST['busqueda']);
-			if(empty($busqueda)){
-				header("location: lista_usuarios.php");
-				mysqli_close($conexion);
-			}
-		 ?>
-
-		<h1>Usuarios</h1>
-		<a href="registro_usuario.php" class="btn_new">Crear usuario</a>
+		<h1>Módulos</h1>
+		<a href="registro_modulo.php" class="btn_new">Crear Módulo</a>
 		
-		
-		<form action="buscar_usuario.php" method="get" class="form_search">
+		<form action="buscar_modulo.php" method="get" class="form_search">
 			<input type="text" name="busqueda" id="busqueda" value="<?php echo $busqueda; ?>">
 			<input type="submit" value="Buscar" class="btn_search">
 		</form>
@@ -39,49 +39,73 @@
 			<tr>
 				<th>ID</th>
 				<th>Nombre</th>
-				<th>Correo</th>
-				<th>Usuario</th>
-				<th>Rol</th>
+				<th>Descripción</th>
+				<th>Estado</th>
+				<th>Orden prod</th>
+				<th>Producto Asignado</th>
+				<th>Cantidad Asignada</th>
+				<th>Cantidad Hecha</th>
+				<th>Eficiencia Acumulada</th>
 				<th>Acciones</th>
 			</tr>
 
 			<?php
 				//paginador
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM usuario u INNER JOIN rol r ON u.rol=r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1");
-				$result_register=mysqli_fetch_array($sql_register);
-				$total_registro=$result_register['total_registro'];	
-				$por_pagina=10; //hacer selector para escoger numero de registros a ver
-				if(empty($_GET['pagina'])){
-					$pagina=1;
-				}else{
-					$pagina=$_GET['pagina'];
-				}
-
-				$desde=($pagina-1)*$por_pagina;
-				$total_paginas=ceil($total_registro/$por_pagina);
-
+				include "../conexion.php";
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM modulos u 
+					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+					INNER JOIN estados v ON u.estado=v.idestado
+					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					WHERE (
+						u.idmodulo LIKE '%$busqueda%' 
+						OR u.nombremodulo LIKE '%$busqueda%' 
+						OR u.descripcion LIKE '%$busqueda%' 
+						OR r.numeroordenproduccion LIKE '%$busqueda%' 
+						OR v.estado LIKE '%$busqueda%' 
+						OR s.nombre LIKE '%$busqueda%'
+					) AND u.status=1");
+				
+				include "calculonumpaginas.php";
 
 				//Crear lista
-				$query = mysqli_query($conexion,"SELECT u.idusuario, u.nombre, u.correo, u.usuario, r.rol FROM usuario u INNER JOIN rol r ON u.rol = r.idrol WHERE (u.idusuario LIKE '%$busqueda%' OR u.nombre LIKE '%$busqueda%' OR u.correo LIKE '%$busqueda%' OR u.usuario LIKE '%$busqueda%' OR r.rol LIKE '%$busqueda%') AND status=1 ORDER BY u.idusuario ASC LIMIT $desde,$por_pagina");
+				$query = mysqli_query($conexion,"
+					SELECT u.* , r.numeroordenproduccion AS numeroordenproduccion, v.estado AS nomestado, s.nombre AS itemaproducir
+					FROM modulos u
+					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
+					INNER JOIN estados v ON u.estado=v.idestado
+					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					WHERE (
+						u.idmodulo LIKE '%$busqueda%' 
+						OR u.nombremodulo LIKE '%$busqueda%' 
+						OR u.descripcion LIKE '%$busqueda%' 
+						OR r.numeroordenproduccion LIKE '%$busqueda%' 
+						OR v.estado LIKE '%$busqueda%'
+						OR s.nombre LIKE '%$busqueda%'
+					) AND u.status=1 ORDER BY u.idmodulo ASC LIMIT $desde,$por_pagina
+				");
 				mysqli_close($conexion);
+
 				$result = mysqli_num_rows($query);
 				if($result>0){
 					while ($data=mysqli_fetch_array($query)) {
 						?>
 							<tr>
-								<td><?php echo $data['idusuario']; ?></td>
-								<td><?php echo $data['nombre']; ?></td>
-								<td><?php echo $data['correo']; ?></td>
-								<td><?php echo $data['usuario']; ?></td>
-								<td><?php echo $data['rol']; ?></td>
+								<td><?php echo $data['idmodulo']; ?></td>
+								<td><?php echo $data['nombremodulo']; ?></td>
+								<td><?php echo $data['descripcion']; ?></td>
+								<td><?php echo $data['nomestado']; ?></td>
+								<td><?php echo $data['numeroordenproduccion']; ?></td>
+								<td><?php echo $data['itemaproducir']; ?></td>
+								<td><?php echo $data['unidadesesperadas']; ?></td>
+								<td><?php echo $data['productoshechos']; ?></td>
+								<td><?php echo $data['eficienciaacumulada']; ?></td>
+
 								<td>
-									<a class="link_edit" href="editar_usuario.php?id=<?php echo $data['idusuario']; ?>">Editar</a>
-									
-									<?php if($data['idusuario']!=1){ ?>
-										|  <a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data['idusuario']; ?>">Eliminar</a>
-										<?php
-										} 
-									?>
+									<a class="link_edit" href="editar_modulo.php?id=<?php echo $data['idmodulo']; ?>">Editar</a>
+									|  
+									<a class="link_delete" href="eliminar_confirmar_modulo.php?id=<?php echo $data['idmodulo']; ?>">Eliminar</a>
 								</td>
 							</tr>
 						<?php

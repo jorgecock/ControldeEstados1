@@ -44,7 +44,10 @@
 			<?php
 				//paginador
 				include "../conexion.php";
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM ordenesproduccion WHERE status=1");
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM ordenesproduccion 
+					WHERE status=1");
 				include "calculonumpaginas.php";
 
 				//Crear lista
@@ -53,7 +56,7 @@
 					FROM ordenesproduccion u 
 					INNER JOIN estadosordenproduccion r ON u.idestadoordenproduccion = r.idestadoordenproduccion
 					INNER JOIN usuario m ON u.usuario_id = m.idusuario 
-					WHERE u.status=1 ORDER BY u.numeroordenproduccion ASC LIMIT $desde,$por_pagina");
+					WHERE u.status=1 ORDER BY u.idordenproduccion ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				if($result>0){

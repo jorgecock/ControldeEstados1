@@ -44,30 +44,31 @@
 
 			<?php
 				//paginador
-				$sql_register=mysqli_query($conexion,"SELECT COUNT(*) as total_registro FROM tiposdispositivosiot WHERE (idtipodedispositivoiot LIKE '%$busqueda%' OR tipodedispositivoIoT LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ) AND status=1");
+				$sql_register=mysqli_query($conexion,"
+					SELECT COUNT(*) as total_registro 
+					FROM tiposdispositivosiot 
+					WHERE (idtipodispositivoiot LIKE '%$busqueda%' OR
+						tipodispositivoIoT LIKE '%$busqueda%' OR 
+						descripcion LIKE '%$busqueda%' ) AND status=1");
 				
 				include "calculonumpaginas.php";
 
 
 				//Crear lista
-				$query = mysqli_query($conexion,"SELECT idtipodedispositivoiot, tipodedispositivoIoT, descripcion FROM tiposdispositivosiot WHERE (idtipodedispositivoiot LIKE '%$busqueda%' OR tipodedispositivoIoT LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%') AND status=1 ORDER BY idtipodedispositivoiot ASC LIMIT $desde,$por_pagina");
+				$query = mysqli_query($conexion,"SELECT idtipodispositivoiot, tipodispositivoIoT, descripcion FROM tiposdispositivosiot WHERE (idtipodispositivoiot LIKE '%$busqueda%' OR tipodispositivoIoT LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%') AND status=1 ORDER BY idtipodispositivoiot ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				if($result>0){
 					while ($data=mysqli_fetch_array($query)) {
 						?>
 							<tr>
-								<td><?php echo $data['idtipodedispositivoiot']; ?></td>
-								<td><?php echo $data['tipodedispositivoIoT']; ?></td>
+								<td><?php echo $data['idtipodispositivoiot']; ?></td>
+								<td><?php echo $data['tipodispositivoIoT']; ?></td>
 								<td><?php echo $data['descripcion']; ?></td>
 								<td>
-									<a class="link_edit" href="editar_tipodispositivoIoT.php?id=<?php echo $data['idtipodedispositivoiot']; ?>">Editar</a>
-									
-									<?php if($data['idtipodedispositivoiot']!=1){ ?>
-										|  <a class="link_delete" href="eliminar_confirmar_usuario.php?id=<?php echo $data['idtipodedispositivoiot']; ?>">Eliminar</a>
-										<?php
-										} 
-									?>
+									<a class="link_edit" href="editar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>">Editar</a>
+									|  
+									<a class="link_delete" href="eliminar_confirmar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>">Eliminar</a>
 								</td>
 							</tr>
 						<?php
