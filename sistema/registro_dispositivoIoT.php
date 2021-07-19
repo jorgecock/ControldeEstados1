@@ -65,23 +65,43 @@
 
 			<form action="" method="post">
 				<label for='modulo'>Módulo</label>
-				<input type="text" name="modulo" id="modulo" placeholder="Módulo" value="<?php echo $modulo; ?>">
-				
+		
+				<?php
+					include "../conexion.php";
+					$query_tipo = mysqli_query($conexion,"SELECT * FROM modulos");
+					mysqli_close($conexion);
+					$result_tipo = mysqli_num_rows($query_tipo);
+				?>
+				<select name="modulo" id="modulo">
+					<?php 
+						if($result_tipo>0){
+							while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
+								<option value="<?php echo $tipoa["idmodulo"]; ?>"
+									<?php if($modulo==$tipoa["idmodulo"]){echo " selected";} ?>>	
+									<?php echo $tipoa["nombremodulo"]; ?>
+								</option><?php
+							}
+						}
+					?>				
+				</select>
+
 
 				<label for="firmware">Firmware</label>
 				<input type="text" name="firmware" id="firmware" placeholder="Firmware" value="<?php echo $firmware; ?>">
 				
 				<label for="tipodispositivoIoT">Tipo de Dispositivo IoT</label>
 
+
+
+
+				<!--  select para escogir el tipo de dispositivo -->
 				<?php
 					include "../conexion.php";
 					$query_tipo = mysqli_query($conexion,"SELECT * FROM tiposdispositivosiot");
 					mysqli_close($conexion);
 					$result_tipo = mysqli_num_rows($query_tipo);
 				?>
-
 				<select name="tipodispositivoIoT" id="tipodispositivoIoT">
-
 					<?php 
 						if($result_tipo>0){
 							while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
@@ -91,9 +111,13 @@
 								</option><?php
 							}
 						}
-					?>
-					
+					?>				
 				</select>
+
+
+
+
+
 				<br>
 				<input type="submit" value="Crear Dispositivo IoT" class="btn_save">
 				<br>
