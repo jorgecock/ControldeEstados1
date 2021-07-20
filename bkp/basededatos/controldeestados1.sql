@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-07-2021 a las 20:59:11
+-- Tiempo de generación: 21-07-2021 a las 00:59:05
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `dispositivosiot` (
   KEY `idmodulo` (`modulo`),
   KEY `tipodispositivoIoT` (`tipodispositivoIoT`),
   KEY `fk_dispositivosiot_usuario` (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `dispositivosiot`
@@ -53,7 +53,8 @@ INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT
 (1, 1, 1, 'B', '2020-11-27 09:31:07', NULL, NULL, 1, 1),
 (2, 2, 1, 'A', '2020-11-27 09:31:52', NULL, NULL, 1, 1),
 (3, 3, 1, 'B', '2020-11-27 09:32:15', NULL, NULL, 1, 1),
-(4, 4, 1, 'B', '2020-11-27 09:32:32', NULL, '2021-07-14 20:55:43', 1, 1);
+(4, 4, 1, 'B', '2020-11-27 09:32:32', NULL, '2021-07-14 20:55:43', 1, 1),
+(27, 12, 1, '34343', '2021-07-19 14:25:18', '2021-07-19 14:28:37', '2021-07-19 14:28:46', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -149,14 +150,14 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `updated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
-(1, 'Módulo 1', 'Ropa deportiva', 3, 1, 1, 10, 1, 10, 0, 1606966175, 1607012543, 1607012546, 0, 0, 0, 46368, 3, '2020-09-04 17:55:23', '2020-11-27 20:21:42', NULL, 1, 0, 0, 0, 1, 0),
-(2, 'Módulo 2', 'Faldas', 1, 14, 1, 10, 1, 10, 0, 1606975260, 1606975270, 1606975260, 0, 0, 0, 10, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:00', '2020-11-26 15:21:41', 1, 0, 0, 0, 0, 0),
-(3, 'Módulo 3', 'Pijamas', 3, 1, 1, 100, 1, 100, 0, 1626314408, 1606502926, 1626314408, 1626314408, 0, 0, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:21:32', NULL, 1, 0, 0, 0, 0, 0),
-(4, 'Módulo 4', 'Camisas', 1, 15, 0, 12, 1, 12, 2, 1605671549, 0, 1605671549, 1605671627, 1605671568, 0.983333, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:37', NULL, 1, 0, 2, 0, 0, 0),
-(12, 'Módulo 5', 'Medias', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:02:20', NULL, NULL, 1, 0, 0, 0, 0, 0),
+(1, '1 Módulo Ropa Deportiva', 'Ropa deportiva, Juanita ', 6, 18, 5, 10, 1, 10, 3, 1626821479, 1626821762, 1626821742, 1626821668, 1626821610, 58, 438, 34, '2020-09-04 17:55:23', '2021-07-20 00:29:44', NULL, 1, 0, 0, 41.0959, 4, 0),
+(2, '2 Módulo Faldas', 'Faldas largas', 1, 1, 1, 100, 1, 100, 0, 1626733941, 1626795441, 1626795437, 1626733941, 0, 0, 625, 60875, '2020-09-04 17:55:23', '2021-07-20 00:29:52', '2020-11-26 15:21:41', 1, 0, 0, 0, 2, 0),
+(3, '3 Módulo Sur', 'Fabricación de mangas', 1, 1, 1, 100, 1, 100, 0, 1626314408, 1626724338, 1626314408, 1626314408, 0, 0, 409930, 0, '2020-09-04 17:55:23', '2021-07-20 00:30:31', NULL, 1, 0, 0, 0, 0, 0),
+(4, 'Módulo 4', 'Camisas', 1, 0, 0, 0, 1, 0, 0, 0, 0, 1605671549, 0, 0, 0, 0, 0, '2020-09-04 17:55:23', '2020-11-27 20:22:37', NULL, 1, 0, 2, 0, 0, 0),
+(12, 'Módulo 5', 'Medias', 1, 1, 1, 1000, 1, 1000, 0, 1626728067, 0, 1626728067, 1626728067, 0, 0, 0, 0, '2021-07-14 11:02:20', NULL, NULL, 1, 0, 0, 0, 0, 0),
 (13, 'Módulo 6', 'Corbatas', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:06:38', NULL, NULL, 1, 0, 0, 0, 0, 0),
 (14, 'Módulo 7', 'Guantes', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 11:34:44', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(15, 'Módulo 8', 'Mochilas', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-07-14 15:55:53', '2021-07-14 22:56:27', '2021-07-14 15:56:39', 1, 0, 0, 0, 0, 0);
+(15, 'Módulo guacala', 'Mochilas', 1, 1, 2, 1000, 1, 1000, 0, 1626805760, 0, 1626805760, 1626805760, 0, 0, 0, 0, '2021-07-14 15:55:53', '2021-07-19 21:57:42', '2021-07-14 15:56:39', 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -180,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `ordenesproduccion` (
   `usuario_id` int(11) NOT NULL,
   PRIMARY KEY (`idordenproduccion`),
   KEY `idestadoordenproduccion` (`idestadoordenproduccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ordenesproduccion`
@@ -188,10 +189,11 @@ CREATE TABLE IF NOT EXISTS `ordenesproduccion` (
 
 INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `fechaprogramacion`, `fechapausa`, `fechacontinuacion`, `fechacierre`, `created_at`, `updated_at`, `deleted_at`, `descripcion`, `idestadoordenproduccion`, `status`, `usuario_id`) VALUES
 (0, 'No Asignada', NULL, NULL, NULL, NULL, '2021-07-14 11:31:28', NULL, NULL, '', 1, 1, 0),
-(1, '10001', '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:05:38', NULL, NULL, 'Casa', 1, 1, 15),
+(1, '10001', '2020-07-20', NULL, NULL, NULL, '2020-07-20 23:05:38', NULL, NULL, 'Casa', 1, 1, 3),
 (14, '10002', '2020-07-25', NULL, NULL, NULL, '2020-07-25 11:23:35', NULL, NULL, 'camisas', 1, 1, 1),
 (15, '10003', '2020-11-25', NULL, NULL, NULL, '2020-11-27 10:41:54', '2020-12-02 18:26:27', NULL, 'zapatos rojizos', 1, 1, 1),
-(16, '10004', '2020-12-13', NULL, NULL, NULL, '2020-12-01 10:10:59', NULL, NULL, 'Camisas pra linea directa', 1, 1, 1);
+(16, '10004', '2020-12-13', NULL, NULL, NULL, '2020-12-01 10:10:59', NULL, NULL, 'Camisas pra linea directa', 1, 1, 1),
+(18, '10006', '2021-07-20', NULL, NULL, NULL, '2021-07-20 14:08:54', NULL, NULL, 'Medias', 1, 1, 22);
 
 -- --------------------------------------------------------
 
@@ -210,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `status` int(11) NOT NULL DEFAULT 1,
   `usuario_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
@@ -219,7 +221,9 @@ CREATE TABLE IF NOT EXISTS `producto` (
 INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`, `usuario_id`) VALUES
 (0, 'No Asignado', 'No Asignado', '', '2021-07-14 15:29:36', NULL, NULL, 1, NULL),
 (1, 'Pijama', 'Coleccion Primavera', 'rojo', '2020-12-02 15:38:40', '2020-12-02 18:42:23', '0000-00-00 00:00:00', 1, 1),
-(2, 'Sabana', 'primavera', 'morada', '2020-12-02 18:29:11', '2020-12-02 18:42:35', '2020-12-02 18:50:53', 1, 1);
+(2, 'Sabana', 'primavera', 'morada', '2020-12-02 18:29:11', '2020-12-02 18:42:35', '2020-12-02 18:50:53', 1, 1),
+(4, 'Pantalon chispas', 'aa1234', 'Jean con pedrería Con pedreria', '2021-07-19 14:41:33', NULL, NULL, 1, 22),
+(5, 'FaldaPantalon', '12345', 'Falda Pantalon', '2021-07-20 17:41:39', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -692,7 +696,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`idusuario`),
   KEY `rol` (`rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
@@ -703,7 +707,8 @@ INSERT INTO `usuario` (`idusuario`, `nombre`, `correo`, `usuario`, `clave`, `rol
 (2, 'Gustavo Carvajal Ramírez', 'gcarvajal@sena.edu.co.com', 'gcarvajal', '827ccb0eea8a706c4c34a16891f84e7b', 2, 1, '2020-11-27 09:53:03', '2020-11-27 16:01:10', NULL),
 (3, 'Karolina Paniagua Gómez', 'kpaniagua@sena.edu.co', 'kpaniagua', '827ccb0eea8a706c4c34a16891f84e7b', 3, 1, '2020-11-27 09:53:14', NULL, NULL),
 (4, 'Marisol Osorio Beltran', 'marosorio@sena.edu.co', 'marosorio', '827ccb0eea8a706c4c34a16891f84e7b', 2, 1, '2020-11-27 09:53:18', NULL, NULL),
-(5, 'Fabio Andrés Gaviria', 'fgaviria@sena.edu.co', 'fgaviria', '827ccb0eea8a706c4c34a16891f84e7b', 3, 0, '2020-11-27 10:05:30', '2020-11-27 16:06:59', '2020-11-27 10:07:13');
+(5, 'Fabio Andrés Gaviria', 'fgaviria@sena.edu.co', 'fgaviria', '827ccb0eea8a706c4c34a16891f84e7b', 3, 0, '2020-11-27 10:05:30', '2020-11-27 16:06:59', '2020-11-27 10:07:13'),
+(22, 'Filiberto', 'filiberto@filiberto', 'filiberto', '13b1c60ea8ad6db4ea5a08e86d65235b', 4, 0, '2021-07-20 14:09:55', NULL, '2021-07-20 14:10:58');
 
 --
 -- Restricciones para tablas volcadas

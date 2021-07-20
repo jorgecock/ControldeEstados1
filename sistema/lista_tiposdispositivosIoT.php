@@ -20,12 +20,6 @@
 	<section id="container">
 		
 
-
-
-
-
-
-
 		<h1>Tipos de Dispositivos IoT</h1>
 		<a href="registro_tipodispositivoIoT.php" class="btn_new">Crear Tipo de Dispositivo IoT</a>
 
@@ -62,9 +56,9 @@
 								<td><?php echo $data['tipodispositivoIoT']; ?></td>
 								<td><?php echo $data['descripcion']; ?></td>
 								<td>
-									<a class="link_edit" href="editar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>">Editar</a>
+									<a class="link_edit" href="editar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>"><i class="fas fa-edit"></i> Editar</a>
 									|  
-									<a class="link_delete" href="eliminar_confirmar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>">Eliminar</a>
+									<a class="link_delete" href="eliminar_confirmar_tipodispositivoIoT.php?id=<?php echo $data['idtipodispositivoiot']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
 								</td>
 							</tr>
 						<?php

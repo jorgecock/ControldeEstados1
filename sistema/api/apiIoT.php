@@ -28,11 +28,11 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 				//corresponden el tipo dispositivo recibido desde el modulo iot corresponde con el registrado en la base de datos
 
 
-				//***************Dispositivo tipo 1*******
-				//// Modulo Iot solo con botenes para conteo de prendas hechas al final de linea y paro por error, y medicion de voltaje
 				if ( $_GET['idtipodispositivoiot']==1 AND isset($_GET['boton1']) AND isset($_GET['boton2']) AND isset($_GET['voltage'])){ 
-					
+					//***************Dispositivo tipo 1*******
+					//// Modulo Iot solo con botenes para conteo de prendas hechas al final de linea y paro por error, y medicion de voltaje
 					//voltage
+
 					$voltage=$_GET['voltage']; //voltaje medido en dispositivo
 					$mod=$data['modulo']; //modulo en el que está registrado el dispositivo.
 
@@ -68,20 +68,22 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 					
 					
 				
-					if($estadoactual==3){//se ejecuta si el estado actual es 3
+					if($estadoactual==3){
+						//se ejecuta si el estado actual es 3
 
 
-						//Boton tarea hecha presionado
-						if($_GET['boton1']==1 AND $_GET['boton2']==0){  //Boton tarea hecha presionado fin de producto 
-							
+						if($_GET['boton1']==1 AND $_GET['boton2']==0){  
+							//Boton tarea hecha presionado fin de producto 
+						
 							$nuevosproductoshechos=$productoshechos+1; //calculo de productos hechos, nuevos productos hechos en la ultima hora
 							$nuevosprodhechosdespausini=$prodhechosdespausaini+1;//calculo de productos hechos despues del inicio o de una pausa, en un periodo de trabajo segido sin pausas
-						
+					
 							$productosesperadosalmomento=$nuevotiempoacumulado/($tiempocicloesperado*60); //cantidad esperada a registrar cada hora segun el tiempo que ha transcurrido y el tiempo de ciclo esperado.
 							$eficienciaacumulada = ($nuevosproductoshechos/$productosesperadosalmomento)*100;
-							
+						
 
-							if ($nuevosprodhechosdespausini <= 1){//validar si no es el primer producto luego de inicio o pausa para descartar los valores en el promedio por ser un tiempo mas largo
+							if ($nuevosprodhechosdespausini <= 1){
+								//validar si no es el primer producto luego de inicio o pausa para descartar los valores en el promedio por ser un tiempo mas largo
 								//primer producto luego de inicio o de una pausa para no tomar en cuenta en los promedios.
 								$ultimotiempodeproduccion=0;
 
@@ -89,10 +91,11 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 								//segundo producto en adelante.
 								$ultimotiempodeproduccion=($tiempoactual-$tiemporegistroanterior);
 							}
+						
 							
-							//cambio de estado por terminar las piezas.
 							if ($nuevosproductoshechos >= $unidadesesperadas){ //validar si termino
 								$siguenteestado=6;
+								//cambio de estado por terminar las piezas.
 							}else{
 								$siguenteestado=3;
 							}
@@ -101,21 +104,21 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 							//actualización de estados de la tabla modulos
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
-								SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado, tiemporegistro=$tiempoactual,   tiemporegistroanterior=$tiemporegistroanterior, ultimotiempodeproduccion = $ultimotiempodeproduccion, voltage = $voltage, prodhechosdespausaini=$nuevosprodhechosdespausini, tiempoacumulado=$nuevotiempoacumulado
+								SET productoshechos=$nuevosproductoshechos, estado=$siguenteestado, tiemporegistro=$tiempoactual,   tiemporegistroanterior=$tiemporegistroanterior, ultimotiempodeproduccion = $ultimotiempodeproduccion, voltage = $voltage, prodhechosdespausaini=$nuevosprodhechosdespausini, tiempoacumulado=$nuevotiempoacumulado,eficienciaacumulada=$eficienciaacumulada
 								WHERE idmodulo=$mod"); 
 
-							//registro del momento de cada elemento a producir en una orden de produccion
+								//registro del momento de cada elemento a producir en una orden de produccion
 							$query4 = mysqli_query($conexion,"
 								INSERT INTO registrotiempos (ordendeprod, itemaproducir, idmodulo) 
 								VALUES ($ordendeprod, $itemaproducir, $mod)");
-								
+							
 							if ($query3 AND $query4){
-									
+								
 								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							
 								$periodo=60; //lapso de tiempo en el cual se registra cada valor de eficiencia
 								$cambiotiempo=intval($nuevotiempoacumulado/$periodo)-intval($tiempoacumuladoanterior/$periodo); 
-								
+							
 								echo ("Tiempo Anterior: ".$tiempoacumuladoanterior."<br>");
 								echo ("Nuevo Tiempo: ".$nuevotiempoacumulado."<br>");
 								echo ("Registro de cada hora: ".$cambiotiempo."<br><br>");
@@ -144,13 +147,10 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 							$siguenteestado=5; //estado de error por paro desde la linea pulsando el boton rojo
 							$pausashechas=$pausashechas+1; //incrementa las pausas
 							
-
 							$query3 = mysqli_query($conexion,"
 								UPDATE modulos 
 								SET estado=$siguenteestado, voltage = $voltage, pausashechas=$pausashechas, tiempoacumulado=$nuevotiempoacumulado, momentodepausa=$tiempoactual
 								WHERE idmodulo=$mod");
-
-
 							$mensaje = array("Estado"=>"Ok","Respuesta" =>"Paro por error  pieza en la linea","idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'], "iddispositivoIoT"=>$_GET['iddispositivoiot'], "Voltage"=>$voltage);
 
 						} 
@@ -161,13 +161,13 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 							$mensaje = array("Estado"=>"Error","Respuesta" =>"Parametros invalidos para el Dispositivo tipo 1");
 						}
 					
-						}else{ //se ejecuta el else con mensaje de que el modulo no está en estado de conteo
-						//mensaje de que el modulo no está en estado de conteo
-						$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual, "Voltage"=>$voltage);
+					}else{ //se ejecuta el else con mensaje de que el modulo no está en estado de conteo
+					//mensaje de que el modulo no está en estado de conteo
+					$mensaje = array("Estado"=>"Error","Respuesta" =>"Modulo no esta en estado de conteo", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Modulo"=>$mod,"Estado Actual"=>$estadoactual, "Voltage"=>$voltage);
 					}
-				} 
-
-				else { //******dispositivo tipo 2 u otro para versiones  nuevas del software
+				
+				} else { 
+					//******dispositivo tipo 2 u otros, se continua con mas elses para cada tipo de dispositivo u otro para versiones  nuevas del software
 					//if ( $_GET['idtipodispositivoiot']==N AND (Parametros esperados)
 					//******dispositivo tipo 2, 3 u otro tipo de dispositivo
 					//cuando se diseñe un dispositivo 2 aqui se pondrá el código que debe invocar. 

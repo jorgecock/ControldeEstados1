@@ -17,7 +17,7 @@
 
 
 				<li class="principal">
-					<a href="#">Produccion</a>
+					<a href="#"><i class="fas fa-industry"></i> Produccion</a>
 					<ul>
 						
 						<?php if($_SESSION['rol']==1 || $_SESSION['rol']==2 || $_SESSION['rol']==4 || $_SESSION['rol']==5){
@@ -61,7 +61,7 @@
 
 
 				<li class="principal">
-					<a href="#">Productos</a>
+					<a href="#"><i class='far fa-lemon'></i> Productos</a>
 					<ul>
 						<li class="principal"><a href="lista_productos.php">Productos</a></li>
 						<!-- <li class="principal"><a href="lista_operaciones.php">Operaciones</a></li>
@@ -99,7 +99,7 @@
 				-->
 
 				<li class="principal">
-					<a href="acercade.php">Acerca de</a>
+					<a href="acercade.php"><i class="far fa-question-circle"></i> Acerca de</a>
 					<ul>
 						<li class="principal"><a href="acercade.php">Acerca de</a></li>
 					</ul>

@@ -53,25 +53,10 @@
 		} else {
 			echo("<h1 style='background-color:#9AE3B0;'>Reporte final de producción e indicadores<br>Producción terminada completa</h1>");
 		}
-	?>
 	
-	<!-- Nombre modulo  -->
-		<?php
-			include "../conexion.php";
-			$query_tipo = mysqli_query($conexion,"
-				SELECT nombremodulo 
-				FROM modulos 
-				WHERE idmodulo=$mod");
-			mysqli_close($conexion);
-			$result_tipo = mysqli_num_rows($query_tipo);
-			if($result_tipo>0){
-				$data= mysqli_fetch_array($query_tipo);
-				$nombremodulo = $data['nombremodulo'];
-			}else {
-				echo ('error nombre modulo');					
-			}
-		?>
-		<h1 align='center'>MODULO: <?php echo $nombremodulo; ?></h1>
+	  	//letrero nombre módulo
+	  	include "letreroNombreModulo.php"; 
+	 ?>
 	
 	
 	<hr size="3px" color="black" />
@@ -186,28 +171,10 @@
 		<div>
 		
 
-		<!-- Cambio de modulo  -->
-	  	<hr size="8px" color="black" />
-		Número de módulo a seguir.<br>
-		<select id="mySelect" name="selectmod" onchange="cambiodemodulo(this.value)">
-			<?php
-				//obtener numero de modulos configurados a hacer seguimiento para select 
-				include "conexion.php";
-				$query1 = mysqli_query($conexion,"SELECT * FROM modulos");
-				mysqli_close($conexion);
-				$result1=mysqli_num_rows($query1);
-
-				for($i=1;$i<=$result1;$i++){
-					$tipoa= mysqli_fetch_array($query1);
-			?>	
-			
-			<option value="<?php echo $tipoa['idmodulo']; ?>" <?php echo ($tipoa['idmodulo']==$mod)? "selected":"";?>><?php echo $tipoa['nombremodulo'];?>
-			</option>
-			
-			<?php 
-				}
-			?>
-		</select>
+		<?php 
+	  		//Selector de cambio de módulo
+	  		include "selectCambioModulo.php"; 
+	  	?>
 
 
 		<a href="index.php">Regresar a la ventana de inicio</a>

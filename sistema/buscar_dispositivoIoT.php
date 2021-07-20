@@ -91,9 +91,9 @@
 								<td><?php echo $data['nombreusuariocreador']; ?></td>
 								</td>
 								<td>
-									<a class="link_edit" href="editar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>">Editar</a>
+									<a class="link_edit" href="editar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>"><i class="fas fa-edit"></i> Editar</a>
 									|  
-									<a class="link_delete" href="eliminar_confirmar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>">Eliminar</a>
+									<a class="link_delete" href="eliminar_confirmar_dispositivoIoT.php?id=<?php echo $data['iddispositivoIoT']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
 								</td>
 							</tr>
 						<?php

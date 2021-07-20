@@ -35,8 +35,8 @@
 				<th>Fecha de Creación</th>
 				<th>Fecha Programación</th>
 				<th>Descripción</th>
-				<th>Fecha Cierre</th>
-				<th>Estado </th>
+				<!-- <th>Fecha Cierre</th>
+				<th>Estado </th> -->
 				<th>Usuario Creador </th>
 				<th>Acciones</th>
 			</tr>
@@ -55,29 +55,32 @@
 					SELECT u.idordenproduccion, u.numeroordenproduccion, u.created_at, u.fechaprogramacion, u.descripcion, u.fechacierre, r.estado, m.nombre 
 					FROM ordenesproduccion u 
 					INNER JOIN estadosordenproduccion r ON u.idestadoordenproduccion = r.idestadoordenproduccion
-					INNER JOIN usuario m ON u.usuario_id = m.idusuario 
+					LEFT JOIN usuario m ON u.usuario_id = m.idusuario 
 					WHERE u.status=1 ORDER BY u.idordenproduccion ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);
 				$result = mysqli_num_rows($query);
 				if($result>0){
 					while ($data=mysqli_fetch_array($query)) {
-						?>
-							<tr>
-								<!-- <td><?php echo $data['idordenproduccion']; ?></td> -->
-								<td><?php echo $data['numeroordenproduccion']; ?></td>
-								<td><?php echo $data['created_at']; ?></td>
-								<td><?php echo $data['fechaprogramacion']; ?></td>
-								<td><?php echo $data['descripcion']; ?></td>
-								<td><?php echo $data['fechacierre']; ?></td>
-								<td><?php echo $data['estado']; ?></td>
-								<td><?php echo $data['nombre']; ?></td>
-								<td>
-									<a class="link_edit" href="editar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>">Editar</a>
-									|  
-									<a class="link_delete" href="eliminar_confirmar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>">Eliminar</a>
-								</td>
-							</tr>
-						<?php
+						if ($data['idordenproduccion']!=0){
+							?>
+								<tr>
+									<!-- <td><?php echo $data['idordenproduccion']; ?></td> -->
+									<td><?php echo $data['numeroordenproduccion']; ?></td>
+									<td><?php echo $data['created_at']; ?></td>
+									<td><?php echo $data['fechaprogramacion']; ?></td>
+									<td><?php echo $data['descripcion']; ?></td>
+									<!-- <td><?php echo $data['fechacierre']; ?></td>
+									<td><?php echo $data['estado']; ?></td> -->
+									<td><?php echo $data['nombre']; ?></td>
+									<td>
+										<a class="link_edit" href="editar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>"><i class="fas fa-edit"></i> Editar</a>
+										|  
+										<a class="link_delete" href="eliminar_confirmar_orden_produccion.php?id=<?php echo $data['idordenproduccion']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
+									</td>
+								</tr>
+						
+							<?php
+						}
 					}
 				}
 			?>
