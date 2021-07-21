@@ -40,6 +40,21 @@
 		En todos los tableros de control de producción cuando se está controlando el conteo, se tiene la opción de cambiar el módulo a monitorear.<br><br>
 
 		El administrador puede crear usuarios, con diferentes roles, mediante la opción "Gestión Humana/Usuarios". Los diferentes tipos de rol, son: Admin, Supervisor, Operario, Gerente y Administrador. Los operarios solo pueden entrar a la opción de visualización en pantalla gigante "Producción/Tablero en Planta".<br><br>
+
+		API<br><br>
+
+		El formato del codigo enviado por la caja iot por método get a la API es:<br><br>
+		http://xxxxxxx/controldeestados1/sistema/api/apiIoT.php?iddispositivoiot=1&idtipodispositivoiot=1&boton1=1&boton2=0&voltage=0<br><br>
+
+		donde:<br><br>
+		xxxxxxx es la direccion del host donde está montada la aplicacion, sea una direccion IP, un localhost o un nombre de dominio DNS de un Hosting.<br><br>
+		iddispositivoiot es el código del dispositivo IoT.<br>
+		idtipodispositivoiot es el código del tipo de dispositivo IoT.<br>
+		boton1 es el estado del boton verde de aceptacion de operacion. 1= oprimido<br>
+		boton2 es el estado del boton rojo de paro. 1=oprimido<br>
+		voltage es el valor de medida en voltios del sensor de la caja IoT.<br><br>
+
+
 	</p>
 	<br>
 	<h2>
