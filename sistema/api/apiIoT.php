@@ -111,28 +111,28 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 							$query4 = mysqli_query($conexion,"
 								INSERT INTO registrotiempos (ordendeprod, itemaproducir, idmodulo) 
 								VALUES ($ordendeprod, $itemaproducir, $mod)");
-							
+
 							if ($query3 AND $query4){
-								
+								 
 								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							
 								$periodo=60; //lapso de tiempo en el cual se registra cada valor de eficiencia
 								$cambiotiempo=intval($nuevotiempoacumulado/$periodo)-intval($tiempoacumuladoanterior/$periodo); 
 							
-								echo ("Tiempo Anterior: ".$tiempoacumuladoanterior."<br>");
+								/*echo ("Tiempo Anterior: ".$tiempoacumuladoanterior."<br>");
 								echo ("Nuevo Tiempo: ".$nuevotiempoacumulado."<br>");
-								echo ("Registro de cada hora: ".$cambiotiempo."<br><br>");
+								echo ("Registro de cada hora: ".$cambiotiempo."<br><br>");*/
 
 								//cada hora se debe cacer un registro en la tabla registro eficiencias
 								if ($cambiotiempo>=1){
 
 									$query4 = mysqli_query($conexion,"
 										INSERT INTO registroeficiencias (id, ordendeprod, itemaproducir, cantidadesperada, cantidadhecha, eficiencia, fechahora, modulo) VALUES (NULL, $ordendeprod, $itemaproducir, $productosesperadosalmomento ,$nuevosproductoshechos ,$eficienciaacumulada, current_timestamp(), $mod)");
+									if ($query4){"bien";}
 								}
 
-							} else{ //se ejecuta mensaje si no puede incrementar la base de datos
-								echo("consulta 3".$query3."<br>consulta 4".$query4)."<br>";
-
+							}else{ //se ejecuta mensaje si no puede incrementar la base de datos
+								// echo("consulta 3 ".$query3."<br>consulta 4 ".$query4)."<br>"
 								//no pudo incrementar la base de datos
 								$mensaje = array("Estado"=>"Error","Respuesta" =>"No pudo incrementar en base de datos", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							}

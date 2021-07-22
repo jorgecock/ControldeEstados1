@@ -48,17 +48,20 @@
 				include "../conexion.php";
 				$sql_register=mysqli_query($conexion,"
 					SELECT COUNT(*) as total_registro 
-					FROM modulos 
-					WHERE status=1");
+					FROM modulos u
+					LEFT JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
+					INNER JOIN estados v ON u.estado=v.idestado
+					LEFT	 JOIN producto s ON u.itemaproducir=s.idproducto
+					WHERE u.status=1");
 				include "calculonumpaginas.php";
 				
 				//Crear lista
 				$query = mysqli_query($conexion,"
 					SELECT u.* , r.numeroordenproduccion, v.estado AS nomestado, s.nombre AS itemaproducir
 					FROM modulos u
-					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
+					LEFT JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
 					INNER JOIN estados v ON u.estado=v.idestado
-					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					LEFT	 JOIN producto s ON u.itemaproducir=s.idproducto
 					WHERE u.status=1 
 					ORDER BY idmodulo ASC LIMIT $desde,$por_pagina");
 				mysqli_close($conexion);

@@ -55,9 +55,9 @@
 				$sql_register=mysqli_query($conexion,"
 					SELECT COUNT(*) as total_registro 
 					FROM modulos u 
-					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
+					LEFT JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion
 					INNER JOIN estados v ON u.estado=v.idestado
-					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					LEFT JOIN producto s ON u.itemaproducir=s.idproducto
 					WHERE (
 						u.idmodulo LIKE '%$busqueda%' 
 						OR u.nombremodulo LIKE '%$busqueda%' 
@@ -73,9 +73,9 @@
 				$query = mysqli_query($conexion,"
 					SELECT u.* , r.numeroordenproduccion AS numeroordenproduccion, v.estado AS nomestado, s.nombre AS itemaproducir
 					FROM modulos u
-					INNER JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
+					LEFT JOIN ordenesproduccion r ON u.ordendeprod=r.idordenproduccion  
 					INNER JOIN estados v ON u.estado=v.idestado
-					INNER JOIN producto s ON u.itemaproducir=s.idproducto
+					LEFT JOIN producto s ON u.itemaproducir=s.idproducto
 					WHERE (
 						u.idmodulo LIKE '%$busqueda%' 
 						OR u.nombremodulo LIKE '%$busqueda%' 

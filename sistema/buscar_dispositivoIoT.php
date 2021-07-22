@@ -36,10 +36,10 @@
 		<table>
 			<tr>
 				<th>ID</th>
-				<th>Módulo</th>
 				<th>Tipo de Dispositivo</th>
 				<th>Firmware</th>
 				<th>Fecha Creación</th>
+				<th>Módulo</th>
 				<th>Usuario Creador </th>
 				<th>Acciones</th>
 			</tr>
@@ -51,8 +51,8 @@
 					SELECT COUNT(*) as total_registro 
 					FROM dispositivosiot u 
 					INNER JOIN tiposdispositivosiot r ON u.tipodispositivoIoT=r.idtipodispositivoiot
-					INNER JOIN usuario m ON u.idusuario = m.idusuario
-					INNER JOIN modulos s ON u.modulo = s.idmodulo
+					LEFT JOIN usuario m ON u.idusuario = m.idusuario
+					LEFT JOIN modulos s ON u.modulo = s.idmodulo
 					WHERE (
 						s.nombremodulo LIKE '%$busqueda%' OR 
 						r.tipodispositivoIoT LIKE '%$busqueda%' OR 
@@ -66,8 +66,8 @@
 					SELECT u.iddispositivoIoT, s.nombremodulo AS 'modulo', r.tipodispositivoIoT AS 'tipodispositivoIoT', u.firmware, u.created_at, m.nombre AS 'nombreusuariocreador'
 					FROM dispositivosiot u 
 					INNER JOIN tiposdispositivosiot r ON u.tipodispositivoIoT=r.idtipodispositivoiot
-					INNER JOIN usuario m ON u.idusuario = m.idusuario
-					INNER JOIN modulos s ON u.modulo = s.idmodulo
+					LEFT JOIN usuario m ON u.idusuario = m.idusuario
+					LEFT JOIN modulos s ON u.modulo = s.idmodulo
 					WHERE (
 						s.nombremodulo LIKE '%$busqueda%' OR 
 						r.tipodispositivoIoT LIKE '%$busqueda%' OR 
@@ -84,10 +84,10 @@
 						?>
 							<tr>
 								<td><?php echo $data['iddispositivoIoT']; ?></td>
-								<td><?php echo $data['modulo']; ?></td>
 								<td><?php echo $data['tipodispositivoIoT']; ?></td>
 								<td><?php echo $data['firmware']; ?></td>
 								<td><?php echo $fecha->format('Y-m-d'); ?></td>
+								<td><?php echo $data['modulo']; ?></td>
 								<td><?php echo $data['nombreusuariocreador']; ?></td>
 								</td>
 								<td>

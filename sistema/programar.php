@@ -17,10 +17,10 @@
 		if (empty($_POST['unidadesesperadas']) AND empty($_POST['tiempocicloesperado'])  AND empty($_POST['minutosprogramados']) AND empty($_POST['ordendeprod']) AND empty($_POST['itemaproducir']) ){
 			$alert="Se deben llenar todos los campos";
 		} else {
-			if ($_POST['unidadesesperadas']==0 OR $_POST['ordendeprod']==0 or $_POST['itemaproducir']==0 or $_POST['tiempocicloesperado']==0 or $_POST['minutosprogramados']==0){
-				$alert="Lo campos no pueden estar en cero, se debe seleccionar alguna orden de produccion y un tipo de producto a producir";
+			if ($_POST['unidadesesperadas']==0 or $_POST['tiempocicloesperado']==0 or $_POST['minutosprogramados']==0){
+				$alert="Lo campos no pueden estar en cero";
 			} else {
-				$ordendeprod=$_POST['ordendeprod'];
+				$ordendeprod=$_POST['ordendeprod'];		
 				$siguienteestado=2; //estado validacion
 				$unidadesesperadas=$_POST['unidadesesperadas'];
 				$tiempocicloesperado=$_POST['tiempocicloesperado'];

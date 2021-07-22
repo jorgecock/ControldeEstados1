@@ -236,7 +236,7 @@
 
 		<script>
 			function cambiodemodulo(val) {
-	  		url="conteo.php?mod="+val;
+	  		url="programar.php?mod="+val;
 	  		location.replace(url);
 			}
 		</script>
