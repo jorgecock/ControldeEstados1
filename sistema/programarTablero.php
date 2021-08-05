@@ -10,7 +10,9 @@
 	include "functions.php";
 	include "definicionmodulo.php";
 	include "includes/scripts.php";
-	include "validacionestadoactualTablero.php";
+	include "validacionestadoactualTablero.php"; // cambia de ventana según el estado en el que esté el modulo
+
+
 
 ?>
 

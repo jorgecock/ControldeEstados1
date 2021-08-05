@@ -39,7 +39,7 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 					//consulta el estado de conteo para el modulo al cual se tiene registrado el dispositivo IoT
 					$query2 = mysqli_query($conexion," SELECT * FROM modulos WHERE idmodulo=$mod");
 					$result2=mysqli_fetch_array($query2);
-					
+		
 					//datos iniciales
 					$tiempoactual=strtotime("now"); //monto actual unix en segundos
 					$estadoactual=$result2['estado']; //estado en que se encuentra el control de tableros en modulo, para dispoditivo 1 solo tendrá efecto en estado =3
@@ -116,9 +116,11 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 								 
 								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							
-								$periodo=60; //lapso de tiempo en el cual se registra cada valor de eficiencia
+								//***********************************************************************************
+								$periodo=3600; //lapso de tiempo en segundos en el cual se registra cada valor de eficiencia
 								$cambiotiempo=intval($nuevotiempoacumulado/$periodo)-intval($tiempoacumuladoanterior/$periodo); 
-							
+								//***********************************************************************************
+
 								/*echo ("Tiempo Anterior: ".$tiempoacumuladoanterior."<br>");
 								echo ("Nuevo Tiempo: ".$nuevotiempoacumulado."<br>");
 								echo ("Registro de cada hora: ".$cambiotiempo."<br><br>");*/

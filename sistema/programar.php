@@ -10,6 +10,9 @@
 	include "functions.php";
 	include "definicionmodulo.php";
 	include "includes/scripts.php"; 
+	include "validacionestadoactual.php"; // cambia de ventana según el estado en el que esté el modulo
+
+
 
 	//Definicion de estado siguiente
 	$alert="";
@@ -39,15 +42,16 @@
 		}		
 	} 
 
-	include "validacionestadoactual.php";
-
-	//Traer datos y desiciones.
-	//include "conexion.php";
-	//$query1 = mysqli_query($conexion,"
-	//			SELECT xxxxxxxxx 
-	//			WHERE idmodulo=$mod");
-	//mysqli_close($conexion);
-
+	//datos para los select de ordenes de produccion y producto
+	include "../conexion.php";
+	$query_ordenesproduccion = mysqli_query($conexion,"SELECT * FROM ordenesproduccion WHERE status=1");
+	$query_producto = mysqli_query($conexion,"SELECT * FROM producto WHERE status=1");
+	mysqli_close($conexion);
+	$result_ordenesproduccion = mysqli_num_rows($query_ordenesproduccion);
+	$result_producto = mysqli_num_rows($query_producto);
+	if($result_ordenesproduccion==0 or $result_producto==0){
+		header("location: sinmodulosproductosordenes.php");
+	}
 ?>
 
 <!DOCTYPE html>
@@ -88,41 +92,25 @@
 			
 			<!-- Orden de produccion -->
 			<label for="ordendeprod">Orden de producción:</label>
-			<?php
-				include "../conexion.php";
-				$query_tipo = mysqli_query($conexion,"SELECT * FROM ordenesproduccion WHERE status=1");
-					mysqli_close($conexion);
-				$result_tipo = mysqli_num_rows($query_tipo);
-			?>	
 			<select name="ordendeprod" id="ordendeprod">
 				<?php 
-					if($result_tipo>0){
-						while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
-							<option value="<?php echo $tipoa["idordenproduccion"]; ?>">	
-									<?php echo $tipoa["numeroordenproduccion"]; ?>
-							</option>
-						<?php }
-					}
+					while ($tipoa= mysqli_fetch_array($query_ordenesproduccion)) { ?>
+						<option value="<?php echo $tipoa["idordenproduccion"]; ?>">	
+							<?php echo $tipoa["numeroordenproduccion"]; ?>
+						</option>
+					<?php }
 				?>
 			</select>
 
 			<!-- Item a producir de produccion -->
 			<label for="itemaproducir">Item a producir:</label>
-			<?php
-				include "../conexion.php";
-				$query_tipo = mysqli_query($conexion,"SELECT * FROM producto WHERE status=1");
-					mysqli_close($conexion);
-				$result_tipo = mysqli_num_rows($query_tipo);
-			?>
 			<select name="itemaproducir" id="itemaproducir">
 				<?php 
-					if($result_tipo>0){
-						while ($tipoa= mysqli_fetch_array($query_tipo)) { ?>
-							<option value="<?php echo $tipoa["idproducto"]; ?>">	
-									<?php echo $tipoa["nombre"]; ?>
-							</option>
-						<?php }
-					}
+					while ($tipoa= mysqli_fetch_array($query_producto)) { ?>
+						<option value="<?php echo $tipoa["idproducto"]; ?>">	
+							<?php echo $tipoa["nombre"]; ?>
+						</option>
+					<?php }
 				?>	
 			</select>
 			

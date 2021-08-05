@@ -12,8 +12,7 @@ ADS1115_WE adc(I2C_ADDRESS);
 
 // VARIABLES
 char ssid[] = SECRET_SSID;  //SSID de la red
-
-
+char user[] = SECRET_USER;  //User de la red
 char pass[] = SECRET_PASS;  //clave de la red
 int keyIndex = 0;           // your network key Index number (needed only for WEP)
 int status = WL_IDLE_STATUS;//estado conexión
@@ -22,20 +21,20 @@ int status = WL_IDLE_STATUS;//estado conexión
 //const char* host = "192.168.43.167"; //Conexion a portatil conectado a celular jorge cock, verificar con IPCONFIG
 //const char* host = "127.0.0.1"; //Conexion celular jorge cock
 //const char* host = "jorgecock.byethost5.com"; //Conexion celular jorge cock??
-const char* host = "192.168.1.15"; //Servidor Casa Jorge
+//const char* host = "192.168.1.15"; //Servidor Casa Jorge
 //const char* host = "192.168.1.158"; //Servidor Carsil
 //const char* host = "10.171.92.68"; //Servidor pcKarolina
+const char* host = "10.171.80.30"; //Servidor pcKarolina
 
 const int httpPort = 80;
 
 
 //Codigo***********
-
 //Direccion API****************************************************************************************************************
 //String url = "http://jorgecock.byethost5.com/ControldeEstados/api/apiIoT.php";
 //String url = "http://192.168.1.158/ControldeEstados/api/apiIoT.php";
-String url = "http://localhost/ControldeEstados1/sistema/api/apiIoT.php"; //carsil y casa  jorge
-
+//String url = "http://localhost/ControldeEstados1/sistema/api/apiIoT.php"; //carsil y casa  jorge
+String url = "http://10.171.80.30/ControldeEstados1/sistema/api/apiIoT.php"; //carsil y casa  jorge
 
 int estadosensor1 =0;
 int estadosensoranterior1=0;
@@ -50,8 +49,8 @@ float voltage = 0.0; //salida del ADC
 int contreg=0;
 
 //******************DATOS DEL TIPO DE MODULO Y SERIE***************************************************************************
-int iddispositivoiot=4; // NUMERO SERIAL DEL DISPOSITIOV IOT
-int idtipodispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int iddispositivoiot=1; // NUMERO SERIAL DEL DISPOSITIOV IOT
+int idtipodispositivoiot=1; // NUMERO SERIAL DEL TIPO DE DISPOSITIOV IOT
 //*****************************************************************************************************************************
 
 // CONFIGURACIÓN INICIAL
@@ -112,7 +111,7 @@ void setup() {
   ///Conectar a red.
   Serial.print("conectando a SSID: ");
   Serial.println(ssid);
-  WiFi.begin(ssid, pass); 
+  WiFi.begin(ssid,user,pass); 
   while (WiFi.status() != WL_CONNECTED) {
     status = WiFi.begin(ssid, pass);
     digitalWrite(Output2, 0);

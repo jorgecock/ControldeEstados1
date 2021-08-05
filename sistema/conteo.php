@@ -197,7 +197,7 @@
 		?>
 		<hr size="3px" color="black" />
 				
-
+		<h1>Registro de eficiencias acumuladas cada hora.</h1>
 		<table id="" class="table table-striped table-bordered">
 			<tr>
 				<th>Hora</th>

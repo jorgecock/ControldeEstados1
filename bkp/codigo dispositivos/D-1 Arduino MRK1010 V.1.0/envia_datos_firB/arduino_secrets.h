@@ -7,8 +7,8 @@
 //#define SECRET_PASS "jorgecock"
 
 //Casa Jorge
-#define SECRET_SSID "FamCockGut"
-#define SECRET_PASS "13a18u3n0Un12"
+//#define SECRET_SSID "FamCockGut"
+//#define SECRET_PASS "13a18u3n0Un12"
 
 //Sena Funcionario
 //#define SECRET_SSID "FUNCIONARIO"
@@ -17,3 +17,8 @@
 //CARSIL
 //#define SECRET_SSID "CARSIL_SAS"
 //#define SECRET_PASS "cd8333531"
+
+//Sena Aprendiz
+#define SECRET_SSID "APRENDIZSENA"
+#define SECRET_USER "Aprendiz008"
+#define SECRET_PASS "r{MDg9;A8%:6"  

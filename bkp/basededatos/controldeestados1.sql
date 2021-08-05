@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-07-2021 a las 23:00:51
+-- Tiempo de generación: 05-08-2021 a las 21:53:11
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -43,15 +43,7 @@ CREATE TABLE IF NOT EXISTS `dispositivosiot` (
   KEY `idmodulo` (`modulo`),
   KEY `tipodispositivoIoT` (`tipodispositivoIoT`),
   KEY `fk_dispositivosiot_usuario` (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `dispositivosiot`
---
-
-INSERT INTO `dispositivosiot` (`iddispositivoIoT`, `modulo`, `tipodispositivoIoT`, `firmware`, `created_at`, `updated_at`, `deleted_at`, `status`, `idusuario`) VALUES
-(28, 16, 1, '1', '2021-07-22 15:02:53', NULL, NULL, 1, 1),
-(29, 17, 1, '1', '2021-07-22 15:18:46', NULL, NULL, 1, 1);
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -140,15 +132,15 @@ CREATE TABLE IF NOT EXISTS `modulos` (
   `tiempoacumtrabajo` int(11) NOT NULL,
   PRIMARY KEY (`idmodulo`),
   KEY `idestado` (`estado`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `modulos`
 --
 
 INSERT INTO `modulos` (`idmodulo`, `nombremodulo`, `descripcion`, `estado`, `ordendeprod`, `itemaproducir`, `unidadesesperadas`, `tiempocicloesperado`, `minutosprogramados`, `productoshechos`, `momentodeinicio`, `momentodepausa`, `momentoinidespausa`, `tiemporegistro`, `tiemporegistroanterior`, `ultimotiempodeproduccion`, `tiempoacumulado`, `tiempopausado`, `created_at`, `updated_at`, `deleted_at`, `status`, `voltage`, `prodhechosdespausaini`, `eficienciaacumulada`, `pausashechas`, `tiempoacumtrabajo`) VALUES
-(16, '1 Camisas Polo', 'Modulo Camisas Polo', 3, 19, 6, 15, 1, 15, 0, 1626986746, 0, 1626986746, 1626986746, 0, 0, 0, 0, '2021-07-22 14:57:19', NULL, NULL, 1, 0, 0, 0, 0, 0),
-(17, '2 Ropa deportiva', 'Ropa deportiva, Juanita ', 3, 19, 6, 10, 1, 10, 6, 1626985415, 0, 1626985415, 1626987512, 1626987500, 12, 2097, 0, '2021-07-22 15:18:13', NULL, NULL, 1, 0, 6, 17.1674, 0, 0);
+(1, 'Modulo 1 Camisas Polo', 'Modulo Camisas Polo', 3, 22, 9, 10, 1, 10, 0, 1628187658, 0, 1628187658, 1628187658, 0, 0, 0, 0, '2021-08-05 11:30:35', '2021-08-05 20:15:40', NULL, 1, 0, 0, 0, 0, 0),
+(2, 'Modulo 2 Ropa Deportiva', 'Ropa Deportiva', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2021-08-05 11:33:23', NULL, NULL, 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -172,14 +164,14 @@ CREATE TABLE IF NOT EXISTS `ordenesproduccion` (
   `usuario_id` int(11) NOT NULL,
   PRIMARY KEY (`idordenproduccion`),
   KEY `idestadoordenproduccion` (`idestadoordenproduccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ordenesproduccion`
 --
 
 INSERT INTO `ordenesproduccion` (`idordenproduccion`, `numeroordenproduccion`, `fechaprogramacion`, `fechapausa`, `fechacontinuacion`, `fechacierre`, `created_at`, `updated_at`, `deleted_at`, `descripcion`, `idestadoordenproduccion`, `status`, `usuario_id`) VALUES
-(19, '10001', '2021-07-22', NULL, NULL, NULL, '2021-07-22 15:21:51', NULL, NULL, 'Camisas para linea directa', 1, 1, 1);
+(22, '10001', '2021-08-05', NULL, NULL, NULL, '2021-08-05 12:05:02', NULL, NULL, 'Polos Rojas', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -198,14 +190,14 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `status` int(11) NOT NULL DEFAULT 1,
   `usuario_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `producto`
 --
 
 INSERT INTO `producto` (`idproducto`, `nombre`, `referencia`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`, `usuario_id`) VALUES
-(6, 'Camisa Polo Niño xs', 'cpnxs001', 'Camisa Polo Niño xs', '2021-07-22 15:23:08', NULL, NULL, 1, 1);
+(9, 'Camisa Polo Niño xs', '1234', 'Polo Verde', '2021-08-05 13:19:32', NULL, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -226,16 +218,7 @@ CREATE TABLE IF NOT EXISTS `registroeficiencias` (
   KEY `fk_registroeficiencias_ordenesproduccion` (`ordendeprod`),
   KEY `fk_registroeficiencias_producto` (`itemaproducir`),
   KEY `fk_registroeficiencias_modulos` (`modulo`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `registroeficiencias`
---
-
-INSERT INTO `registroeficiencias` (`id`, `ordendeprod`, `itemaproducir`, `cantidadesperada`, `cantidadhecha`, `eficiencia`, `fechahora`, `modulo`) VALUES
-(9, 19, 6, 21, 1, 4.85437, '2021-07-22 15:44:11', 17),
-(10, 19, 6, 25, 2, 7.85855, '2021-07-22 15:49:02', 17),
-(11, 19, 6, 35, 5, 14.3885, '2021-07-22 15:58:20', 17);
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -250,21 +233,7 @@ CREATE TABLE IF NOT EXISTS `registrotiempos` (
   `idmodulo` int(11) NOT NULL,
   `horaderegistro` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`idregistro`)
-) ENGINE=InnoDB AUTO_INCREMENT=364 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `registrotiempos`
---
-
-INSERT INTO `registrotiempos` (`idregistro`, `ordendeprod`, `itemaproducir`, `idmodulo`, `horaderegistro`) VALUES
-(1, '18', '5', 1, '2021-07-22 14:37:04'),
-(357, '18', '5', 1, '2021-07-22 14:37:40'),
-(358, '19', '6', 17, '2021-07-22 15:44:11'),
-(359, '19', '6', 17, '2021-07-22 15:49:02'),
-(360, '19', '6', 17, '2021-07-22 15:49:12'),
-(361, '19', '6', 17, '2021-07-22 15:49:28'),
-(362, '19', '6', 17, '2021-07-22 15:58:20'),
-(363, '19', '6', 17, '2021-07-22 15:58:32');
+) ENGINE=InnoDB AUTO_INCREMENT=400 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -308,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `tiposdispositivosiot` (
   `deleted_at` datetime DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`idtipodispositivoiot`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `tiposdispositivosiot`
@@ -316,7 +285,11 @@ CREATE TABLE IF NOT EXISTS `tiposdispositivosiot` (
 
 INSERT INTO `tiposdispositivosiot` (`idtipodispositivoiot`, `tipodispositivoIoT`, `descripcion`, `created_at`, `updated_at`, `deleted_at`, `status`) VALUES
 (1, '1A', 'Caja Wifi con botones: verde de aceptar y rojo de paro, con opción de medir corriente', '2020-09-04 19:16:59', '2020-11-27 15:37:13', NULL, 1),
-(2, '2A', 'Caja Wifi con  monitoreo de corriente y opción de apagar máquinas', '2020-09-04 19:19:45', '2020-11-27 15:37:05', '2021-07-16 10:23:44', 1);
+(2, '2A', 'Caja Wifi con  monitoreo de corriente y opción de apagar máquinas', '2020-09-04 19:19:45', '2020-11-27 15:37:05', '2021-07-16 10:23:44', 1),
+(8, 'Lector codigo Barras', 'Referencia 1.2.1.', '2021-07-28 19:20:42', NULL, NULL, 1),
+(9, 'Lector RFID', 'Lector RFID V1.1', '2021-07-28 19:22:17', NULL, NULL, 1),
+(10, 'Celular', 'Android', '2021-07-28 19:54:18', NULL, NULL, 1),
+(11, 'tableta', 'tableta', '2021-07-28 19:55:21', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 

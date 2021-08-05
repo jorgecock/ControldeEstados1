@@ -84,13 +84,8 @@
 								<td>
 									<a class="link_edit" href="editar_modulo.php?id=<?php echo $data['idmodulo']; ?>"><i class="fas fa-edit"></i> Editar
 									</a>
-									
-									<?php if($data['idmodulo']!=1){ ?>
-										|  
-										<a class="link_delete" href="eliminar_confirmar_modulo.php?id=<?php echo $data['idmodulo']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
-									<?php
-										} 
-									?>
+									|  
+									<a class="link_delete" href="eliminar_confirmar_modulo.php?id=<?php echo $data['idmodulo']; ?>"><i class="fas fa-trash-alt"></i> Eliminar</a>
 								</td>
 							</tr>
 						<?php
