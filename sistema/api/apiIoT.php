@@ -117,7 +117,7 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 								$mensaje = array("Estado"=>"Ok","Respuesta" =>"pieza hecha +1", "iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot'],"Modulo"=>$mod, "Unidades esperadas"=>$unidadesesperadas, "Productos Hechos"=>$nuevosproductoshechos,"Estado Actual"=>$estadoactual,"Voltage"=>$voltage);
 							
 								//***********************************************************************************
-								$periodo=3600; //lapso de tiempo en segundos en el cual se registra cada valor de eficiencia
+								$periodo=180; //3600; //lapso de tiempo en segundos en el cual se registra cada valor de eficiencia
 								$cambiotiempo=intval($nuevotiempoacumulado/$periodo)-intval($tiempoacumuladoanterior/$periodo); 
 								//***********************************************************************************
 
@@ -173,7 +173,7 @@ if(!empty($_GET)) { //se ejecuta si se reciben parametros
 					//if ( $_GET['idtipodispositivoiot']==N AND (Parametros esperados)
 					//******dispositivo tipo 2, 3 u otro tipo de dispositivo
 					//cuando se diseñe un dispositivo 2 aqui se pondrá el código que debe invocar. 
-					$mensaje = array("Estado"=>"Ok","Respuesta" =>"Dispositivo diferente al tipo 1");
+					$mensaje = array("Estado"=>"Ok","Respuesta" =>"Dispositivo diferente al tipo 1 o falta Parametros","iddispositivoIoT"=>$_GET['iddispositivoiot'],"idtipodispositivoIoT"=>$_GET['idtipodispositivoiot']);
 				}
 
 			} else { //******dispositivo no coincide con el de la base de datos

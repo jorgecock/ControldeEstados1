@@ -20,29 +20,43 @@
 				WHERE u.idmodulo=$mod");
 	$data=mysqli_fetch_array($query2);
 	
-	$tiempoacumuladoanterior=$data['tiempoacumulado'];
-	$momentoinidespausa=$data['momentoinidespausa'];
-	$tiempoactual=strtotime("now");
-	$momentodepausa=$tiempoactual;
-	$tiempocicloesperado=$data['tiempocicloesperado'];
-	$productoshechos=$data['productoshechos'];
-	$unidadesesperadas=$data['unidadesesperadas'];
-	$porcentajecompletado=$productoshechos*100/$unidadesesperadas;
-	$ordendeprod=$data['numeroordenproduccion'];
-	$itemaproducir=$data['nombre'];
-	$idproducto=$data['itemaproducir'];
-	$idordenproduccion=$data['ordendeprod'];
-	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion'];
-	$prodhechosdespausaini=$data['prodhechosdespausaini'];
-	$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa);
-	$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
-	$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior;
+	
+	//Tiempo de referencia actual
+	$tiempoactual=strtotime("now"); //Intante universal actual 
+	$momentodepausa=$tiempoactual; //Actualiza momento de pausa por si acaso se oprime el boton pausa
+
+	//Dato ingresados inicialmente al programar el conteo
+	$ordendeprod=$data['numeroordenproduccion']; //Numero de Orden de produccion
+	$idordenproduccion=$data['ordendeprod']; //Id de la orden de produccion . Este dato no se está mostrando *******
+	$itemaproducir=$data['nombre']; //Nombre del producto a producir
+	$idproducto=$data['itemaproducir']; //Id del producto a producir. Este dato no se está mostrando.*********
+	$unidadesesperadas=$data['unidadesesperadas']; //Unidades eperadas programadas
+	
+
+	//Productos hechos y porcentaje completado
+	$productoshechos=$data['productoshechos']; //Productos hechos actualmente
+	$porcentajecompletado=$productoshechos*100/$unidadesesperadas; //Porcentaje de ejecucion unidades hechas respecto a las esperadas
+
+	//Ultimo tiempo de produccion
+	$ultimotiempodeproduccion=$data['ultimotiempodeproduccion']; // Tiempo de elaboracion del ultimo producto en segundos
+	$tiempocicloesperado=$data['tiempocicloesperado']; //Tiempo de ciclo esperado en minutos, dato ingresado al programar el conteo
+
+
+
+	$tiempoacumuladoanterior=$data['tiempoacumulado']; //Tiempo acumulado de trabajo en segundos. POR PRODUCTOS PRODUCIDOS
+	$momentoinidespausa=$data['momentoinidespausa']; //instante universal en el que inicio luego de la ultima pausa
+	$prodhechosdespausaini=$data['prodhechosdespausaini']; //Productos hechos despues de la ultima pausa o inicio (Corrida entre pauasas)
+	$tiempopasadodesdeultimoreinicio=($tiempoactual-$momentoinidespausa); // Tiempo Transcurrido luego de la ultima pausa OK, en milisegundos
+
+	
+	$nuevotiempoacumuladoanterior=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior; //
+	$tiempoacumtrabajo=$tiempopasadodesdeultimoreinicio+$tiempoacumuladoanterior; //Tiempo acumulado en trabajo en segundos
 	
 	if ($tiempoacumtrabajo!=0){
-		$eficiencia=$productoshechos*$tiempocicloesperado*6000/$tiempoacumtrabajo;
+		$eficiencia=$productoshechos*$tiempocicloesperado*6000/$tiempoacumtrabajo; //Eficiencia
 	} 
-	$pausashechas=$data['pausashechas'];
-	$tiempopausado=$data['tiempopausado'];
+	$pausashechas=$data['pausashechas']; //Cantidad de pausasa hechas
+	$tiempopausado=$data['tiempopausado']; //Cantidad de tiempo pausado
 
 	//Definicion de estado siguiente
 
@@ -65,7 +79,6 @@
 			
 			$siguienteestado=6; //pasa a estado terminado
 			
-			include "conexion.php";
 			$query1 = mysqli_query($conexion,"
 				UPDATE modulos
 				SET estado=$siguienteestado, tiempoacumulado=$nuevotiempoacumuladoanterior, momentodepausa=$momentodepausa, eficienciaacumulada=$eficiencia
@@ -74,6 +87,8 @@
 			header("location: reportefinal.php");
 		}
 	}
+	mysqli_close($conexion);
+
 
 	include "validacionestadoactual.php";
 
@@ -226,7 +241,6 @@
 			<!-- <a href="index.php">Regresar a la ventana de inicio</a> -->
 		</form>	
 		
-
 
 		<?php 
 	  		//Selector de cambio de módulo
